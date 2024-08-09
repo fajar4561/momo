@@ -1,5 +1,23 @@
-<?php 
-require 'public/component/sidebar.php';
+<?php
+function isMobileDevice() {
+    return preg_match("/(android|iphone|ipod|opera mini|iemobile)/i", $_SERVER['HTTP_USER_AGENT']);
+}
+
+
+if ($session_akses == 0) {
+    if (isMobileDevice()) {
+        
+    }
+    else {
+        require 'public/component/sidebar2.php';
+    }
+ }
+ else {
+
+    require 'public/component/sidebar.php';
+ } 
+
+
 require 'public/component/topbar.php';
 ?>
 
