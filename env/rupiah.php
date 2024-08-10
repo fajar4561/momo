@@ -1,6 +1,6 @@
 
 
-<?php foreach (range(1, 18) as $key) { ?>
+<?php foreach (range(1, 30) as $key) { ?>
   
 <script type="text/javascript">
   var rupiah<?php echo $key."$data[id]";?> = document.getElementById('rupiah'+<?php echo $key."$data[id]";?>);

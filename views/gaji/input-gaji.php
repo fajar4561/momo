@@ -182,7 +182,7 @@ else {
                                                     <th>Unit</th>
                                                     <th>Upah Sebelum Kenaikan</th>
                                                     <th>Penambahan</th>
-                                                    <th>Upah Setelah Kenaikan</th>
+                                                    <!--<th>Upah Setelah Kenaikan</th>-->
                                                     <th>Tj. Jabatan</th>
                                                     <th>Tj. Fungsional</th>
                                                     <th>Tj. Resiko</th>
@@ -217,7 +217,7 @@ else {
                                                        <input type="hidden" name="nopeg[]" value="<?=$data['nopeg']?>">
                                                        <td><input type="text" id="rupiah1<?=$data['id']?>" class="form-control" style="width: 120px;" name="upah_awal[]"></td>
                                                        <td><input type="text" id="rupiah2<?=$data['id']?>" style="width: 120px;" name="penambahan[]" class="form-control"></td>
-                                                       <td><input type="text" id="rupiah3<?=$data['id']?>" style="width: 120px;" name="revisi[]" class="form-control"></td>
+                                                       <!--<td><input type="text" id="rupiah3<?=$data['id']?>" style="width: 120px;" name="revisi[]" class="form-control"></td>-->
                                                        <td><input type="text" id="rupiah4<?=$data['id']?>" name="tj_jabatan[]" style="width: 120px;" class="form-control"></td>
                                                        <td><input type="text" id="rupiah5<?=$data['id']?>" name="tj_fungsional[]" style="width: 120px;" class="form-control"></td>
                                                        <td><input type="text" id="rupiah6<?=$data['id']?>" name="tj_resiko[]" style="width: 120px;" class="form-control"></td>
@@ -234,7 +234,7 @@ else {
                                                        <td><input type="text" id="rupiah17<?=$data['id']?>" name="obat[]" style="width: 120px;" class="form-control"></td>
                                                        <td><input type="text" id="rupiah18<?=$data['id']?>" name="seragam[]" style="width: 120px;" class="form-control"></td>
                                                        <td><input type="text" id="rupiah19<?=$data['id']?>" name="kredit[]" style="width: 120px;" class="form-control"></td>
-                                                       <td><input type="text" id="rupiah20<?=$data['id']?>" name="kredit[]" style="width: 120px;" class="form-control"></td>
+                                                       <td><input type="text" id="rupiah20<?=$data['id']?>" name="lain[]" style="width: 120px;" class="form-control"></td>
 
                                                        <!---JS ubah ke format Rupiah-->
                                                        <?php 
