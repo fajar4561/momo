@@ -12,7 +12,7 @@ $file_ext = strtolower($file_info['extension']);
 // Buka file CSV untuk dibaca
 $handle = fopen($file, "r");
 
-fgetcsv($handle, 1000, ",");
+//fgetcsv($handle, 1000, ",");
 
 // Buang baris pertama (judul kolom)
 //fgetcsv($handle, 1000, ",");
@@ -24,51 +24,50 @@ if ($file_ext !='csv') {
 }
 else {
 	// Loop untuk membaca setiap baris data dari file CSV
-	while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-
-		// deklarasi variabel
-
+	while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
 		$nopeg = str_replace("'", "", $data[1]);
 		$bulan = $data[5];
 		$tahun = $data[6];
+
 		$upah_awal = floatval($data[7]);
+		$penambahan = floatval($data[8]);
+		$revisi	= floatval($data[9]);
 
-		$tj_jabatan = floatval($data[8]);
-		$tj_fungsional = floatval($data[9]);
-		$tj_resiko = floatval($data[10]);
-		$tj_tpbri = floatval($data[11]);
-		$fee_for_service = floatval($data[12]);
-		$lembur = floatval($data[13]);
-		$thr = floatval($data[14]);
-		$tj_lain = floatval($data[15]);
+		$tj_jabatan = floatval($data[10]);
+		$tj_fungsional = floatval($data[11]);
+		$tj_resiko = floatval($data[12]);
+		$tj_tpbri = floatval($data[13]);
+		$fee_for_service = floatval($data[14]);
+		$lembur = floatval($data[15]);
+		$thr = floatval($data[16]);
+		$tj_lain = floatval($data[17]);
 
-		//$gaji_bruto = floatval($data[16]); // gaji kotor
-		$gaji_bruto = $upah_awal + $tj_jabatan + $tj_fungsional + $tj_resiko + $tj_tpbri + $fee_for_service + $lembur + $thr + $tj_lain;
+		//$gaji_bruto = floatval($data[18]); // gaji kotor
+		$gaji_bruto = $revisi+ $tj_jabatan + $tj_fungsional + $tj_resiko + $tj_tpbri + $fee_for_service + $lembur + $thr + $tj_lain;
 
-		$bpjs_tenaga = floatval($data[17]);
-		$bpjs_kesehatan = floatval($data[18]);
+		$bpjs_tenaga = floatval($data[19]);
+		$bpjs_kesehatan = floatval($data[20]);
 
-		$pph21 = floatval($data[19]);
-		$ppni = floatval($data[20]);
-		$lain = floatval($data[21]);
+		$pph21 = floatval($data[21]);
+		$ppni = floatval($data[22]);
+		$lain = floatval($data[23]);
 
-		//$total_potongan = floatval($data[22]);
+		//$total_potongan = floatval($data[24]);
+
 		$total_potongan = $bpjs_tenaga + $bpjs_kesehatan+$pph21+$ppni+$lain;
 
-		
-		//$gaji_netto = floatval($data[23]); // dari hasil bruto di kurangi dari potongan pokok diluar slip
+		//$gaji_netto = floatval($data[25]); // dari hasil bruto di kurangi dari potongan pokok diluar slip
 		$gaji_netto = $gaji_bruto-$total_potongan;
 
+		$obat = floatval($data[26]);
+		$seragam = floatval($data[27]);
+		$kredit = floatval($data[28]);
+		$pelatihan = floatval($data[29]);
 
-		$obat = floatval($data[24]);
-		$seragam = floatval($data[25]);
-		$kredit = floatval($data[26]);
-		$pelatihan = floatval($data[27]);
-
-		//$total_potongan_slip = floatval($data[28]);
+		//$total_potongan_slip = floatval($data[30]);
 		$total_potongan_slip = $obat + $seragam + $kredit+$pelatihan;
 
-		//$transfer = floatval($data[29]);
+		//$transfer = floatval($data[31]);
 		$transfer = $gaji_netto-$total_potongan_slip;
 
 		$ambil_data_gaji = $koneksi->query("SELECT * FROM gaji WHERE bulan='$bulan' AND tahun='$tahun'");
@@ -80,6 +79,8 @@ else {
 				$update = $koneksi->query("UPDATE gaji SET
 					tgl_gaji='$tanggal_hari_ini', 
 					upah_awal ='$upah_awal',
+					penambahan='$penambahan',
+					revisi='$revisi',
 					bpjs_kerja='$bpjs_tenaga',
 					bpjs_kes='$bpjs_kesehatan',
 					pph21='$pph21',
@@ -106,6 +107,7 @@ else {
 			}
 
 		}
+
 		$bulan2 = $_SESSION['bulan2']=$bulan;
 		$tahun2 = $_SESSION['tahun2']=$tahun;
 		
@@ -131,7 +133,7 @@ else {
 
 
 			if ($jml_karyawan==$jml_keinput) {
-	// update data transaksi gaji
+			// update data transaksi gaji
 				$koneksi->query("UPDATE transaksi_gaji SET tgl_transaksi='$tanggal_hari_ini',
 					proses='$jml_keinput',
 					total_gaji='$total_pendapatan',
@@ -153,8 +155,6 @@ else {
 			echo "<script>location='../../../data-gaji';</script>";
 		}	
 	}
-
-
 }
 
 ?>

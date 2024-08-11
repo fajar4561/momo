@@ -111,20 +111,26 @@ else {
                                                     <th>Unit</th>
                                                     <th>Upah Sebelum Kenaikan</th>
                                                     <th>Penambahan</th>
-                                                    <th>Upah Setelah Kenaikan</th>
-                                                    <th>BPJS Tenaga Kerja</th>
-                                                    <th>BPJS Kesehatan</th>
-                                                    <th>PPH 21</th>
-                                                    <th>PPNI</th>
-                                                    <th>Lain-lain</th>
-                                                    <th>TJ. Jabatan</th>
-                                                    <th>TJ. Fungsional</th>
-                                                    <th>TJ. TPBR/Khusus</th>
+                                                    <!--<th>Upah Setelah Kenaikan</th>-->
+                                                    <th>Tj. Jabatan</th>
+                                                    <th>Tj. Fungsional</th>
+                                                    <th>Tj. Resiko</th>
+                                                    <th>Tj. TPBR/Khusus</th>
                                                     <th>Fee For Service</th>
-                                                    <th>Lembur Pelayanan</th>
-                                                    <th>Penyesuaian Gaji</th>
-                                                    <th>TJ Lain-lain</th>
-                                                </tr>
+                                                    <th>Lembur</th>
+                                                    <th>THR/Thn</th>
+                                                    <th>tj. Lain-lain</th>
+                                                    <th>BPJS TK</th>
+                                                    <th>BPJS KES</th>
+                                                    <th>PPH21</th>
+                                                    <th>PPNI</th>
+                                                    <th>Potongan Lain</th>
+                                                    <th>Obat</th>
+                                                    <th>Seragam</th>
+                                                    <th>Kredit Bank</th>
+                                                    <th>Lain-lain /By Pelatihan</th>
+                                                    
+                                                </tr> 
                                             </thead>
                                             <tbody>
                                                  <?php
@@ -139,18 +145,25 @@ else {
                                                        <td><?=$data['unit']?></td>
                                                        <input type="hidden" name="nopeg[]" value="<?=$data['nopeg']?>">
                                                        <td><input type="text" id="rupiah1<?=$data['id']?>" class="form-control" style="width: 120px;" name="upah_awal[]"></td>
-                                                       <td><input type="text" id="rupiah7<?=$data['id']?>" style="width: 120px;" name="bpjs_tenaga[]" class="form-control"></td>
-                                                       <td><input type="text" id="rupiah8<?=$data['id']?>" name="bpjs_kesehatan[]" class="form-control"></td>
-                                                       <td><input type="text" id="rupiah18<?=$data['id']?>" name="pph21[]" style="width: 100px;"  class="form-control"></td>
-                                                       <td><input type="text" id="rupiah9<?=$data['id']?>" name="ppni[]" style="width: 100px;" class="form-control"></td>
-                                                       <td><input type="text" id="rupiah10<?=$data['id']?>" name="lain[]" style="width: 120px;" class="form-control"></td>
-                                                       <td><input type="text" id="rupiah11<?=$data['id']?>" name="tj_jabatan[]" style="width: 120px;" class="form-control"></td>
-                                                       <td><input type="text" id="rupiah12<?=$data['id']?>" name="tj_fungsional[]" style="width: 120px;" class="form-control"></td>
-                                                       <td><input type="text" id="rupiah13<?=$data['id']?>" name="tj_tpbri[]" style="width: 120px;" class="form-control"></td>
-                                                       <td><input type="text" id="rupiah14<?=$data['id']?>" name="fee_for_service[]" style="width: 120px;" class="form-control"></td>
-                                                       <td><input type="text" id="rupiah15<?=$data['id']?>" name="lembur[]" style="width: 120px;" class="form-control"></td>
-                                                       <td><input type="text" id="rupiah16<?=$data['id']?>" name="penyesuaian[]" style="width: 120px;" class="form-control"></td>
-                                                       <td><input type="text" id="rupiah17<?=$data['id']?>" name="tj_lain[]" style="width: 120px;" class="form-control" ></td>
+                                                       <td><input type="text" id="rupiah2<?=$data['id']?>" style="width: 120px;" name="penambahan[]" class="form-control"></td>
+                                                       <!--<td><input type="text" id="rupiah3<?=$data['id']?>" style="width: 120px;" name="revisi[]" class="form-control"></td>-->
+                                                       <td><input type="text" id="rupiah4<?=$data['id']?>" name="tj_jabatan[]" style="width: 120px;" class="form-control"></td>
+                                                       <td><input type="text" id="rupiah5<?=$data['id']?>" name="tj_fungsional[]" style="width: 120px;" class="form-control"></td>
+                                                       <td><input type="text" id="rupiah6<?=$data['id']?>" name="tj_resiko[]" style="width: 120px;" class="form-control"></td>
+                                                       <td><input type="text" id="rupiah7<?=$data['id']?>" name="tj_tpbri[]" style="width: 120px;" class="form-control"></td>
+                                                       <td><input type="text" id="rupiah8<?=$data['id']?>" name="fee_for_service[]" style="width: 120px;" class="form-control"></td>
+                                                       <td><input type="text" id="rupiah9<?=$data['id']?>" name="lembur[]" style="width: 120px;" class="form-control"></td>
+                                                       <td><input type="text" id="rupiah10<?=$data['id']?>" name="thr[]" style="width: 120px;" class="form-control"></td>
+                                                       <td><input type="text" id="rupiah11<?=$data['id']?>" name="tj_lain[]" style="width: 120px;" class="form-control" ></td>
+                                                       <td><input type="text" id="rupiah12<?=$data['id']?>" style="width: 120px;" name="bpjs_tenaga[]" class="form-control"></td>
+                                                       <td><input type="text" id="rupiah13<?=$data['id']?>" name="bpjs_kesehatan[]" class="form-control"></td>
+                                                       <td><input type="text" id="rupiah14<?=$data['id']?>" name="pph21[]" style="width: 100px;"  class="form-control"></td>
+                                                       <td><input type="text" id="rupiah15<?=$data['id']?>" name="ppni[]" style="width: 100px;" class="form-control"></td>
+                                                       <td><input type="text" id="rupiah16<?=$data['id']?>" name="lain[]" style="width: 120px;" class="form-control"></td>
+                                                       <td><input type="text" id="rupiah17<?=$data['id']?>" name="obat[]" style="width: 120px;" class="form-control"></td>
+                                                       <td><input type="text" id="rupiah18<?=$data['id']?>" name="seragam[]" style="width: 120px;" class="form-control"></td>
+                                                       <td><input type="text" id="rupiah19<?=$data['id']?>" name="kredit[]" style="width: 120px;" class="form-control"></td>
+                                                       <td><input type="text" id="rupiah20<?=$data['id']?>" name="lain2[]" style="width: 120px;" class="form-control"></td>
 
                                                        <!---JS ubah ke format Rupiah-->
                                                        <?php 

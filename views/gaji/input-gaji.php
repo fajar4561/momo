@@ -234,7 +234,7 @@ else {
                                                        <td><input type="text" id="rupiah17<?=$data['id']?>" name="obat[]" style="width: 120px;" class="form-control"></td>
                                                        <td><input type="text" id="rupiah18<?=$data['id']?>" name="seragam[]" style="width: 120px;" class="form-control"></td>
                                                        <td><input type="text" id="rupiah19<?=$data['id']?>" name="kredit[]" style="width: 120px;" class="form-control"></td>
-                                                       <td><input type="text" id="rupiah20<?=$data['id']?>" name="lain[]" style="width: 120px;" class="form-control"></td>
+                                                       <td><input type="text" id="rupiah20<?=$data['id']?>" name="lain2[]" style="width: 120px;" class="form-control"></td>
 
                                                        <!---JS ubah ke format Rupiah-->
                                                        <?php 
