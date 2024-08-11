@@ -1,7 +1,7 @@
 <?php 
 session_start();
-//error_reporting(0);
-//ini_set('display_errors', 0);
+error_reporting(0);
+ini_set('display_errors', 0);
 $title = str_replace("-", " ", $_GET['halaman']);
 
 if ($_GET['halaman']=='detail-pegawai' OR $_GET['halaman']=='detail-transaksi-gaji' OR $_GET['halaman']=='transaksi-gaji' OR $_GET['halaman']=='detail-gaji' OR $_GET['halaman']=='ubah-gaji' OR isset($_GET['page']) OR isset($_GET['pesan'])) 
