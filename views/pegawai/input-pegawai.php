@@ -32,9 +32,9 @@ $_SESSION['pesan'] = '';
                                 </div>
                             </div> 
                             <div class="mb-3 row">
-                                <label for="example-tel-input" class="col-sm-2 col-form-label text-end">NIK <code class="highlighter-rouge">*</code></label>
+                                <label for="example-tel-input" class="col-sm-2 col-form-label text-end">NIK</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="text" name="nik" placeholder="Nomor Induk Keluarga" required>
+                                    <input class="form-control" type="text" name="nik" placeholder="Nomor Induk Keluarga">
                                 </div>
                             </div>
                             <div class="mb-3 row">
@@ -143,21 +143,21 @@ $_SESSION['pesan'] = '';
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label for="example-datetime-local-input" class="col-sm-2 col-form-label text-end">Email <code class="highlighter-rouge">*</code></label>
+                                <label for="example-datetime-local-input" class="col-sm-2 col-form-label text-end">Email </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="text" name="email" placeholder="Alamat Email" required>
+                                    <input class="form-control" type="text" name="email" placeholder="Alamat Email">
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label for="example-datetime-local-input" class="col-sm-2 col-form-label text-end">Telpon <code class="highlighter-rouge">*</code></label>
+                                <label for="example-datetime-local-input" class="col-sm-2 col-form-label text-end">Telpon</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="text" name="telpon" placeholder="Nomor Telepon / WA Pegawai" required>
+                                    <input class="form-control" type="text" name="telpon" placeholder="Nomor Telepon / WA Pegawai">
                                 </div>
                             </div>
                             <div class="mb-2 row">
                                 <label class="col-sm-2 col-form-label text-end">Status Perkawinan</label>
                                 <div class="col-sm-10">
-                                    <select class="form-select" name="kawin" required>
+                                    <select class="form-select" name="kawin">
                                         <option value="">--- Pilih Status Perkawinan ---</option>
                                         <option value="Belum Kawin">Belum Kawin</option>
                                         <option value="Kawin">Kawin</option>

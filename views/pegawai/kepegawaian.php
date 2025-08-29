@@ -27,7 +27,7 @@ require 'env/tgl_indo.php';
 							<ul class="list-unstyled topbar-nav mb-0">
 								<li class="hide-phone app-search">
 									<form role="search" action="#" method="post">
-										<input type="search" name="cari" class="form-control top-search mb-0" placeholder="Cari Berdasarkan Nama atau Unit Kerja...">
+										<input type="search" name="cari" class="form-control top-search mb-0" placeholder="Cari......" style="width: 200px;">
 										<button type="submit"><i class="ti ti-search"></i></button>
 									</form>
 								</li>

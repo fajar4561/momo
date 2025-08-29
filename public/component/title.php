@@ -18,7 +18,9 @@
                 
 
             </div>
-            <h4 class="page-title">Halaman <?=ucwords($title)?></h4>
+            <?php if (!isMobileDevice()) { ?>
+                <h4 class="page-title">Halaman <?=ucwords($title)?></h4>
+            <?php } ?>
         </div>
         <!--end page-title-box-->
     </div>

@@ -86,11 +86,20 @@ $data = $koneksi->query("SELECT * FROM pegawai WHERE nopeg='$nopeg'")->fetch_ass
                                 <td>:</td>
                                 <td class="text-uppercase">
                                     <?php 
-                                        $bulan = $pecah['bulan'];
+                                        $bulan = (int)$pecah['bulan']; // Ambil bulan sebagai integer
+                                        $tahun = (int)$pecah['tahun']; // Ambil tahun sebagai integer
                                         require 'env/nama_bulan.php';
-                                        $terima = $bulan+1;
+
+                                         // Hitung bulan penerimaan gaji
+                                        if ($bulan == 12) {
+                                            $bulan_terima = 1; // Januari
+                                            $tahun_terima = $tahun + 1; // Tahun bertambah
+                                        } else {
+                                            $bulan_terima = $bulan + 1;
+                                            $tahun_terima = $tahun;
+                                        }
                                     ?>
-                                    <strong class="text-uppercase">gaji <?=bulan_indonesia($bulan)?> diterimakan <?=bulan_indonesia($terima).' '.$pecah['tahun']?> </strong>
+                                    <strong class="text-uppercase">Gaji <?= bulan_indonesia($bulan) ?> diterimakan <?= bulan_indonesia($bulan_terima) . ' ' . $tahun_terima ?> </strong>
                                 </td>
                             </tr>
                         </table>
@@ -117,6 +126,8 @@ $data = $koneksi->query("SELECT * FROM pegawai WHERE nopeg='$nopeg'")->fetch_ass
                                     'tj_resiko' => $pecah['tj_resiko'],
                                     'tj_tpbri' => $pecah['tj_tpbri'],
                                     'fee_for_servis' => $pecah['fee_for_servis'],
+                                    'tj_mcu' => $pecah['tj_mcu'],
+                                    'tj_bpjs' => $pecah['tj_bpjs'],
                                     'lembur' => $pecah['lembur'],
                                     'penyesuaian' => $pecah['penyesuaian'],
                                     'tj_lain' => $pecah['tj_lain'],
@@ -131,6 +142,8 @@ $data = $koneksi->query("SELECT * FROM pegawai WHERE nopeg='$nopeg'")->fetch_ass
                                     'tj_resiko' => 'TJ. Resiko',
                                     'tj_tpbri' => 'TJ. TPBRI / Khusus',
                                     'fee_for_servis' => 'Fee For Servis',
+                                    'tj_mcu' => 'Fee Petugas MCU',
+                                    'tj_bpjs' => 'Fee Tim BPJS',
                                     'lembur' => 'Lembur Pelayanan',
                                     'penyesuaian' => 'Penyesuaian Gaji',
                                     'tj_lain' => 'Lain-lain',

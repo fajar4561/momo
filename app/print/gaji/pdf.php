@@ -2,8 +2,8 @@
 require '../../../env/koneksi.php';
 require '../../../env/tgl_indo.php';
 require '../../../env/terbilang.php';
-require '../../../env/nama_bulan.php';
-
+require '../../../env/nama_bulan.php'; 
+ 
 $kode = $_GET['kode'];
 $nopeg = $_GET['nopeg'];
 
@@ -13,8 +13,16 @@ $pecah = $koneksi->query("SELECT * FROM gaji WHERE kode_transaksi='$kode' AND no
 // Ambil data pegawai berdasarkan nopeg
 $data = $koneksi->query("SELECT * FROM pegawai WHERE nopeg='$nopeg'")->fetch_assoc();
 
-$bulan = $pecah['bulan'];
-$terima = $bulan+1;
+$bulan = (int)$pecah['bulan']; // Ambil bulan sebagai integer
+$tahun = (int)$pecah['tahun']; // Ambil tahun sebagai integer
+ // Hitung bulan penerimaan gaji
+if ($bulan == 12) {
+    $bulan_terima = 1; // Januari
+    $tahun_terima = $tahun + 1; // Tahun bertambah
+} else {
+    $bulan_terima = $bulan + 1;
+    $tahun_terima = $tahun;
+}
 
 
 require('../../../public/plugins/fpdf/fpdf.php');
@@ -73,7 +81,7 @@ $pdf->Cell(1,5,$data['unit'],0,0);
 $pdf->Ln();
 $pdf->Cell(20,5,'Keterangan',0,0);
 $pdf->Cell(6,5,':',0,0);
-$pdf->Cell(1, 5, strtoupper('Gaji '. bulan_indonesia($bulan). ' Diterimakan '. bulan_indonesia($terima).' '.$pecah['tahun']), 0, 0);
+$pdf->Cell(1, 5, strtoupper('Gaji '. bulan_indonesia($bulan). ' Diterimakan '. bulan_indonesia($bulan_terima).' '.$tahun_terima), 0, 0);
 
 $pdf->Ln(13);
 $pdf->SetFont('Arial', 'B', 10);
@@ -163,12 +171,25 @@ $pdf->Cell(47,5,format_currency($pecah['lembur']),0,0);
 
 $pdf->Ln();
 $pdf->Cell(6,5,"9.",0,0);
+$pdf->Cell(55,5,"Fee Petugas MCU",0,0);
+$pdf->Cell(6,5,':',0,0);
+$pdf->Cell(47,5,format_currency($pecah['tj_mcu']),0,0);
+
+$pdf->Ln();
+$pdf->Cell(6,5,"10.",0,0);
+$pdf->Cell(55,5,"Fee Tim BPJS",0,0);
+$pdf->Cell(6,5,':',0,0);
+$pdf->Cell(47,5,format_currency($pecah['tj_bpjs']),0,0);
+
+
+$pdf->Ln();
+$pdf->Cell(6,5,"11.",0,0);
 $pdf->Cell(55,5,"Penyesuaian Gaji",0,0);
 $pdf->Cell(6,5,':',0,0);
 $pdf->Cell(47,5,format_currency($pecah['penyesuaian']),0,0);
 
 $pdf->Ln();
-$pdf->Cell(6,5,"10.",0,0);
+$pdf->Cell(6,5,"12.",0,0);
 $pdf->Cell(55,5,"Lain-lain",0,0);
 $pdf->Cell(6,5,':',0,0);
 $pdf->Cell(47,5,format_currency($pecah['tj_lain']),0,0);

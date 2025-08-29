@@ -31,27 +31,36 @@ if (!in_array($file_ext, $allowed_exts)) {
 	$_SESSION['pesan'] = 'Format file tidak sesuai !';
 	$_SESSION['info'] = ' Gagal Upload Berkas <strong class="text-uppercase">'.$jenis.'</strong?> !';
 	$_SESSION['warna'] = 'danger';
-	echo "<script>location='../../../berkas-kepegawaian';</script>"; 
+	echo "<script>location='../../../upload-berkas';</script>"; 
 }
 else {
-	// simpan data berdasarkan parameter jenis file upload
-	// chek terlebih dahulu apakah nopeg sudah terdaftar apa belum
-	$koneksi_terdaftar = $koneksi->query("SELECT * FROM file WHERE nopeg='$nopeg'");
-	$yangcocok = $koneksi_terdaftar->num_rows;
-
-	if ($yangcocok==1) {
-		// update data
-		$koneksi->query("UPDATE file SET $var='$filebaru' WHERE nopeg='$nopeg' ");
-
+	if ($jenis=='sertif') {
+		$koneksi->query("INSERT INTO sertifikat (id,nopeg,berkas) VALUES(null, '$nopeg', '$filebaru')");
+		$_SESSION['pesan'] = 'Berkas Berhasil diupload !';
+		$_SESSION['info'] = 'Berhasil ! ';
+		$_SESSION['warna'] = 'success';
+		echo "<script>location='../../../upload-berkas';</script>";
 	}
 	else {
-		$koneksi->query("INSERT INTO file (id,nopeg,$var) VALUES(null, '$nopeg','$filebaru')");
-	}
+		// simpan data berdasarkan parameter jenis file upload
+		// chek terlebih dahulu apakah nopeg sudah terdaftar apa belum
+		$koneksi_terdaftar = $koneksi->query("SELECT * FROM file WHERE nopeg='$nopeg'");
+		$yangcocok = $koneksi_terdaftar->num_rows;
 
-	$_SESSION['pesan'] = 'Berkas '.strtoupper($var).' Berhasil diupload !';
-	$_SESSION['info'] = 'Berhasil ! ';
-	$_SESSION['warna'] = 'success';
-	echo "<script>location='../../../berkas-kepegawaian';</script>";
+		if ($yangcocok==1) {
+			// update data
+			$koneksi->query("UPDATE file SET $var='$filebaru' WHERE nopeg='$nopeg' ");
+
+		}
+		else {
+			$koneksi->query("INSERT INTO file (id,nopeg,$var) VALUES(null, '$nopeg','$filebaru')");
+		}
+
+		$_SESSION['pesan'] = 'Berkas '.strtoupper($var).' Berhasil diupload !';
+		$_SESSION['info'] = 'Berhasil ! ';
+		$_SESSION['warna'] = 'success';
+		echo "<script>location='../../../upload-berkas';</script>";
+	}
 }
 
 

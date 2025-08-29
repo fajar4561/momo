@@ -33,14 +33,14 @@ if (!in_array($file_ext, $allowed_exts)) {
 	$_SESSION['pesan'] = 'Format file tidak sesuai !';
 	$_SESSION['info'] = 'peringatan !';
 	$_SESSION['warna'] = 'danger';
-	echo "<script>location='../../../berkas-kepegawaian';</script>"; 
+	echo "<script>location='../../../upload-berkas';</script>"; 
 }
 else {
 	$koneksi->query("UPDATE file SET $var='$filebaru' WHERE nopeg='$nopeg' ");
 	$_SESSION['pesan'] = 'Berkas '.strtoupper($var).' Berhasil di ubah !';
 	$_SESSION['info'] = 'Berhasil ! ';
 	$_SESSION['warna'] = 'success';
-	echo "<script>location='../../../berkas-kepegawaian';</script>"; 
+	echo "<script>location='../../../upload-berkas';</script>"; 
 }
 
 

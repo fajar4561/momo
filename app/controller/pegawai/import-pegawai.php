@@ -2,35 +2,41 @@
 session_start();
 require '../../../env/koneksi.php';
 
-// File CSV yang diunggah
+require '../../../vendor/autoload.php'; // Pastikan path ini sesuai dengan instalasi Composer Anda
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+
 $file = $_FILES['input-file']['tmp_name'];
 
 $file_info = pathinfo($_FILES['input-file']['name']);
 $file_ext = strtolower($file_info['extension']);
 
+$reader = new Xlsx();
+$spreadsheet = $reader->load($file);
 
-// kasih pesan error apabila file yang diupload bukan berjeniskan CSV
+// Ambil sheet aktif
+$sheet = $spreadsheet->getActiveSheet();
 
-if ($file_ext !='csv') {
-	$_SESSION['pesan'] = 'File Harus berformatkan ".csv" silahkan periksa kembali';
-	$_SESSION['info'] = 'Gagal Import File !';
-	$_SESSION['warna'] = 'danger';
-	echo "<script>window.location=history.go(-1);</script>";
-}
-else {
-	// Buka file CSV untuk dibaca
-	$handle = fopen($file, "r");
+// Konversi sheet ke array
+$data = $sheet->toArray();
 
-	// Buang baris pertama (judul kolom)
-	fgetcsv($handle, 1000, ",");
+/*
+echo '<pre>';
+print_r($data);
+echo '</pre>';
+*/
 
-    // Loop untuk membaca setiap baris data dari file CSV
-	while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-	        // Memecah data menjadi variabel-variabel terpisah
-		
-		$nama = trim($data[2]);
-		$nopeg = str_replace("'", "", $data[1]);
-		$gen = $data[3];
+if (!empty($data)) {
+    // Mengabaikan baris header jika ada
+    $header = array_shift($data); // Menghapus dan mendapatkan baris header
+    
+    // Loop melalui setiap baris data
+    foreach ($data as $index => $row) {
+        // Simpan setiap elemen data dari baris ke variabel
+        $nama = trim($row[2]);
+		$nopeg = str_replace("'", "", $row[1]);
+		$gen = $row[3];
 		// gender
 		if ($gen == 'L') {
 			$gender ='Laki-laki';
@@ -39,33 +45,31 @@ else {
 			$gender ='Perempuan';
 		}
 
-		$nik = str_replace("'", "", $data[4]);
-		$tmpt_lahir = $data[10];
-		$tanggal_input =$data[11];
-		$tanggal_parts = explode('/', $tanggal_input);
-		$tgl_lahir = date("Y-m-d", mktime(0, 0, 0, $tanggal_parts[1], $tanggal_parts[0], $tanggal_parts[2]));
+		$nik = str_replace("'", "", $row[4]);
+		$tmpt_lahir = $row[10];
+		$tgl_lahir =$row[11];
 		
 		// jabatan
-		$jabatan0 = $data[5];
+		$jabatan0 = $row[5];
 		$baris = explode("\n", $jabatan0);
 		$baris = array_map('trim', $baris);
 		$baris = array_filter($baris);
 		$jabatan = implode("\n", $baris);
 		//akhir jabatan
 		// unit
-		$unit0 = $data[6];
+		$unit0 = $row[6];
 		$baris2 = explode("\n", $unit0);
 		$baris2 = array_map('trim', $baris2);
 		$baris2 = array_filter($baris2);
 		$unit = implode("\n", $baris2);
 		// akhir unit
-		$tmt = $data[7];
-		$skpt = $data[8];
-		$alamat = $data[9];
-		$status_kawin = $data[12];
-		$status_pegawai = $data[13];
-		$telpon = str_replace("'", "", $data[14]);
-		$email = $data[15];
+		$tmt = $row[7];
+		$skpt = $row[8];
+		$alamat = $row[9];
+		$status_kawin = $row[12];
+		$status_pegawai = $row[13];
+		$telpon = str_replace("'", "", $row[14]);
+		$email = $row[15];
 		// menghitung umur
 		$tanggal_lahir_obj = new DateTime($tgl_lahir);
 		$tanggal_hari_ini = new DateTime();
@@ -94,7 +98,9 @@ else {
 
 		$password = md5($nopeg);
 
-		//chek apakah nopeg sudah terdaftar apa belum
+        
+        //echo "Nama: $tmt<br><br>";
+        //chek apakah nopeg sudah terdaftar apa belum
 		$ambil= $koneksi->query("SELECT * FROM pegawai WHERE nopeg='$nopeg'");
 		$cocok = $ambil->num_rows;
 
@@ -127,16 +133,12 @@ else {
 			$stmt->execute();
 
 		}
-
-		
-	  
-
-		
-	}
-
-	$_SESSION['pesan'] = 'Data pegawai Berhasil di Import dan di Perbaharui !';
+    }
+    
+    $_SESSION['pesan'] = 'Data pegawai Berhasil di Import dan di Perbaharui !';
 	$_SESSION['info'] = 'Berhasil !';
 	$_SESSION['warna'] = 'success';
 	echo "<script>location='../../../data-pegawai';</script>"; 
 }
+
 ?>

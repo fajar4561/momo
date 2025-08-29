@@ -96,13 +96,19 @@ else {
 			}
 			// simpan data
 			$password = md5("$nopeg");
-			$simpan = $koneksi->query("INSERT INTO pegawai (id, nopeg, nama, nik, agama, gender, tmpt_lahir, tgl_lahir, umur, jabatan,unit, tmt, skpt, masa, ijazah, alamat, email, telpon,status_kawin,status_pegawai, username, password, foto) VALUES (null, '$nopeg', '$nama', '$nik', '$gender', '$agama', '$tmpt_lahir', '$tgl_lahir', '$umur', '$jabatan', '$unit', '$tmt', '$skpt', '$masa', '$ijazah', '$alamat', '$email', '$telpon', '$kawin', '$status_pegawai',  '$nopeg', '$password', '$fotobaru')");
+			$simpan = $koneksi->query("INSERT INTO pegawai (id, nopeg, nama, nik, agama, gender, tmpt_lahir, tgl_lahir, umur, jabatan,unit, tmt, skpt, masa, ijazah, alamat, email, telpon,status_kawin,status_pegawai, username, password, foto) VALUES (null, '$nopeg', '$nama', '$nik', '$agama', '$gender', '$tmpt_lahir', '$tgl_lahir', '$umur', '$jabatan', '$unit', '$tmt', '$skpt', '$masa', '$ijazah', '$alamat', '$email', '$telpon', '$kawin', '$status_pegawai',  '$nopeg', '$password', '$fotobaru')");
 
-			// alihkan halaman
-			$_SESSION['pesan'] = 'Data pegawai <strong>'.$nama.'</strong> Berhasil di simpan !';
-			$_SESSION['info'] = 'Berhasil !';
-			$_SESSION['warna'] = 'success';
-			echo "<script>location='../../../data-pegawai';</script>"; 
+			if ($simpan) {
+				// alihkan halaman
+				$_SESSION['pesan'] = 'Data pegawai <strong>'.$nama.'</strong> Berhasil di simpan !';
+				$_SESSION['info'] = 'Berhasil !';
+				$_SESSION['warna'] = 'success';
+				echo "<script>location='../../../data-pegawai';</script>"; 
+			} else {
+				echo "Gagal menyimpan data: " . $koneksi->error;
+			}
+
+			
 
 
 		}

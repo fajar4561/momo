@@ -1,11 +1,16 @@
 RewriteEngine On
 
+# Halaman Utama
 RewriteRule ^beranda$ index.php?halaman=beranda [L]
 
+# Kepegawaian
 RewriteRule ^input-pegawai$ index.php?halaman=input-pegawai [L]
 RewriteRule ^data-pegawai$ index.php?halaman=data-pegawai [L]
 RewriteRule ^detail-pegawai/([^/]+)$ index.php?halaman=detail-pegawai&n=$1 [L]
+RewriteRule ^ubah-pegawai/([^/]+)$ index.php?halaman=ubah-pegawai&n=$1 [L]
+RewriteRule ^penyerahan-inventaris$ index.php?halaman=penyerahan-inventaris [L]
 
+# Gaji
 RewriteRule ^input-gaji$ index.php?halaman=input-gaji [L]
 RewriteRule ^data-gaji$ index.php?halaman=data-gaji [L]
 RewriteRule ^detail-transaksi-gaji/([^/]+)$ index.php?halaman=detail-transaksi-gaji&kode=$1 [L]
@@ -13,20 +18,51 @@ RewriteRule ^transaksi-gaji/([^/]+)$ index.php?halaman=transaksi-gaji&kode=$1 [L
 RewriteRule ^detail-gaji/([^/]+)$ index.php?halaman=detail-gaji&kode=$1 [L]
 RewriteRule ^ubah-gaji/([^/]+)$ index.php?halaman=ubah-gaji&kode=$1 [L]
 
+# Absensi dan Kritik
 RewriteRule ^absensi$ index.php?halaman=absensi [L]
-
 RewriteRule ^kritik$ index.php?halaman=kritik [L]
 
-RewriteRule ^kepegawaian$ index.php?halaman=kepegawaian [L]
-RewriteRule ^kepegawaian/([^/]+)/?$ index.php?halaman=kepegawaian&page=$1 [L,QSA]
-
-RewriteRule ^berkas-kepegawaian$ index.php?halaman=berkas-kepegawaian [L]
-RewriteRule ^upload-berkas$ index.php?halaman=upload-berkas [L]
-
+# Profil dan Login
 RewriteRule ^login$ login.php [NC,L]
-
 RewriteRule ^profil$ index.php?halaman=profil [L]
-
 RewriteRule ^profil/([^/]+)$ index.php?halaman=profil&pesan=$1 [L]
 
+# Inventaris
+RewriteRule ^input-pembelian$ index.php?halaman=input-pembelian [L]
+RewriteRule ^input-barang$ index.php?halaman=input-barang [L]
+RewriteRule ^data-pembelian$ index.php?halaman=data-pembelian [L]
+RewriteRule ^detail-transaksi-pembelian/([^/]+)$ index.php?halaman=detail-transaksi-pembelian&kode=$1 [L]
+RewriteRule ^ubah-transaksi-pembelian/([^/]+)$ index.php?halaman=ubah-transaksi-pembelian&kode=$1 [L]
+RewriteRule ^data-inventaris$ index.php?halaman=data-inventaris [L]
+RewriteRule ^stok-barang$ index.php?halaman=stok-barang [L]
+RewriteRule ^detail-inventaris$ index.php?halaman=detail-inventaris [QSA,L]
+RewriteRule ^laporan-pembelian$ index.php?halaman=laporan-pembelian [QSA,L]
+RewriteRule ^laporan-penyusutan$ index.php?halaman=laporan-penyusutan [QSA,L]
+
+RewriteRule ^unit-inv$ index.php?halaman=unit-inv [L]
+RewriteRule ^input-unit$ index.php?halaman=input-unit [L]
+RewriteRule ^ubah-unit$ index.php?halaman=ubah-unit [QSA,L]
+
+RewriteRule ^cek-inv$ index.php?halaman=cek-inv [L]
+
+
+# Kepegawaian dengan Paging
+RewriteRule ^kepegawaian$ index.php?halaman=kepegawaian [L]
+RewriteRule ^upload-berkas$ index.php?halaman=upload-berkas [L]
+RewriteRule ^kepegawaian/([^/]+)/?$ index.php?halaman=kepegawaian&page=$1 [L,QSA]
+
+#linen
+RewriteRule ^input-linen$ index.php?halaman=input-linen [L]
+RewriteRule ^master-linen$ index.php?halaman=master-linen [L]
+
+#kredensial
+RewriteRule ^master-jabatan$ index.php?halaman=master-jabatan [L]
+RewriteRule ^master-form-rkk$ index.php?halaman=master-form-rkk [L]
+RewriteRule ^pengajuan-kredensial$ index.php?halaman=pengajuan-kredensial [L]
+RewriteRule ^data-pengajuan-kredensial$ index.php?halaman=data-pengajuan [L]
+
+# chat gpt
+RewriteRule ^chatbox$ index.php?halaman=chatbox [L]
+
+# Pengaturan PHP
 php_value max_input_vars 3000

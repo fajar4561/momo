@@ -9,7 +9,7 @@ if ($session_akses == 0) {
         
     }
     else {
-        require 'public/component/sidebar2.php';
+        require 'public/component/sidebar.php';
     }
  }
  else {

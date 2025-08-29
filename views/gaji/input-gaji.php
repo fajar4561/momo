@@ -1,8 +1,20 @@
 <?php 
 require 'env/koneksi.php';
 
-if (isset($_POST['cari'])) {
+require 'vendor/autoload.php';
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+if ($koneksi->connect_error) {
+    die("Connection failed: " . $koneksi->connect_error);
+}
+ 
+// Buat instance Spreadsheet
+$spreadsheet = new Spreadsheet();
+$sheet = $spreadsheet->getActiveSheet();
+
+if (isset($_POST['cari'])) {
+    
     // deklarasikan session bulan dan tahun yang dipilih
     $bulan2 = $_SESSION['bulan'];
     $tahun = $_SESSION['tahun'];
@@ -16,34 +28,31 @@ if (isset($_POST['cari'])) {
         $result = $koneksi->query($sql);
 
         // export ke file excel
-        $nama_file = 'public/file/gaji/Penggajian-'.$unit.'-Bulan-'.$bulan2.'-'.$tahun.'.csv';
+        $nama_file = 'public/file/gaji/Penggajian-'.$unit.'-Bulan-'.$bulan2.'-'.$tahun.'.xlsx';
         $header = array("No", "NIP", "Nama", "Jabatan", "Unit", "Periode Bulan", "Periode Tahun", "Upah Sebelum kenaikan", "Penambahan", "Upah Setelah Kenaikan", "TJ.JABATAN", "TJ.FUNGSIONAL", "TJ.RESIKO", "TJ.TPBR/KHUSUS", "FEE FOR SERVICE", "LEMBUR", "THR/THN", "LAIN-LAIN", "GAJI BRUTO", "BPJS TK", "BPJS KES", "PPH21", "PPNI","LAIN-LAIN", "TOTAL POTONGAN","GAJI NETTO", "OBAT","SERAGAM KARYAWAN", "KREDIT BTN", "LAIN-LAIN / BY PELATIHAN", "TOTAL POT", "TRANSFER");
 
-        // Buka file untuk ditulis
-        $file = fopen($nama_file, 'w');
+        // Set header kolom di Excel
+        foreach ($header as $index => $columnName) {
+            $sheet->setCellValueByColumnAndRow($index + 1, 1, $columnName);
+        }
 
-        // Tulis header ke file CSV
-        fputcsv($file, $header);
-        $nomor_baris = 1;
+        // Tulis data ke sheet
+        $nomor_baris = 2; // Mulai dari baris ke-2 karena baris ke-1 adalah header
 
-        // Loop untuk menulis data
-        // Loop untuk menulis data
         while ($row = $result->fetch_assoc()) {
-    // Menambahkan nomor baris ke data
-            $row_with_number = array_merge(array(sprintf('%d', $nomor_baris)), $row);
-            
-    // Mengonversi nilai nopeg menjadi string dan menambahkan tanda kutip di awal
-            $row_with_number['nopeg'] = "'" . $row_with_number['nopeg'];
-            
-    // Tulis baris data ke file CSV
-            fputcsv($file, $row_with_number);
-            
-    // Increment nomor baris
+            $sheet->setCellValueByColumnAndRow(1, $nomor_baris, $nomor_baris - 1); // No
+            $sheet->setCellValueByColumnAndRow(2, $nomor_baris, "'" . $row['nopeg']); // NIP dengan tanda kutip
+            $sheet->setCellValueByColumnAndRow(3, $nomor_baris, $row['nama']); // Nama
+            $sheet->setCellValueByColumnAndRow(4, $nomor_baris, $row['jabatan']);
+            $sheet->setCellValueByColumnAndRow(5, $nomor_baris, $row['unit']);
+            $sheet->setCellValueByColumnAndRow(6, $nomor_baris, $bulan2);
+            $sheet->setCellValueByColumnAndRow(7, $nomor_baris, $tahun);
             $nomor_baris++;
         }
 
-        // Tutup file
-        fclose($file);
+        // Simpan file Excel
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($nama_file);
     }
     else {
         $ambildata = $koneksi->query("SELECT * FROM gaji INNER JOIN pegawai ON gaji.nopeg=pegawai.nopeg WHERE status_pegawai!='RESIGN' AND bulan='$bulan2' AND tahun='$tahun' ORDER BY nama ASC");
@@ -52,33 +61,31 @@ if (isset($_POST['cari'])) {
         $result = $koneksi->query($sql);
 
         // export ke file excel
-        $nama_file = 'public/file/gaji/Penggajian-Bulan-'.$bulan2.'-'.$tahun.'.csv';
+        $nama_file = 'public/file/gaji/Penggajian-Bulan-'.$bulan2.'-'.$tahun.'.xlsx';
         $header = array("No", "NIP", "Nama", "Jabatan", "Unit", "Periode Bulan", "Periode Tahun", "Upah Sebelum kenaikan", "Penambahan", "Upah Setelah Kenaikan", "TJ.JABATAN", "TJ.FUNGSIONAL", "TJ.RESIKO", "TJ.TPBR/KHUSUS", "FEE FOR SERVICE", "LEMBUR", "THR/THN", "LAIN-LAIN", "GAJI BRUTO", "BPJS TK", "BPJS KES", "PPH21", "PPNI","LAIN-LAIN", "TOTAL POTONGAN","GAJI NETTO", "OBAT","SERAGAM KARYAWAN", "KREDIT BTN", "LAIN-LAIN / BY PELATIHAN", "TOTAL POT", "TRANSFER");
 
-        // Buka file untuk ditulis
-        $file = fopen($nama_file, 'w');
+        // Set header kolom di Excel
+        foreach ($header as $index => $columnName) {
+            $sheet->setCellValueByColumnAndRow($index + 1, 1, $columnName);
+        }
 
-        // Tulis header ke file CSV
-        fputcsv($file, $header);
-        $nomor_baris = 1;
+        // Tulis data ke sheet
+        $nomor_baris = 2; // Mulai dari baris ke-2 karena baris ke-1 adalah header
 
-       // Loop untuk menulis data
         while ($row = $result->fetch_assoc()) {
-    // Menambahkan nomor baris ke data
-            $row_with_number = array_merge(array(sprintf('%d', $nomor_baris)), $row);
-            
-    // Mengonversi nilai nopeg menjadi string dan menambahkan tanda kutip di awal
-            $row_with_number['nopeg'] = "'" . $row_with_number['nopeg'];
-            
-    // Tulis baris data ke file CSV
-            fputcsv($file, $row_with_number);
-            
-    // Increment nomor baris
+            $sheet->setCellValueByColumnAndRow(1, $nomor_baris, $nomor_baris - 1); // No
+            $sheet->setCellValueByColumnAndRow(2, $nomor_baris, "'" . $row['nopeg']); // NIP dengan tanda kutip
+            $sheet->setCellValueByColumnAndRow(3, $nomor_baris, $row['nama']); // Nama
+            $sheet->setCellValueByColumnAndRow(4, $nomor_baris, $row['jabatan']);
+            $sheet->setCellValueByColumnAndRow(5, $nomor_baris, $row['unit']);
+            $sheet->setCellValueByColumnAndRow(6, $nomor_baris, $bulan2);
+            $sheet->setCellValueByColumnAndRow(7, $nomor_baris, $tahun);
             $nomor_baris++;
         }
 
-        // Tutup file
-        fclose($file);
+        // Simpan file Excel
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($nama_file);
     }
 $jml_data = mysqli_num_rows($ambildata);
 }
@@ -188,6 +195,8 @@ else {
                                                     <th>Tj. Resiko</th>
                                                     <th>Tj. TPBR/Khusus</th>
                                                     <th>Fee For Service</th>
+                                                    <th>Fee Petugas MCU</th>
+                                                    <th>Fee Tim BPJS</th>
                                                     <th>Lembur</th>
                                                     <th>THR/Thn</th>
                                                     <th>tj. Lain-lain</th>
@@ -223,6 +232,9 @@ else {
                                                        <td><input type="text" id="rupiah6<?=$data['id']?>" name="tj_resiko[]" style="width: 120px;" class="form-control"></td>
                                                        <td><input type="text" id="rupiah7<?=$data['id']?>" name="tj_tpbri[]" style="width: 120px;" class="form-control"></td>
                                                        <td><input type="text" id="rupiah8<?=$data['id']?>" name="fee_for_service[]" style="width: 120px;" class="form-control"></td>
+                                                       <td><input type="text" id="rupiah21<?=$data['id']?>" name="tj_mcu[]" style="width: 120px;" class="form-control"></td>
+                                                       <td><input type="text" id="rupiah22<?=$data['id']?>" name="tj_bpjs[]" style="width: 120px;" class="form-control"></td>
+
                                                        <td><input type="text" id="rupiah9<?=$data['id']?>" name="lembur[]" style="width: 120px;" class="form-control"></td>
                                                        <td><input type="text" id="rupiah10<?=$data['id']?>" name="thr[]" style="width: 120px;" class="form-control"></td>
                                                        <td><input type="text" id="rupiah11<?=$data['id']?>" name="tj_lain[]" style="width: 120px;" class="form-control" ></td>
@@ -284,7 +296,7 @@ else {
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="d-grid">
-                                <p class="text-muted">Pastikan File yang diupload berformatkan "CSV".</p>
+                                <p class="text-muted">Pastikan File yang diupload berformatkan "xlsx".</p>
                                 <div class="preview-box d-block justify-content-center rounded shadow overflow-hidden bg-light p-1"></div>
                                 <input type="file" id="input-file" name="input-file" onchange="handleChange()" hidden />
                                 <label class="btn-upload btn btn-primary mt-4" for="input-file">Upload File</label>

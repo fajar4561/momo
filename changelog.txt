@@ -1,0 +1,6 @@
+V2.0.1 : Perbaikan beberapa bug & penambahan laporan penyusutan
+V2.0.0 : Implementasi sistem informasi Inventaris
+V1.0.3 : Penambahan fungsi QrCode untuk ttd pegawai dengan parameter nopeg
+V1.0.2 : Improvisasi tampilan untuk menu pegawai dan admin ketika dikases menggunakan device/platform berbeda
+V1.0.1 : Penyesuaian Format Gaji terbaru.
+V1.0.0 : Penambahan Fitur Upload Berkas Kepegawaian & Improvisasi Load pada device.

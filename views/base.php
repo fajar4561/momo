@@ -49,9 +49,13 @@ require_once $link.'app/controller/pegawai/qr_otomatis.php';
                 </div>
             </div>
             <div class="col-auto">
-               <div class="dash-datepick">
-                    <input type="hidden" id="light_datepicker"/>
-                </div>
+               <div class="card">
+                   <div class="card-body">
+                       <div class="dash-datepick">
+                            <input type="hidden" id="light_datepicker"/>
+                        </div>
+                   </div>
+               </div>
             </div>
         </div>
     </div>
@@ -126,44 +130,84 @@ require_once $link.'app/controller/pegawai/qr_otomatis.php';
                 </div><!--end card--> 
             </div>
             <div class="col-md-6 col-lg-12">
-                <div class="card">   
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row align-items-center">
+                                <div class="col">                      
+                                    <h4 class="card-title"></h4>                      
+                                </div><!--end col-->
+                            </div>  <!--end row-->                                  
+                        </div><!--end card-header-->
+                        <div class="card-body">
+                            <div class="chart-demo">
+                                <div id="apex_line1" class="apex-charts"></div>
+                            </div>                                        
+                        </div><!--end card-body-->
+                    </div><!--end card-->
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-12">
+                <div class="card">  
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col">                      
-                                <h4 class="card-title">Customer Satisfaction</h4>                      
-                            </div><!--end col-->                                       
+                                <h4 class="card-title">Data Transaksi Gaji</h4>                      
+                            </div><!--end col-->
+                            <div class="col-auto"> 
+                                <a href="data-gaji" class="text-primary">Lihat Semua</a>   
+                            </div><!--end col-->
                         </div>  <!--end row-->                                  
-                    </div><!--end card-header-->  
+                    </div><!--end card-header-->                                
                     <div class="card-body">
-                        <div class="position-absolute bottom-50 start-50 translate-middle mb-n2">
-                            <h3 class="mb-0">94.5%</h3>
-                            <p class="mb-0 text-uppercase fw-semibold text-muted">Happiness</p>
-                        </div> 
-                        <div id="ana_device" class="apex-charts mb-2"></div>  
-                        <ul class="list-inline mb-0 text-center">
-                            <li class="list-inline-item mb-2 mb-lg-0 fw-semibold">
-                                <i class="far fa-grin-stars text-primary font-16 align-middle me-1"></i>Excellent
-                            </li>
-                            <li class="list-inline-item mb-2 mb-lg-0 fw-semibold">
-                                <i class="far fa-smile me-1 mb-lg-0 font-16 align-middle" style="color: #fdb5c8;"></i>Very Good
-                            </li>
-                            <li class="list-inline-item mb-2 fw-semibold">
-                                <i class="far fa-meh text-info me-1 font-16 align-middle"></i>Good
-                            </li>
-                            <li class="list-inline-item fw-semibold">
-                                <i class="far fa-frown  me-1 font-16 align-middle" style="color: #c693ff;"></i>Fair
-                            </li>
-                        </ul>  
-                        <hr class="hr-dashed">                                                                   
-                        <div class="media">
-                            <span class="thumb-sm justify-content-center d-flex align-items-center bg-soft-warning rounded-circle me-2">MT</span>                                    
-                            <div class="media-body align-self-center">
-                                <p class="text-muted mb-0">There are many variations of passages of Lorem Ipsum available... 
-                                    <a href="#" class="text-primary">Read more</a>
-                                </p>                                           
-                            </div><!--end media-body-->
-                        </div>
-                    </div><!--end card-body-->    
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Periode Gaji</th>
+                                        <th>Tanggal Penginputan</th>
+                                        <th>Jumlah Karyawan</th>
+                                        <th>Terproses</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $ambildata = $koneksi->query("SELECT * FROM transaksi_gaji  ORDER BY kode_transaksi DESC LIMIT 5");
+                                    $no = 1;
+                                    while ($data = mysqli_fetch_assoc($ambildata)) { 
+                                        require_once 'env/nama_bulan.php';
+                                        $progres = ($data['proses']/$data['jumlah_karyawan']) * 100;
+                                    ?>
+                                    <tr>
+                                        <td><?=$no++?></td>
+                                        <td><?=ucwords(bulan_indonesia($data['periode_bulan']))?> <?=$data['periode_tahun']?></td>
+                                        <td><?=($data['tgl_transaksi']=='0000-00-00') ? '' : tgl_indo($data['tgl_transaksi'])?></td>
+                                        <td>
+                                            <?=$data['jumlah_karyawan']?>
+                                        </td>
+                                        <td>
+                                            <?php
+                                            $warna = $progres <= 20 ? "bg-danger" : ($progres <= 40 ? "bg-warning" : ($progres <= 60 ? "bg-info" : ($progres <= 80 ? "bg-primary" : "bg-success")));
+                                            ?>
+                                            <small class="float-end ms-2 pt-1 font-10"><?=round($progres)?>%</small>
+                                            <div class="progress mt-2" style="height:3px;">
+                                                <div class="progress-bar <?=$warna?>" role="progressbar" style="width: <?=$progres?>%;" aria-valuenow="<?=$progres?>" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge rounded-pill <?=($data['status_transaksi'] == 'belum selesai') ? 'bg-danger' : 'bg-success'?>">
+                                                <?=ucwords($data['status_transaksi'])?>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <?php } ?>                                                                                                  
+                                </tbody>
+                            </table>
+
+                        </div><!--end table-responsive--> 
+                    </div><!--end card-body-->                                                                                                        
                 </div>
             </div>
         </div>

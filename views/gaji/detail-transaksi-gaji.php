@@ -16,6 +16,88 @@ $tahun = $pecah['periode_tahun'];
 require 'env/nama_bulan.php';
 
 ?>
+<style type="text/css">
+    /* Kontainer utama dari slider */
+.slider-container {
+    height: 606px; /* Sesuaikan dengan kebutuhan */
+    overflow-y: scroll; /* Menambahkan scroll vertikal */
+    
+    border-radius: 8px; /* Sudut membulat untuk kontainer */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Efek bayangan */
+    padding: 10px; /* Padding di dalam kontainer */
+    background: #f9f9f9; /* Latar belakang yang cerah */
+    margin: 0; /* Menghilangkan margin default */
+}
+
+/* Gaya untuk konten slider */
+.slider-content {
+    padding: 0; /* Hapus padding default jika diperlukan */
+}
+
+/* Gaya untuk setiap item dalam list */
+.list-group-item {
+    border: 1px solid #e0e0e0; /* Border lebih lembut untuk item */
+    border-radius: 4px; /* Sudut membulat untuk item */
+    margin-bottom: 8px; /* Spasi antara item */
+    background-color: #ffffff; /* Latar belakang item */
+    transition: background-color 0.3s, box-shadow 0.3s; /* Transisi yang halus */
+}
+
+/* Efek hover untuk item */
+.list-group-item:hover {
+    background-color: #f0f0f0; /* Latar belakang saat hover */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Efek bayangan saat hover */
+}
+
+/* Gaya untuk badge */
+.badge {
+    background-color: #007bff; /* Warna latar belakang badge */
+    color: #ffffff; /* Warna teks badge */
+    padding: 5px 10px; /* Padding untuk badge */
+    border-radius: 12px; /* Sudut membulat untuk badge */
+}
+
+/* Gaya untuk badge dengan outline */
+.badge-outline-primary {
+    background-color: transparent; /* Latar belakang transparan */
+    color: #007bff; /* Warna teks badge */
+    border: 1px solid #007bff; /* Border badge */
+    padding: 5px 10px; /* Padding untuk badge */
+    border-radius: 12px; /* Sudut membulat untuk badge */
+}
+
+/* Styling untuk ikon */
+.list-group-item .la {
+    font-size: 18px; /* Ukuran ikon */
+}
+
+/* Gaya scrollbar untuk Webkit browsers (Chrome, Safari) */
+.slider-container::-webkit-scrollbar {
+    width: 8px; /* Lebar scrollbar */
+}
+
+.slider-container::-webkit-scrollbar-thumb {
+    background-color: #888; /* Warna scrollbar */
+    border-radius: 4px; /* Sudut membulat scrollbar */
+}
+
+.slider-container::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Warna scrollbar saat hover */
+}
+
+.slider-container::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Latar belakang track scrollbar */
+}
+
+@media (max-width: 768px) {
+    .slider-container {
+        height: 200px; /* Sesuaikan tinggi untuk layar kecil */
+    }
+}
+
+
+
+</style>
 
 <div class="row">
     <div class="col-sm-12">
@@ -127,51 +209,51 @@ require 'env/nama_bulan.php';
                                 </div><!--end card-header-->
                                 <div class="card-body">
                                     <div class="blog-card">
-                                        <div class="row">
-                                            <div class="col-lg-12">
+                                        <div class="slider-container">
+                                            <div class="slider-content">
                                                 <ul class="list-group">
                                                     <?php
-                                                        $sql = "SELECT master_unit.*, pegawai.* 
-                                                        FROM master_unit 
-                                                        INNER JOIN pegawai ON master_unit.unit_kerja = pegawai.unit 
-                                                        GROUP BY master_unit.unit_kerja 
-                                                        ORDER BY master_unit.unit_kerja ASC";
-                                                        $result = $koneksi->query($sql);
-                                                        while ($data=mysqli_fetch_assoc($result)) 
-                                                        {
-                                                            // ambil data jumlah pegawai berdasarkan unit
-                                                            $unit = $data['unit_kerja'];
-                                                            $ambil = $koneksi->query("SELECT * FROM pegawai WHERE status_pegawai!='RESIGN' AND unit='$unit'");
-                                                            $jumlah_pegawai =mysqli_num_rows($ambil);
-                                                            $row = $ambil->fetch_assoc();
+                                                    $sql = "SELECT master_unit.*, pegawai.* 
+                                                    FROM master_unit 
+                                                    INNER JOIN pegawai ON master_unit.unit_kerja = pegawai.unit 
+                                                    GROUP BY master_unit.unit_kerja 
+                                                    ORDER BY master_unit.unit_kerja ASC";
+                                                    $result = $koneksi->query($sql);
+                                                    while ($data=mysqli_fetch_assoc($result)) 
+                                                    {
+                            // ambil data jumlah pegawai berdasarkan unit
+                                                        $unit = $data['unit_kerja'];
+                                                        $ambil = $koneksi->query("SELECT * FROM pegawai WHERE status_pegawai!='RESIGN' AND unit='$unit'");
+                                                        $jumlah_pegawai =mysqli_num_rows($ambil);
+                                                        $row = $ambil->fetch_assoc();
 
-                                                            $nopeg= $row['nopeg'];
+                                                        $nopeg= $row['nopeg'];
 
-                                                            // ambil data yang sudah terinput
-                                                            $ambil_gaji = $koneksi->query("SELECT * FROM gaji INNER JOIN pegawai ON gaji.nopeg=pegawai.nopeg WHERE bulan='$bulan' AND tahun='$tahun' AND unit='$unit' AND status=1");
-                                                            $jml_selesai = mysqli_num_rows($ambil_gaji);
-                                                    ?>
-                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                        <?php if ($jumlah_pegawai==$jml_selesai) { ?>
-                                                            <div>
-                                                                <i class="la la-check text-success font-16 me-2"></i> <?=$data['unit_kerja']?><small> (<?=$jumlah_pegawai?>)</small>
-                                                            </div>
-                                                            <?php if ($jml_selesai > 0 ) { ?>
-                                                                <span class="badge badge-outline-primary badge-pill"><?=$jml_selesai?></span>
+                            // ambil data yang sudah terinput
+                                                        $ambil_gaji = $koneksi->query("SELECT * FROM gaji INNER JOIN pegawai ON gaji.nopeg=pegawai.nopeg WHERE bulan='$bulan' AND tahun='$tahun' AND unit='$unit' AND status=1");
+                                                        $jml_selesai = mysqli_num_rows($ambil_gaji);
+                                                        ?>
+                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                            <?php if ($jumlah_pegawai==$jml_selesai) { ?>
+                                                                <div>
+                                                                    <i class="la la-check text-success font-16 me-2"></i> <?=$data['unit_kerja']?><small> (<?=$jumlah_pegawai?>)</small>
+                                                                </div>
+                                                                <?php if ($jml_selesai > 0 ) { ?>
+                                                                    <span class="badge badge-outline-primary badge-pill"><?=$jml_selesai?></span>
+                                                                <?php } ?>
+                                                            <?php } else { ?>
+                                                                <div>
+                                                                    <i class=" me-2"></i><a href="../transaksi-gaji/GJ-001&bulan=<?=$bulan?>&tahun=<?=$tahun?>&unit=<?=$data['unit_kerja']?>&jenis=1"><?=$data['unit_kerja']?></a> <small>(<?=$jumlah_pegawai?>)</small>
+                                                                </div>
+                                                                <?php if ($jml_selesai > 0 ) { ?>
+                                                                    <span class="badge badge-outline-primary badge-pill"><?=$jml_selesai?></span>
+                                                                <?php } ?>
                                                             <?php } ?>
-                                                        <?php } else { ?>
-                                                            <div>
-                                                                <i class=" me-2"></i><a href="../transaksi-gaji/GJ-001&bulan=<?=$bulan?>&tahun=<?=$tahun?>&unit=<?=$data['unit_kerja']?>&jenis=1"><?=$data['unit_kerja']?></a> <small>(<?=$jumlah_pegawai?>)</small>
-                                                            </div>
-                                                            <?php if ($jml_selesai > 0 ) { ?>
-                                                                <span class="badge badge-outline-primary badge-pill"><?=$jml_selesai?></span>
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    </li>
+                                                        </li>
                                                     <?php } ?>
                                                 </ul><!--end list-group-->
-                                            </div>
-                                        </div>                                        
+                                            </div><!--end slider-content-->
+                                        </div><!--end slider-container-->
                                     </div><!--end blog-card-->                                                                                   
                                 </div><!--end card-body-->
                             </div><!--end card--> 

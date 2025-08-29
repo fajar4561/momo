@@ -1,10 +1,13 @@
 <?php 
+
 session_start();
-error_reporting(0);
-ini_set('display_errors', 0);
+
+// error_reporting(0);
+// ini_set('display_errors', 0);
+// header('Cache-Control: max-age=3600');
 $title = str_replace("-", " ", $_GET['halaman']);
 
-if ($_GET['halaman']=='detail-pegawai' OR $_GET['halaman']=='detail-transaksi-gaji' OR $_GET['halaman']=='transaksi-gaji' OR $_GET['halaman']=='detail-gaji' OR $_GET['halaman']=='ubah-gaji' OR isset($_GET['page']) OR isset($_GET['pesan'])) 
+if ($_GET['halaman']=='detail-pegawai' OR $_GET['halaman']=='detail-transaksi-gaji' OR $_GET['halaman']=='transaksi-gaji' OR $_GET['halaman']=='detail-gaji' OR $_GET['halaman']=='ubah-gaji' OR isset($_GET['page']) OR isset($_GET['pesan']) || $_GET['halaman']=='detail-transaksi-pembelian' || $_GET['halaman']=='ubah-transaksi-pembelian' || $_GET['halaman']=='ubah-pegawai') 
 {
     $link = "../";
     require 'env/koneksi.php'; 
@@ -66,6 +69,7 @@ else {
      <link href="<?=$link?>public/resources/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
      <link href="<?=$link?>public/resources/assets/css/app.min.css" rel="stylesheet" type="text/css" />
      <script src="<?=$link?>public/plugins/jquery/jquery-3.2.1.min.js" type="text/javascript"></script>
+     <link href="<?=$link?>public/resources/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
 
      <link href="<?=$link?>public/plugins/datatables/css/dataTables.css" rel="stylesheet" type="text/css" />
      <link href="<?=$link?>public/plugins/datatables/css/fixedColumns.dataTables.css" rel="stylesheet" type="text/css" />
