@@ -253,7 +253,7 @@ $files = [
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                            <button class="btn btn-de-primary dropdown-toggle" data-bs-toggle="modal" data-bs-target="#modaldetail"> Lihat Detail</button>
+                                            <a href="#" class="btn btn-de-primary dropdown-toggle" data-bs-toggle="modal" data-bs-target="#modaldetail"> Lihat Detail</a>
                                         </div>
                                     </div>
                                     
@@ -365,24 +365,35 @@ $files = [
                             </div>
                             <!--end form-group-->
                             <?php 
-                            $isComplete = true; // anggap semua lengkap
+                            $isComplete = true;
+                            $missingFiles = []; // simpan berkas yang belum ada
 
+                            // cek file utama
                             foreach ($files as $field2 => $label2) { 
                                 if (empty($berkas[$field2])) {
-                                    $isComplete = false; // kalau ada yg kosong, berarti belum lengkap
-                                    break;
+                                    $isComplete = false;
+                                    $missingFiles[] = $label2; 
                                 }
+                            }
+
+                            // cek sertifikat
+                            if ($sertifikat == 0) {
+                                $isComplete = false;
+                                $missingFiles[] = "Sertifikat";
                             }
                             ?>
 
                             <?php if ($isComplete): ?>
-                            <!-- Kalau sudah lengkap -->
-                            <button type="submit" class="btn btn-de-primary btn-sm">Simpan Pengajuan</button>
-                            <button type="button" class="btn btn-de-danger btn-sm">Cancel</button>
+                                <!-- Kalau sudah lengkap -->
+                                <button type="submit" class="btn btn-de-primary btn-sm">Simpan Pengajuan</button>
+                                <button type="button" class="btn btn-de-danger btn-sm">Cancel</button>
                             <?php else: ?>
-                            <!-- Kalau belum lengkap -->
-                            <button type="button" class="btn btn-de-primary btn-sm" onclick="showWarning()">Simpan Pengajuan</button>
-                            <button type="button" class="btn btn-de-danger btn-sm">Cancel</button>
+                                <!-- Kalau belum lengkap -->
+                                <button type="button" class="btn btn-de-primary btn-sm" 
+                                    onclick='showWarning(<?= json_encode($missingFiles) ?>)'>
+                                    Simpan Pengajuan
+                                </button>
+                                <button type="button" class="btn btn-de-danger btn-sm">Cancel</button>
                             <?php endif; ?>
 
 
@@ -467,51 +478,53 @@ $files = [
                 <h6 class="modal-title m-0" id="exampleModalDefaultLabel">Filter</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div><!--end modal-header-->
-            <div class="modal-body">
-                <div class="row p-3">
-                    <div class="col-lg-12">
-                        <h5>Crypto Market Services</h5>
-                        <span class="badge bg-soft-secondary">Disable Services</span>
-                        <small class="text-muted ml-2">07 Oct 2020</small>
-                        <form>
-                            <div class="row mb-3 mt-3">
-                                <label class="col-md-3 control-label">Jenis</label>
-                                <div class="col-md-9">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                        <label class="form-check-label" for="inlineRadio1">Perawat</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                        <label class="form-check-label" for="inlineRadio2">Bidan</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3 mt-3">
-                                <label class="col-md-3 control-label">Jenjang</label>
-                                <div class="col-md-9">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                        <label class="form-check-label" for="inlineRadio1">PK-I</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                        <label class="form-check-label" for="inlineRadio2">PK-II</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                        <label class="form-check-label" for="inlineRadio2">PK-III</label>
+            <form>
+                <div class="modal-body">
+                    <div class="row p-3">
+                        <div class="col-lg-12">
+                            <h5>Crypto Market Services</h5>
+                            <span class="badge bg-soft-secondary">Disable Services</span>
+                            <small class="text-muted ml-2">07 Oct 2020</small>
+                                <div class="row mb-3 mt-3">
+                                    <label class="col-md-3 control-label">Jenis</label>
+                                    <div class="col-md-9">
+                                        <!-- Jenis -->
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="jenis" id="jenisPerawat" value="perawat">
+                                          <label class="form-check-label" for="jenisPerawat">Perawat</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="jenis" id="jenisBidan" value="bidan">
+                                          <label class="form-check-label" for="jenisBidan">Bidan</label>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
-                    </div><!--end col-->
-                </div><!--end row-->                                                      
-            </div><!--end modal-body-->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-de-primary btn-sm">Save changes</button>
-            </div><!--end modal-footer-->
+                                <div class="row mb-3 mt-3">
+                                    <label class="col-md-3 control-label">Jenjang</label>
+                                    <div class="col-md-9">
+                                        <!-- Jenjang -->
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="jenjang" id="jenjang1" value="PK-1">
+                                          <label class="form-check-label" for="jenjang1">PK-I</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="jenjang" id="jenjang2" value="PK-2">
+                                          <label class="form-check-label" for="jenjang2">PK-II</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="jenjang" id="jenjang3" value="PK-3">
+                                          <label class="form-check-label" for="jenjang3">PK-III</label>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div><!--end col-->
+                    </div><!--end row-->                                                      
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-de-primary btn-sm" id="applyFilter">Save changes</button>
+                </div>
+            </form>
         </div><!--end modal-content-->
     </div><!--end modal-dialog-->
 </div>
@@ -642,8 +655,14 @@ fileBoxContent.addEventListener('wheel', (e) => {
 });
 
 // pencarian rkk
-function loadData(query = '') {
-    fetch('app/controller/keperawatan/search.php?q=' + encodeURIComponent(query))
+// fungsi load data dengan query + filter
+function loadData(query = '', jenis = '', jenjang = '') {
+    const params = new URLSearchParams();
+    if (query) params.append('q', query);
+    if (jenis) params.append('jenis', jenis);
+    if (jenjang) params.append('jenjang', jenjang);
+
+    fetch('app/controller/keperawatan/search.php?' + params.toString())
         .then(response => response.text())
         .then(data => {
             document.getElementById('card-container').innerHTML = data;
@@ -656,9 +675,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Pencarian realtime
     document.getElementById('search').addEventListener('keyup', function(){
-        loadData(this.value);
+        const jenis = document.querySelector('input[name="jenis"]:checked')?.value || '';
+        const jenjang = document.querySelector('input[name="jenjang"]:checked')?.value || '';
+        loadData(this.value, jenis, jenjang);
+    });
+
+    // Apply filter dari modal
+    document.getElementById('applyFilter').addEventListener('click', function() {
+        const query = document.getElementById('search').value;
+        const jenis = document.querySelector('input[name="jenis"]:checked')?.value || '';
+        const jenjang = document.querySelector('input[name="jenjang"]:checked')?.value || '';
+        loadData(query, jenis, jenjang);
+
+        // Tutup modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('exampleModalDefault'));
+        modal.hide();
     });
 });
+
 
 // menampilkan konten ketika di load
 function loadDetail(id) {
@@ -690,14 +724,40 @@ function showCards() {
     document.getElementById('detailContainer').innerHTML = '';
 }
 
-// alert data belum lengkap
-function showWarning() {
-    Swal.fire({
-        icon: 'warning',
-        title: 'Lengkapi Berkas!',
-        text: 'Anda harus mengunggah semua berkas sebelum bisa menyimpan pengajuan.',
-        confirmButtonText: 'Mengerti'
+
+// alert kalau berkas belum lengkap upload berkas 
+
+function showWarning(missing) {
+    let list = "<div style='text-align:left;font-size:15px;line-height:1.6'>";
+    missing.forEach(file => {
+        list += `
+            <div style="display:flex;align-items:center;margin-bottom:5px;">
+                <span style="color:#e74c3c;font-size:18px;margin-right:8px;">❌</span>
+                <span>${file}</span>
+            </div>
+        `;
     });
+    list += "</div>";
+
+        Swal.fire({
+        imageUrl: 'public/bg/alert.webp',
+        imageWidth: 330,
+        imageHeight: 230,
+        imageAlt: 'Custom Icon',
+        title: 'Lengkapi Berkas!',
+        html: `
+            <p style="margin-bottom:10px;font-size:14px;color:#555">
+                Anda harus mengunggah semua berkas berikut sebelum menyimpan pengajuan:
+            </p>
+            ${list}
+        `,
+        confirmButtonText: '📂 Mengerti',
+        confirmButtonColor: '#3085d6',
+        background: '#fdfdfd',
+        width: 430
+    });
+
 }
+
 
 </script>

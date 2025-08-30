@@ -7,7 +7,7 @@ $ambil = $koneksi->query($sql);
 
 if ($data = mysqli_fetch_assoc($ambil)) {
     ?>
-    <input type="hidden" name="rkk_id" value="<?=$id?>">
+    <input type="hidden" name="rkk_id" id="rkk_id" value="<?=$id?>" required>
     <div class="card">
         <div class="card-body"> 
             <div class="row p-3">

@@ -1,4 +1,33 @@
 <?php
+
+if (empty($_POST['rkk_id']) || $_POST['rkk_id'] == 0) {
+    echo "
+    <html>
+    <head>
+        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css'>
+    </head>
+    <body>
+        <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+        <script>
+            Swal.fire({
+                imageUrl: '../../../public/bg/nodata.webp',
+		        imageWidth: 290,
+		        imageHeight: 270,
+		        imageAlt: 'Custom Icon',
+                title: 'Data tidak valid',
+                text: 'RKK tidak boleh kosong.'
+            }).then(() => {
+                window.history.back();
+            });
+        </script>
+    </body>
+    </html>";
+    exit;
+}
+
+
+
+
 date_default_timezone_set('Asia/Jakarta');
 session_start();
 $today= date("d M Y");
