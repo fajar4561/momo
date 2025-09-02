@@ -1,121 +1,11 @@
 <?php 
 require 'public/component/toast.php';
 require 'req/style-pengajuan-kredensial.php';
+require 'req/head-pengajuan-kredensial.php';
 ?>
 
-
-
-<?php 
-// ambil dari variabel session yang aktive
-$sesi_pegawai = $_SESSION['username'];
-
-$ambil_data_diri = $koneksi->query("SELECT * FROM pegawai WHERE username='$sesi_pegawai'");
-$data_diri = $ambil_data_diri->fetch_assoc();
-
-function getFileFormat($file) {
-    // Menentukan path file dan ekstensi file
-    $file_extension = pathinfo($file, PATHINFO_EXTENSION);
-    $file_path = 'public/file/berkas/' . $file;
-    $file_size = file_exists($file_path) ? filesize($file_path) / 1024 : 0; // Cek apakah file ada
-
-    // Pemendekan nama file jika terlalu panjang
-    $maxLength = 10;
-    if (strlen($file) > $maxLength) {
-        $shortName = substr($file, -$maxLength); // Ambil bagian akhir dari nama file
-        $displayName = '...' . $shortName; // Format nama file pendek
-    } else {
-        $displayName = $file;
-    }
-
-    // Menentukan format berdasarkan ekstensi file
-    if ($file_extension == 'pdf') {
-        $format = 'la-file-pdf text-danger';
-    } elseif ($file_extension == 'png') {
-        $format = 'la-file-image text-warning';
-    } elseif ($file_extension == 'jpg') {
-        $format = 'la-file-image text-info';
-    } elseif ($file_extension == 'jpeg') {
-        $format = 'la-file-image text-success';
-    } else {
-        $format = 'la-file text-secondary';
-    }
-
-    return [
-        'format' => $format,
-        'file_size' => $file_size,
-        'file_path' => $file_path,
-        'display_name' => $displayName, // Nama file pendek
-    ];
-}
-
-// ambil data berkas 
-$n = $data_diri['nopeg'];
-$ambil_berkas = $koneksi->query("SELECT * FROM file WHERE nopeg='$n'");
-$ambil_berkas_sertif = $koneksi->query("SELECT * FROM sertifikat WHERE nopeg='$n'");
-$sertifikat = $ambil_berkas_sertif->num_rows;
-
-$berkas = mysqli_fetch_assoc($ambil_berkas);
-
-// Memanggil fungsi untuk setiap berkas
-$ktpData = getFileFormat($berkas['KTP']);
-$kkData = getFileFormat($berkas['KK']);
-$ijazahData = getFileFormat($berkas['IJAZAH']);
-$ppniData = getFileFormat($berkas['PPNI']);
-$sipData = getFileFormat($berkas['SIP']);
-$strData = getFileFormat($berkas['STR']);
-$npwpData = getFileFormat($berkas['NPWP']);
-
-// Anda dapat mengakses hasilnya seperti ini
-$ktp = $ktpData['format'];
-$file_path_ktp = $ktpData['file_path'];
-$file_size_ktp = $ktpData['file_size'];
-$display_name_ktp = $ktpData['display_name']; // Nama file pendek
-
-$kk = $kkData['format'];
-$file_path_kk = $kkData['file_path'];
-$file_size_kk = $kkData['file_size'];
-$display_name_kk = $kkData['display_name']; // Nama file pendek
-
-$ijazah = $ijazahData['format'];
-$file_path_ijazah = $ijazahData['file_path'];
-$file_size_ijazah = $ijazahData['file_size'];
-$display_name_ijazah = $ijazahData['display_name']; // Nama file pendek
-
-$ppni = $ppniData['format'];
-$file_path_ppni = $ppniData['file_path'];
-$file_size_ppni = $ppniData['file_size'];
-$display_name_ppni = $ppniData['display_name']; // Nama file pendek
-
-$sip = $sipData['format'];
-$file_path_sip = $sipData['file_path'];
-$file_size_sip = $sipData['file_size'];
-$display_name_sip = $sipData['display_name'];
-
-$str = $strData['format'];
-$file_path_str = $strData['file_path'];
-$file_size_str = $strData['file_size'];
-$display_name_str = $strData['display_name'];
-
-$npwp = $npwpData['format'];
-$file_path_npwp = $npwpData['file_path'];
-$file_size_npwp = $npwpData['file_size'];
-$display_name_npwp = $npwpData['display_name'];
-
-
-$files = [
-    "KTP"    => "KTP",
-    "KK"     => "Kartu Keluarga",
-    "IJAZAH" => "Ijazah",
-    "PPNI"   => "PPNI",
-    "SIP"    => "SIP",
-    "STR"    => "STR",
-    "NPWP"   => "NPWP"
-];
-
-
-?>
 <!-- akhir scroll file box -->
-<form method="post" action="app/controller/keperawatan/simpan-pengajuan.php">
+<form method="post" action="app/controller/keperawatan/simpan-pengajuan.php" id="form_rkk">
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -241,13 +131,16 @@ $files = [
                                                 Upload Berkas
                                               </a>
                                               <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="foto">Foto Terbaru</a>
                                                 <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="ktp">Upload KTP</a>
                                                 <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="kk">Upload KK</a>
                                                 <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="ijazah">Upload Ijazah</a>
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="transkip">Transkip Nilai</a>
                                                 <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="ppni">Upload PPNI</a>
                                                 <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="sip">Upload SIP</a>
                                                 <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="str">Upload STR</a>
                                                 <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="npwp">Upload NPWP</a>
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="portofolio">Portofolio</a>
                                                 <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="sertifikat">Upload Sertifikat</a>
                                               </div>
                                             </div>
@@ -284,14 +177,21 @@ $files = [
 										        $randColor = $colors[array_rand($colors)];
 										?>
 										    <div class="file-box">
-										        <a href="public/file/berkas/<?= htmlspecialchars($berkas[$field]) ?>" class="download-icon-link" download>
-										            <i class="las la-download file-download-icon"></i>
-										        </a>
-										        <div class="text-center">
-										            <i class="lar la-file-alt <?= $randColor ?>"></i>
-										            <h6 class="text-truncate"><?= htmlspecialchars($berkas[$field]) ?></h6>
-										            <small class="text-muted"><?= $label ?></small>
-										        </div>
+										        <div class="dropdown dropend">
+                                                    <a href="#" data-bs-toggle="dropdown" class="download-icon-link" download>
+                                                        <i class="las la-download file-download-icon"></i>
+                                                    
+                                                        <div class="text-center">
+                                                            <i class="lar la-file-alt <?= $randColor ?>"></i>
+                                                            <h6 class="text-truncate"><?= htmlspecialchars($berkas[$field]) ?></h6>
+                                                            <small class="text-muted"><?= $label ?></small>
+                                                        </div>
+                                                    </a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#">Download</a>
+                                                        <a class="dropdown-item" href="#">Hapus</a>
+                                                      </div>
+                                                </div>
 										    </div>
 										<?php 
 										    endif;
@@ -385,15 +285,15 @@ $files = [
 
                             <?php if ($isComplete): ?>
                                 <!-- Kalau sudah lengkap -->
-                                <button type="submit" class="btn btn-de-primary btn-sm">Simpan Pengajuan</button>
-                                <button type="button" class="btn btn-de-danger btn-sm">Cancel</button>
+                                <button type="submit" class="btn btn-secondary btn-sm">Simpan Pengajuan</button>
+                                <button type="button" class="btn btn-danger btn-sm">Cancel</button>
                             <?php else: ?>
                                 <!-- Kalau belum lengkap -->
-                                <button type="button" class="btn btn-de-primary btn-sm" 
+                                <button type="button" class="btn btn-secondary btn-sm" 
                                     onclick='showWarning(<?= json_encode($missingFiles) ?>)'>
                                     Simpan Pengajuan
                                 </button>
-                                <button type="button" class="btn btn-de-danger btn-sm">Cancel</button>
+                                <button type="button" class="btn btn-danger btn-sm">Cancel</button>
                             <?php endif; ?>
 
 
@@ -437,17 +337,17 @@ $files = [
                            required>
                         <label class="input-group-text" for="fileInput">Upload</label>
                     </div>
-                    <div class="row mb-2">
-                        <div class="col-lg-6 mb-lg-0">
+                    <div class="row mb-2" id="tgl">
+                        <div class="col-lg-6">
                             <label class="form-label">Tgl Dibuat :</label>
                             <input type="date" class="form-control" name="tgl_dibuat">
                         </div>
-                        <div class="col-lg-6 mb-lg-0">
+                        <div class="col-lg-6">
                             <label class="form-label">Tgl Berakhir :</label>
                             <input type="date" class="form-control" name="tgl_berakhir">
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" id="nosurat">
                         <div class="col-lg-12">
                             <label class="form-label">No surat :</label>
                             <input type="text" name="nomor" class="form-control" placeholder="Nomor dari Surat/Sertifikat/Kartu">
@@ -482,9 +382,8 @@ $files = [
                 <div class="modal-body">
                     <div class="row p-3">
                         <div class="col-lg-12">
-                            <h5>Crypto Market Services</h5>
-                            <span class="badge bg-soft-secondary">Disable Services</span>
-                            <small class="text-muted ml-2">07 Oct 2020</small>
+                            <h5>Filter Pencarian RKK</h5>
+                            <small class="text-muted ml-2">Anda bisa memilih berdasarkan 2 parameter dibawah ini</small>
                                 <div class="row mb-3 mt-3">
                                     <label class="col-md-3 control-label">Jenis</label>
                                     <div class="col-md-9">
@@ -521,8 +420,7 @@ $files = [
                     </div><!--end row-->                                                      
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-de-primary btn-sm" id="applyFilter">Save changes</button>
+                    <button type="button" class="btn btn-de-primary btn-sm" id="applyFilter">Proses</button>
                 </div>
             </form>
         </div><!--end modal-content-->
@@ -546,8 +444,8 @@ $files = [
                                     <tr>
                                         <th>No</th>
                                         <th>Jenis</th>
-                                        <th>Tgl Pembuatan</th>
-                                        <th>Tgl Berakhir</th>
+                                        <th>Tgl Buat</th>
+                                        <th>Expired</th>
                                         <th>No Surat</th>
                                     </tr>
                                 </thead>
@@ -577,7 +475,12 @@ $files = [
                                                 }
                                             ?>
                                         </td>
-                                        <td><?=$data_detail['no_file']?></td>
+                                        <td class="text-center">
+                                            <?= in_array($jenis_file, ['FOTO','PORTOFOLIO']) 
+                                                  ? '✔' 
+                                                  : $data_detail['no_file']; 
+                                            ?>
+                                        </td>
                                         <!-- <td></td> -->
 
                                     </tr>
@@ -590,174 +493,5 @@ $files = [
         </div>
     </div>
 </div>
-<script>
-// script upload berkas
-document.querySelectorAll('.dropdown-item').forEach(item => {
-      item.addEventListener('click', function() {
-        let jenis = this.getAttribute('data-jenis');
-        let title = this.textContent;
-        document.getElementById('modalTitle').textContent = title;
-        document.getElementById('jenisInput').value = jenis;
-        // cek jika jenis sertifikat, tampilkan input keterangan
-        if (jenis === 'sertifikat') {
-            document.getElementById('keteranganGroup').style.display = 'block';
-        } else {
-            document.getElementById('keteranganGroup').style.display = 'none';
-        }
-    });
-  });
+<?php require_once 'req/js-pengajuan-kredensial.php'; ?>
 
-document.querySelector('.scroll-x').addEventListener('wheel', function(e) {
-    if (e.deltaY !== 0) {
-        e.preventDefault();
-        this.scrollLeft += e.deltaY;
-    }
-});
-
-const fileBoxContent = document.querySelector('.file-box-content');
-
-// === DRAG TO SCROLL ===
-let isDown = false;
-let startX;
-let scrollLeft;
-
-fileBoxContent.addEventListener('mousedown', (e) => {
-    isDown = true;
-    fileBoxContent.classList.add('active');
-    startX = e.pageX - fileBoxContent.offsetLeft;
-    scrollLeft = fileBoxContent.scrollLeft;
-});
-
-fileBoxContent.addEventListener('mouseleave', () => {
-    isDown = false;
-    fileBoxContent.classList.remove('active');
-});
-
-fileBoxContent.addEventListener('mouseup', () => {
-    isDown = false;
-    fileBoxContent.classList.remove('active');
-});
-
-fileBoxContent.addEventListener('mousemove', (e) => {
-    if (!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - fileBoxContent.offsetLeft;
-    const walk = (x - startX) * 1.5; // kecepatan geser (1.5 bisa disesuaikan)
-    fileBoxContent.scrollLeft = scrollLeft - walk;
-});
-
-// === MOUSE WHEEL KE SAMPING ===
-fileBoxContent.addEventListener('wheel', (e) => {
-    if (e.deltaY !== 0) {
-        e.preventDefault();
-        fileBoxContent.scrollLeft += e.deltaY; // geser horizontal dengan scroll wheel
-    }
-});
-
-// pencarian rkk
-// fungsi load data dengan query + filter
-function loadData(query = '', jenis = '', jenjang = '') {
-    const params = new URLSearchParams();
-    if (query) params.append('q', query);
-    if (jenis) params.append('jenis', jenis);
-    if (jenjang) params.append('jenjang', jenjang);
-
-    fetch('app/controller/keperawatan/search.php?' + params.toString())
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('card-container').innerHTML = data;
-        });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Load semua data saat halaman pertama kali dibuka
-    loadData();
-
-    // Pencarian realtime
-    document.getElementById('search').addEventListener('keyup', function(){
-        const jenis = document.querySelector('input[name="jenis"]:checked')?.value || '';
-        const jenjang = document.querySelector('input[name="jenjang"]:checked')?.value || '';
-        loadData(this.value, jenis, jenjang);
-    });
-
-    // Apply filter dari modal
-    document.getElementById('applyFilter').addEventListener('click', function() {
-        const query = document.getElementById('search').value;
-        const jenis = document.querySelector('input[name="jenis"]:checked')?.value || '';
-        const jenjang = document.querySelector('input[name="jenjang"]:checked')?.value || '';
-        loadData(query, jenis, jenjang);
-
-        // Tutup modal
-        const modal = bootstrap.Modal.getInstance(document.getElementById('exampleModalDefault'));
-        modal.hide();
-    });
-});
-
-
-// menampilkan konten ketika di load
-function loadDetail(id) {
-    fetch('views/keperawatan/req/detail.php?id=' + id)
-        .then(response => response.text())
-        .then(data => {
-            // sembunyikan daftar card & search bar
-            document.querySelector('.scroll-x').style.display = 'none';
-            document.getElementById('searchBar').style.display = 'none';
-
-            // isi detail + tombol kembali
-            document.getElementById('detailContainer').innerHTML = data;
-
-            // datatable
-            if ($.fn.DataTable.isDataTable('#datatable_1')) {
-                $('#datatable_1').DataTable().destroy();
-            }
-            $('#datatable_1').DataTable();
-        });
-}
-
-// tombol menampilkan isi detelah di hide
-function showCards() {
-    // tampilkan lagi daftar card & search bar
-    document.querySelector('.scroll-x').style.display = 'block';
-    document.getElementById('searchBar').style.display = 'block';
-
-    // kosongkan detail
-    document.getElementById('detailContainer').innerHTML = '';
-}
-
-
-// alert kalau berkas belum lengkap upload berkas 
-
-function showWarning(missing) {
-    let list = "<div style='text-align:left;font-size:15px;line-height:1.6'>";
-    missing.forEach(file => {
-        list += `
-            <div style="display:flex;align-items:center;margin-bottom:5px;">
-                <span style="color:#e74c3c;font-size:18px;margin-right:8px;">❌</span>
-                <span>${file}</span>
-            </div>
-        `;
-    });
-    list += "</div>";
-
-        Swal.fire({
-        imageUrl: 'public/bg/alert.webp',
-        imageWidth: 330,
-        imageHeight: 230,
-        imageAlt: 'Custom Icon',
-        title: 'Lengkapi Berkas!',
-        html: `
-            <p style="margin-bottom:10px;font-size:14px;color:#555">
-                Anda harus mengunggah semua berkas berikut sebelum menyimpan pengajuan:
-            </p>
-            ${list}
-        `,
-        confirmButtonText: '📂 Mengerti',
-        confirmButtonColor: '#3085d6',
-        background: '#fdfdfd',
-        width: 430
-    });
-
-}
-
-
-</script>

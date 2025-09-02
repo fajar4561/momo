@@ -43,7 +43,7 @@ $pdf->Cell(0, 0, $judul2, 0, 0); // 'C' untuk center
 $pdf->SetFont('Arial', '', 10);
 $pdf->SetXY(10, 70);
 $pdf->Cell(0, 5, 'Kepada Yth', 0, 1);   // 1 = pindah baris otomatis
-$pdf->Cell(0, 5, 'Direktur RS Permata Medika Semarang', 0, 1);
+$pdf->Cell(0, 5, 'Direktur RS Permata Medika Semarang', 0, 1); 
 $pdf->Cell(0, 5, 'Di Tempat', 0, 1);
 
 $pdf->SetXY(10, 90);
@@ -71,17 +71,37 @@ $pdf->Cell(1,5,$jenjang_yang_dipilih,0,0);
 $pdf->SetXY(10, 122);
 $pdf->Cell(0, 5, 'Bersama ini kami mengajukan permohonan kredensial/rekredensial guna mendapatkan penugasan klinis dalam', 0, 1);
 $pdf->Cell(0, 5, 'melakukan pelayanan Asuhan Keperawatan di Rumahsakit Permata Medika.', 0, 1);
-$pdf->Cell(0, 5, 'Demikian atas terkabulnya permohonan ini saya ucapkan terimakasih.', 0, 1);
+$pdf->Cell(0, 5, 'Sebagai bahan pertimbangan bersama ini saya lampirkan :', 0, 1);
+$files2 = [
+    "FOTO"   => "Pas Foto Terbaru",
+    "KTP"    => "Kartu Tanda Penduduk (KTP)",
+    "KK"     => "Kartu Keluarga (KK)",
+    "IJAZAH" => "Ijazah Terkahir",
+    "PPNI"   => "Kartu Keanggotaan PPNI",
+    "SIP"    => "Surat Ijin Praktik (SIP)",
+    "STR"    => "Surat Tanda Registrasi (STR)",
+    "NPWP"   => "NPWP",
+    "PORTOFOLIO"   => "Portofolio",
+    "TRANSKIP"   => "Transkip Nilai",
+];
 
-$pdf->SetXY(130, 145);
-$pdf->Cell(15,5,'',0,0);
-$pdf->Cell(5,5,tgl_ind($today),0,0);
+$no3 = 1;
+foreach ($files2 as $field2 => $label2) {
+	$pdf->SetX(15); 
+	$pdf->Cell(0, 5, $no3++.'.'.$label2, 0, 1);
+}
+$pdf->Cell(0, 5, 'Demikian atas terkabulnya permohonan ini saya ucapkan terimakasih.', 0, 1);
 
 
 // Menampilkan gambar QR code
-$pdf->Image('../../../public/file/qr/' . $nopeg . '.png', 152, 152, 0, 25);
-$pdf->SetXY(145, 180);
+$x2 = $pdf->GetX();
+$y2 = $pdf->GetY();
+$pdf->SetXY(145, $y2+10);
+$pdf->Cell(5,5,tgl_ind($today),0,0);
+$pdf->SetXY($x2+10, $y2+15);
+$pdf->Image('../../../public/file/qr/' . $nopeg . '.png', 152, $pdf->GetY(), 0, 25);
+$pdf->SetXY(145, $y2+40);
 $pdf->Cell(5,5,$pecah['nama'],0,0);
 
-$pdf->Output("../../../public/file/keperawatan/permohonan/".$kode."-".$nopeg.".pdf", 'F');
+$pdf->Output("../../../public/file/keperawatan/permohonan/surat-permohonan-".$kode."-".$nopeg.".pdf", 'F');
 ?>

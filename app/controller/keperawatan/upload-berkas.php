@@ -29,7 +29,8 @@ $filebaru = $uniqId."_".$nama_file;
 // chek apakah sudah ada data yang diupload
 // ini berlaku untuk file berkas selain sertifikat.
 
-if ($jenis != 'sertifikat') {
+if ( !in_array($jenis, ['sertifikat'])) {
+	
 	// berlaku untuk selain sertifikat supaya tidak crash
 	$koneksi->query("DELETE FROM file_detail WHERE jenis_file='$jenis' AND nopeg='$nopeg'");
 	$ambil_file = $koneksi->query("SELECT * FROM file WHERE nopeg='$nopeg'");
@@ -40,7 +41,14 @@ if ($jenis != 'sertifikat') {
 		$update = $koneksi->query("UPDATE file SET $jenis='$filebaru' WHERE nopeg='$nopeg'");
 		if ($update) {
 			// pindah file ke server
-			move_uploaded_file($file, "../../../public/file/berkas/".$filebaru);
+			if ($jenis=='foto') {
+				$koneksi->query("UPDATE pegawai SET foto='$filebaru' WHERE nopeg='$nopeg' ");
+				move_uploaded_file($file, "../../../public/img/".$filebaru);	
+			}
+			else {
+				move_uploaded_file($file, "../../../public/file/berkas/".$filebaru);		
+			}
+			
 
 	    } else {
 	        echo "Gagal update: " . $koneksi->error;
@@ -52,7 +60,13 @@ if ($jenis != 'sertifikat') {
 		$simpan_file = $koneksi->query("INSERT INTO file (id,nopeg,$nama_data) VALUES(null, '$nopeg','$filebaru')");
 		if ($simpan_file) {
 			// pindah file ke server
-			move_uploaded_file($file, "../../../public/file/berkas/".$filebaru);
+			if ($jenis=='foto') {
+				$koneksi->query("UPDATE pegawai SET foto='$filebaru' WHERE nopeg='$nopeg' ");
+				move_uploaded_file($file, "../../../public/img/".$filebaru);	
+			}
+			else {
+				move_uploaded_file($file, "../../../public/file/berkas/".$filebaru);		
+			}
 
 	    } else {
 	        echo "Gagal simpan data baru: " . $koneksi->error;
@@ -61,6 +75,7 @@ if ($jenis != 'sertifikat') {
 	}
 }
 else {
+
 	$keterangan = $_POST['keterangan'];
 	$simpan_file = $koneksi->query("INSERT INTO sertifikat (id,nopeg,berkas,keterangan) VALUES(null, '$nopeg', '$filebaru', '$keterangan')");
 	if ($simpan_file) {
