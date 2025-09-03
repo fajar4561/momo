@@ -118,7 +118,7 @@ while ($data_detail_rkk = mysqli_fetch_assoc($ambil_data_rkk)) {
     $rowCount++;
 
     // tentukan batas baris per halaman
-    $maxRows = ($pageNum == 1) ? 15 : 20;
+    $maxRows = ($pageNum == 1) ? 20 : 40;
 
     // cek kalau sudah mencapai batas -> ganti halaman
     if ($rowCount >= $maxRows) {

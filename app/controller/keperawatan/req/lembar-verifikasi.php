@@ -113,7 +113,8 @@ $pdf->Ln();
 $pdf->SetFont('Arial','',8);
 $ambil_sertifikat = $koneksi->query("SELECT * FROM sertifikat WHERE nopeg='$nopeg'");
 while ($data_sertifikat= mysqli_fetch_assoc($ambil_sertifikat)) {
-    $ambil_sertif = $koneksi->query("SELECT * FROM file_detail WHERE jenis_file='SERTIFIKAT' AND nopeg='$nopeg'");
+    $sertifikat_berkas = $data_sertifikat['berkas'];
+    $ambil_sertif = $koneksi->query("SELECT * FROM file_detail WHERE nama_file = '$sertifikat_berkas' ");
     $pecah_sertifikat = $ambil_sertif->fetch_assoc();
     $pdf->Cell(53, 8, $no2++.". ".$data_sertifikat['keterangan'], 1, 0, 'L');   // Kolom Materi
     $pdf->Cell(10, 8, '', 1, 0, 'C');       // Kolom ADA

@@ -149,6 +149,24 @@ $('#form_rkk').on('submit', function(e) {
             // kalau sudah ada → update
             $('#form_rkk input[type=hidden][name="'+name+'"]').val(value);
         }
+
+        // 🔹 tampilkan SweetAlert2 loading
+        Swal.fire({
+        title: 'Sedang diproses...',
+        html: `
+            <p style="font-size:14px; color:#444; font-family:Segoe UI, sans-serif;">
+                Mohon tunggu sebentar, sistem sedang memproses pengajuan Anda...
+            </p>
+        `,
+        imageUrl: 'public/bg/loading3.gif', // ganti dengan GIF kamu
+        imageWidth: 200,
+        imageHeight: 200,
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        background: '#ffffff',
+    });
+
     });
 
     // form akan lanjut submit normal (ke PHP) dengan semua hidden input ikut
@@ -201,3 +219,4 @@ function showWarning(missing) {
 
 
 </script>
+<script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>

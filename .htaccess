@@ -59,7 +59,7 @@ RewriteRule ^master-linen$ index.php?halaman=master-linen [L]
 RewriteRule ^master-jabatan$ index.php?halaman=master-jabatan [L]
 RewriteRule ^master-form-rkk$ index.php?halaman=master-form-rkk [L]
 RewriteRule ^pengajuan-kredensial$ index.php?halaman=pengajuan-kredensial [L]
-RewriteRule ^data-pengajuan-kredensial$ index.php?halaman=data-pengajuan [L]
+RewriteRule ^data-pengajuan-kredensial$ index.php?halaman=data-pengajuan-kredensial [L]
 
 # chat gpt
 RewriteRule ^chatbox$ index.php?halaman=chatbox [L]
