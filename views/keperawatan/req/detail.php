@@ -2,7 +2,7 @@
 include '../../../env/koneksi.php';
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-$sql = "SELECT * FROM master_rkK WHERE id = $id";
+$sql = "SELECT * FROM master_rkk WHERE id = $id";
 $ambil = $koneksi->query($sql);
 
 if ($data = mysqli_fetch_assoc($ambil)) {

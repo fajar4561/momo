@@ -2,8 +2,8 @@
 
 session_start();
 
-// error_reporting(0);
-// ini_set('display_errors', 0);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 // header('Cache-Control: max-age=3600');
 $title = str_replace("-", " ", $_GET['halaman']);
 

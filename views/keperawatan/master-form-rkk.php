@@ -132,13 +132,20 @@ function loadDetail(id) {
     fetch('app/controller/keperawatan/detail.php?id=' + id)
         .then(response => response.text())
         .then(data => {
-            document.getElementById('detailContainer').innerHTML = data;
-            if ($.fn.DataTable.isDataTable('#datatable_1')) {
-                $('#datatable_1').DataTable().destroy();
+            const container = document.getElementById('detailContainer');
+            if (container) {
+                container.innerHTML = data;
+                if ($('#datatable_1').length) {
+                    if ($.fn.DataTable.isDataTable('#datatable_1')) {
+                        $('#datatable_1').DataTable().destroy();
+                    }
+                    $('#datatable_1').DataTable();
+                }
             }
-            $('#datatable_1').DataTable();
-        });
+        })
+        .catch(err => console.error("Gagal load detail:", err));
 }
+
 
 $(document).ready(function () {
     var table = $('#datatable_1').DataTable({

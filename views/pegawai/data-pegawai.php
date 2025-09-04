@@ -52,7 +52,7 @@ if ($result->num_rows > 0) {
         $sheet->setCellValueByColumnAndRow(12, $nomor_baris, $row['tgl_lahir']); // Tanggal Lahir
         $sheet->setCellValueByColumnAndRow(13, $nomor_baris, $row['status_kawin']); // Status Perkawinan
         $sheet->setCellValueByColumnAndRow(14, $nomor_baris, $row['Status_pegawai']); // Status Pegawai
-        $sheet->setCellValueByColumnAndRow(15, $nomor_baris, "'" . $row['telpon']); // Nomor Telepon dengan tanda kutip
+        $sheet->setCellValueExplicitByColumnAndRow(15, $nomor_baris, $row['telpon'], DataType::TYPE_STRING);
         $sheet->setCellValueByColumnAndRow(16, $nomor_baris, $row['email']); // Email
 
         $nomor_baris++;
