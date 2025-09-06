@@ -13,8 +13,8 @@ $data_user = $ambil_sesi_pengguna->fetch_assoc();
 $nopeg=$data_user['nopeg'];
 $jenis = $_POST['jenis'];
 $nama_data = strtoupper($jenis);
-$tgl_buat = $_POST['tgl_dibuat'];
-$tgl_berakhir = $_POST['tgl_berakhir'];
+$tgl_buat = !empty($_POST['tgl_dibuat']) ? $_POST['tgl_dibuat'] : "0000-00-00";
+$tgl_berakhir = !empty($_POST['tgl_berakhir']) ? $_POST['tgl_berakhir'] : "0000-00-00";
 $no_file = $_POST['nomor'];
 
 
@@ -88,9 +88,15 @@ else {
 
 }
 
-// simpan semua detail 
-$simpan_file_detail = $koneksi->query("INSERT INTO file_detail (id,nopeg,jenis_file,nama_file,tgl_keluar,tgl_berakhir,no_file,tgl_upload) 
-	VALUES(null, '$nopeg', '$nama_data', '$filebaru', '$tgl_buat', '$tgl_berakhir', '$no_file', '$tgl_upload')");
+// simpan semua detail
+if ($jenis != 'foto') {
+	$simpan_file_detail = $koneksi->query("INSERT INTO file_detail (id,nopeg,jenis_file,nama_file,tgl_keluar,tgl_berakhir,no_file,tgl_upload) 
+		VALUES(null, '$nopeg', '$nama_data', '$filebaru', '$tgl_buat', '$tgl_berakhir', '$no_file', '$tgl_upload')");
+ }
+ else {
+ 	$simpan_file_detail = $koneksi->query("INSERT INTO file_detail (id,nopeg,jenis_file,nama_file,no_file,tgl_upload) 
+		VALUES(null, '$nopeg', '$nama_data', '$filebaru', '$no_file', '$tgl_upload')");
+ } 
 
 if ($simpan_file_detail) {
 	$_SESSION['pesan'] = 'Berkas '.strtoupper($nama_data).' Berhasil diupload !';

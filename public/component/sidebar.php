@@ -297,6 +297,7 @@
                                 </div> -->
                                 <a class="nav-link" href="master-form-rkk">Form RKK</a>
                                 <a class="nav-link" href="pengajuan-kredensial">Pengajuan</a>
+                                <a class="nav-link" href="data-pengajuan-kredensial">Data Pengajuan</a>
                             </li>
                         </ul>
                     </div>

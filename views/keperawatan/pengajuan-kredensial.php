@@ -476,10 +476,12 @@ require 'req/head-pengajuan-kredensial.php';
                                             ?>
                                         </td>
                                         <td class="text-center">
-                                            <?= in_array($jenis_file, ['FOTO','PORTOFOLIO']) 
+
+                                           <?= in_array($data_detail['jenis_file'], ['FOTO','PORTOFOLIO']) 
                                                   ? '✔' 
                                                   : $data_detail['no_file']; 
                                             ?>
+
                                         </td>
                                         <!-- <td></td> -->
 
