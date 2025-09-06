@@ -91,7 +91,7 @@ table tbody tr .dropdown-toggle {
 							$ambil_jabatan = $koneksi->query("SELECT * FROM master_pegawai ORDER BY jabatan ASC");
 							while ($data = mysqli_fetch_assoc($ambil_jabatan)) {
 								?>
-								<tr data-dropdown-id="<?=$data['kode_transaksi']?>">
+								<tr data-dropdown-id="<?=$data['id']?>">
 									<td>
 										<p class="d-inline-block align-middle mb-0 product-name"><?=$data['jabatan']?></p> 
 									</td>
