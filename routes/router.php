@@ -52,6 +52,7 @@ $halaman_map = [
         "master-form-rkk" => "views/keperawatan/master-form-rkk.php",
         "pengajuan-kredensial" => "views/keperawatan/pengajuan-kredensial.php",
         "data-pengajuan-kredensial" => "views/keperawatan/data-pengajuan.php",
+        "data-kredensial" => "views/keperawatan/data-kredensial.php",
 
 	],
     0 => [ // Pengguna biasa

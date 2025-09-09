@@ -57,6 +57,7 @@ $kode = $today. sprintf("%03s", $urutan);
 // deklarasi variabel
 // biodata diri
 $nopeg = $_POST['nik'];
+$nama = $_POST['nama'];
 $email = $_POST['email'];
 $unit = $_POST['unit'];
 $telepon = $_POST['telepon'];
@@ -78,8 +79,8 @@ else {
 	echo "Gagal Update data diri".$koneksi->error ;
 }
 
-$simpan_pengajuan_kredensial = $koneksi->query("INSERT INTO pengajuan_kredensial (id,kode_pengajuan,tgl_pengajuan,nopeg,jenjang_diajukan,status_pengajuan) 
-	VALUES(null, '$kode', '$tgl_hari_ini', '$nopeg', '$rkk_id', '$status')");
+$simpan_pengajuan_kredensial = $koneksi->query("INSERT INTO pengajuan_kredensial (id,kode_pengajuan,tgl_pengajuan,nopeg,unit,jenjang_diajukan,status_pengajuan) 
+	VALUES(null, '$kode', '$tgl_hari_ini', '$nopeg', '$unit', '$rkk_id', '$status')");
 
 if ($simpan_pengajuan_kredensial) {
 	// code...
@@ -135,7 +136,7 @@ try {
 
     // Subject & Body
     $mail->isHTML(true);
-    $mail->Subject = 'Contoh kirim File Pengajuan';
+    $mail->Subject = 'Pengajuan Kredensial '.$nama;
     $mail->Body = "
     <div style='font-family:Segoe UI, sans-serif; max-width:600px; margin:auto; border:1px solid #e0e0e0; border-radius:10px; overflow:hidden; background:#ffffff;'>
 
@@ -188,7 +189,7 @@ try {
 
     // Send
     $mail->send();
-    echo "Email berhasil dikirim dengan lampiran!";
+    //echo "Email berhasil dikirim dengan lampiran!";
 } catch (Exception $e) {
     echo "Email gagal dikirim. Error: {$mail->ErrorInfo}";
 }
