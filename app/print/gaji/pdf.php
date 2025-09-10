@@ -156,6 +156,11 @@ $pdf->Cell(55,5,"Tunjangan TPBR/Khusus",0,0);
 $pdf->Cell(6,5,':',0,0);
 $pdf->Cell(47,5,format_currency($pecah['tj_tpbri']),0,0);
 
+$pdf->Cell(4,5,"6.",0,0);
+$pdf->Cell(40,5,"Lelayu",0,0);
+$pdf->Cell(6,5,':',0,0);
+$pdf->Cell(1,5,format_currency($pecah['lelayu']),0,0);
+
 
 $pdf->Ln();
 $pdf->Cell(6,5,"7.",0,0);
@@ -184,9 +189,9 @@ $pdf->Cell(47,5,format_currency($pecah['tj_bpjs']),0,0);
 
 $pdf->Ln();
 $pdf->Cell(6,5,"11.",0,0);
-$pdf->Cell(55,5,"Penyesuaian Gaji",0,0);
+$pdf->Cell(55,5,"Fee Pembimbing",0,0);
 $pdf->Cell(6,5,':',0,0);
-$pdf->Cell(47,5,format_currency($pecah['penyesuaian']),0,0);
+$pdf->Cell(47,5,format_currency($pecah['fee_pembimbing']),0,0);
 
 $pdf->Ln();
 $pdf->Cell(6,5,"12.",0,0);

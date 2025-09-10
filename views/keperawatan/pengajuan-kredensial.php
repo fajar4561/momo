@@ -33,7 +33,7 @@ require 'req/head-pengajuan-kredensial.php';
                                                 <img src="public/bg/alur.png" class="img-fluid rounded" alt="Header Image Besar">
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> 
                                 </div>
                             </div>
                             <div class="row mt-2">

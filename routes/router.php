@@ -62,6 +62,10 @@ $halaman_map = [
         "absensi" => "views/pegawai/absensi.php",
         "kritik" => "views/pegawai/saran.php",
         "upload-berkas" => "views/pegawai/berkas.php",
+
+        // perawat / bidan
+        "pengajuan-kredensial" => "views/keperawatan/pengajuan-kredensial.php",
+        "data-pengajuan-kredensial" => "views/keperawatan/data-pengajuan.php",
     ],
     2 => [ // HRD
         "beranda" => function () {

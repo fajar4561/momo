@@ -247,6 +247,42 @@
     <!--end col-->
 </div>
 <div class="row p-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table" id="datatable_1">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>No</th>
+                                <th>Kode Pengajuan.</th>
+                                <th>Tgl Pengajuan</th>
+                                <th>Nama</th>
+                                <th>Unit</th>
+                                <th>Jenjang</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php 
+                                $ambil_data = $koneksi->query("SELECT * FROM pengajuan_kredensial ORDER BY tgl_pengajuan DESC");
+                                while ($data = mysqli_fetch_assoc($ambil_data)) {
+                            ?>
+                            <tr>
+                                <td>Unity Pugh</td>
+                                <td>9958</td>
+                                <td>Curicó</td>
+                                <td>2005/02/11</td>
+                                <td>37%</td>
+                            </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
 const sliding = document.querySelector('.sliding');

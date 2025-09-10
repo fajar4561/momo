@@ -5,9 +5,9 @@ session_start();
 require '../../../env/koneksi.php';
 require '../../../vendor/autoload.php'; // Pastikan path ini sesuai dengan instalasi Composer Anda
 
-echo "<pre>";
-print_r($_SESSION);
-echo "</pre>";
+// echo "<pre>";
+// print_r($_SESSION);
+// echo "</pre>";
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx; 
@@ -46,51 +46,57 @@ else {
 }
 
 	foreach ($data as $index => $row) {
-		// echo "<pre>";
-		// print_r($row);
-		// echo "</pre>";
+        // echo "<pre>";
+        // print_r($row);
+        // echo "</pre>";
 
-		$nopeg = str_replace("'", "", $row[1]);
-		$bulan = $row[5];
-		$tahun = $row[6];
+        $nopeg = str_replace("'", "", $row[1]);
+        $bulan = $row[5];
+        $tahun = $row[6];
 
-		$upah_awal = isset($row[7]) ? clean_number($row[7]) : 0;
-		$penambahan = isset($row[8]) ? clean_number($row[8]) : 0;
-		$revisi = isset($row[9]) ? clean_number($row[9]) : 0;
-
-		$tj_jabatan = isset($row[10]) ? clean_number($row[10]) : 0;
+        $upah_awal = isset($row[7]) ? clean_number($row[7]) : 0;
+        $penambahan = isset($row[8]) ? clean_number($row[8]) : 0;
+        $revisi = isset($row[9]) ? clean_number($row[9]) : 0;
+        $tj_jabatan = isset($row[10]) ? clean_number($row[10]) : 0;
         $tj_fungsional = isset($row[11]) ? clean_number($row[11]) : 0;
         $tj_resiko = isset($row[12]) ? clean_number($row[12]) : 0;
         $tj_tpbri = isset($row[13]) ? clean_number($row[13]) : 0;
         $fee_for_service = isset($row[14]) ? clean_number($row[14]) : 0;
         $tj_mcu = isset($row[15]) ? clean_number($row[15]) : 0;
         $tj_bpjs = isset($row[16]) ? clean_number($row[16]) : 0;
-        $lembur = isset($row[17]) ? clean_number($row[17]) : 0;
-        $thr = isset($row[18]) ? clean_number($row[18]) : 0;
-        $tj_lain = isset($row[19]) ? clean_number($row[19]) : 0;
+        // penambahan baru
+        $fee_pembimbing = isset($row[17]) ? clean_number($row[17]) : 0;
+        // -------
+        $lembur = isset($row[18]) ? clean_number($row[18]) : 0;
+        $thr = isset($row[19]) ? clean_number($row[19]) : 0;
+        $tj_lain = isset($row[20]) ? clean_number($row[20]) : 0;
 
-        $gaji_bruto = $revisi+ $tj_jabatan + $tj_fungsional + $tj_resiko + $tj_tpbri + $fee_for_service +$tj_mcu + $tj_bpjs+ $lembur + $thr + $tj_lain;
+        $gaji_bruto = isset($row[21]) ? clean_number($row[21]) : 0;
 
-        $bpjs_tenaga = isset($row[21]) ? clean_number($row[21]) : 0;
-        $bpjs_kesehatan = isset($row[22]) ? clean_number($row[22]) : 0;
+        // pengeluaran
+        $bpjs_tenaga = isset($row[22]) ? clean_number($row[22]) : 0;
+        $bpjs_kesehatan = isset($row[23]) ? clean_number($row[23]) : 0;
 
-        $pph21 = isset($row[23]) ? clean_number($row[23]) : 0;
-        $ppni = isset($row[24]) ? clean_number($row[24]) : 0;
-        $lain = isset($row[25]) ? clean_number($row[25]) : 0;
+        $pph21 = isset($row[24]) ? clean_number($row[24]) : 0;
+        $ppni = isset($row[25]) ? clean_number($row[25]) : 0;
+        // pengeluaran baru
+        $lelayu = isset($row[26]) ? clean_number($row[26]) : 0;
+        // -------
+        $lain = isset($row[27]) ? clean_number($row[27]) : 0;
 
-        $total_potongan = $bpjs_tenaga + $bpjs_kesehatan+$pph21+$ppni+$lain;
 
-        $gaji_netto = $gaji_bruto-$total_potongan;
+        $total_potongan = isset($row[28]) ? clean_number($row[28]) : 0;
+        $gaji_netto = isset($row[29]) ? clean_number($row[29]) : 0;
 
-        $obat = isset($row[28]) ? clean_number($row[28]) : 0;
-        $seragam = isset($row[29]) ? clean_number($row[29]) : 0;
-        $kredit = isset($row[30]) ? clean_number($row[30]) : 0;
-        $pelatihan = isset($row[31]) ? clean_number($row[31]) : 0;
-        $uang_gedung = isset($row[32]) ? clean_number($row[32]) : 0;
+        $obat = isset($row[30]) ? clean_number($row[30]) : 0;
+        $seragam = isset($row[31]) ? clean_number($row[31]) : 0;
+        $kredit = isset($row[32]) ? clean_number($row[32]) : 0;
+        $pelatihan = isset($row[33]) ? clean_number($row[33]) : 0;
+        $uang_gedung = isset($row[34]) ? clean_number($row[34]) : 0;
 
-        $total_potongan_slip = $obat + $seragam + $kredit+$pelatihan + $uang_gedung;
+        $total_potongan_slip = isset($row[35]) ? clean_number($row[35]) : 0;
 
-        $transfer = $gaji_netto-$total_potongan_slip;
+        $transfer = isset($row[36]) ? clean_number($row[36]) : 0;
 
         $ambil_data_gaji = $koneksi->query("SELECT * FROM gaji WHERE bulan='$bulan' AND tahun='$tahun'");
         $ada_data = $ambil_data_gaji->num_rows;
@@ -107,6 +113,7 @@ else {
                     bpjs_kes='$bpjs_kesehatan',
                     pph21='$pph21',
                     ppni='$ppni',
+                    lelayu = $lelayu,
                     lain='$lain',
                     tj_jbtn='$tj_jabatan',
                     tj_fungsional='$tj_fungsional',
@@ -115,6 +122,7 @@ else {
                     tj_tpbri =$tj_tpbri,
                     tj_mcu = $tj_mcu,
                     tj_bpjs = $tj_bpjs,
+                    fee_pembimbing = $fee_pembimbing,
                     lembur='$lembur',
                     thr='$thr',
                     tj_lain='$tj_lain',
@@ -139,10 +147,10 @@ else {
             }
 
         }
-	}
+    }
+
     
-    echo $bulan;
-	$bulan2 = $bulan;
+    $bulan2 = $bulan;
     $tahun2 = $tahun;
     
     $ambil_gaji_bulan = $koneksi->query("SELECT * FROM transaksi_gaji WHERE periode_bulan='$bulan2' AND periode_tahun='$tahun2'");
