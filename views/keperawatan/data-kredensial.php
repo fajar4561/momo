@@ -254,7 +254,7 @@
                     <table class="table" id="datatable_1">
                         <thead class="thead-light">
                             <tr>
-                                <th>No</th>
+                                <th class="text-center">No</th>
                                 <th>Kode Pengajuan.</th>
                                 <th>Tgl Pengajuan</th>
                                 <th>Nama</th>
@@ -265,16 +265,41 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php 
+                            <?php
+                                $no =1 ; 
                                 $ambil_data = $koneksi->query("SELECT * FROM pengajuan_kredensial ORDER BY tgl_pengajuan DESC");
                                 while ($data = mysqli_fetch_assoc($ambil_data)) {
+                                    $nopeg = $data['nopeg'];
+                                    $ambil_perawat = $koneksi->query("SELECT * FROM pegawai WHERE nopeg='$nopeg'");
+                                    $row = $ambil_perawat->fetch_assoc();
+
+                                    $id_jenjang = $data['jenjang_diajukan'];
+                                    $ambil_rkk = $koneksi->query("SELECT * FROM master_rkk WHERE id='$id_jenjang'");
+                                    $data_rkk = $ambil_rkk->fetch_assoc();
                             ?>
                             <tr>
-                                <td>Unity Pugh</td>
-                                <td>9958</td>
-                                <td>Curicó</td>
-                                <td>2005/02/11</td>
-                                <td>37%</td>
+                                <td class="text-center"><?=$no++?></td>
+                                <td><?=$data['kode_pengajuan']?></td>
+                                <td><?=date("d M Y", strtotime($data['tgl_pengajuan']))?></td>
+                                <td><?=$row['nama']?></td>
+                                <td><?=$data['unit']?></td>
+                                <td><?=$data_rkk['nama_rkk']?> <?=$data_rkk['unit_rkk']?></td>
+                                <td>
+                                    <button type="button" class="btn btn-secondary btn-sm">
+                                        Notifications <span class="badge bg-light text-dark">4</span>
+                                    </button>
+                                </td>
+                                <td>
+                                    <div class="dropdown d-inline-block">
+                                        <a class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                            <i class="las la-pen font-20 text-muted"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel<?= $data_rkk['id'] ?>">
+                                            <a href="#" class="dropdown-item btn-edit">Ubah</a>
+                                            <a href="#" class="dropdown-item btn-hapus">Hapus</a>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                             <?php } ?>
                         </tbody>

@@ -66,18 +66,50 @@ try {
         $mail->addAddress($alamat_email, $nama_peg);
         $mail->Subject = strtoupper('Gaji ' . bulan_indonesia($bulan) . ' Diterimakan ' . bulan_indonesia($bulan_terima) . ' ' . $tahun_terima);
         $mail->Body = "
-        <h1>Halo, $nama_peg!</h1>
-        <p>Berikut Kami lampirkan Slip Gaji dan Slip Potongan</p>
-        <table border='1' cellspacing='0' cellpadding='8' style='border-collapse: collapse; width: 100%;'>
-            <tr><th style='background-color: #f2f2f2;'>Field</th><th>Data</th></tr>
-            <tr><td>Gaji Netto</td><td>Rp. " . number_format($row_pegawai['total_pendapatan'], 0, ',', '.') . "</td></tr>
-            <tr><td>Potongan Obat</td><td>Rp. " . number_format($row_pegawai['obat'], 0, ',', '.') . "</td></tr>
-            <tr><td>Potongan Seragam</td><td>Rp. " . number_format($row_pegawai['seragam'], 0, ',', '.') . "</td></tr>
-            <tr><td>Kredit BTN</td><td>Rp. " . number_format($row_pegawai['kredit'], 0, ',', '.') . "</td></tr>
-            <tr><td>Potongan Pelatihan</td><td>Rp. " . number_format($row_pegawai['pelatihan'], 0, ',', '.') . "</td></tr>
-            <tr><td>Uang Gedung PPNI</td><td>Rp. " . number_format($row_pegawai['uang_gedung'], 0, ',', '.') . "</td></tr>
-            <tr><td>Uang Yang Di Transfer</td><td>Rp. " . number_format($row_pegawai['transfer'], 0, ',', '.') . "</td></tr>
-        </table>";
+        <div style='font-family: Arial, sans-serif; color: #333; line-height: 1.6; background-color:#f4f6f8; padding:20px;'>
+          <div style='max-width:600px; margin:0 auto; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.1);'>
+
+            <!-- Header -->
+            <div style='background:#0b51b7; padding:20px; text-align:center; color:#fff;'>
+              <h1 style='margin:0; font-size:22px; letter-spacing:1px;'>RS Permata Medika</h1>
+              <h2 style='margin:10px 0 0; font-size:18px;'>Slip Gaji Karyawan</h2>
+              <p style='margin:5px 0 0; font-size:14px;'>Bulan " . bulan_indonesia($bulan) . " - Diterimakan " . bulan_indonesia($bulan_terima) . " $tahun_terima</p>
+            </div>
+
+            <!-- Body -->
+            <div style='padding:20px;'>
+              <p>Halo <b>$nama_peg</b>,</p>
+              <p>Berikut adalah rincian gaji Anda. Slip resmi dalam bentuk PDF juga kami lampirkan.</p>
+
+              <table cellpadding='10' cellspacing='0' width='100%' style='border-collapse:collapse; font-size:14px; margin-top:10px;'>
+                <tr style='background:#f8f9fa; border-bottom:1px solid #ddd;'>
+                  <th align='left'>Keterangan</th>
+                  <th align='right'>Jumlah</th>
+                </tr>
+                <tr><td>Gaji Netto</td><td align='right'>Rp " . number_format($row_pegawai['total_pendapatan'],0,',','.') . "</td></tr>
+                <tr><td>Potongan Obat</td><td align='right'>Rp " . number_format($row_pegawai['obat'],0,',','.') . "</td></tr>
+                <tr><td>Potongan Seragam</td><td align='right'>Rp " . number_format($row_pegawai['seragam'],0,',','.') . "</td></tr>
+                <tr><td>Kredit BTN</td><td align='right'>Rp " . number_format($row_pegawai['kredit'],0,',','.') . "</td></tr>
+                <tr><td>Potongan Pelatihan</td><td align='right'>Rp " . number_format($row_pegawai['pelatihan'],0,',','.') . "</td></tr>
+                <tr><td>Uang Gedung PPNI</td><td align='right'>Rp " . number_format($row_pegawai['uang_gedung'],0,',','.') . "</td></tr>
+                <tr style='background:#eaf4ff; font-weight:bold;'>
+                  <td>Total Ditransfer</td>
+                  <td align='right'>Rp " . number_format($row_pegawai['transfer'],0,',','.') . "</td>
+                </tr>
+              </table>
+
+              <p style='margin-top:20px;'>Jika ada pertanyaan terkait slip gaji ini, silakan hubungi <b>Bagian Keuangan HRD</b>.</p>
+            </div>
+
+            <!-- Footer -->
+            <div style='background:#f8f9fa; text-align:center; padding:15px; font-size:12px; color:#666;'>
+              <p style='margin:0;'>© " . date('Y') . " RS Permata Medika | Sistem Informasi Penggajian</p>
+              <p style='margin:5px 0 0; font-size:11px; color:#999;'>Email ini dikirim secara otomatis oleh sistem, mohon tidak membalas langsung ke alamat ini.</p>
+            </div>
+          </div>
+        </div>";
+
+
 
         $attachment_path = $folder . $nomor_pegawai . '.pdf';
         if (file_exists($attachment_path)) {
