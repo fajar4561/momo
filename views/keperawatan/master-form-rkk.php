@@ -33,6 +33,38 @@ require 'public/component/toast.php';
     background-color: #bbb; /* thumb */
 }
 
+/* Scroll vertikal: awalnya transparan, muncul saat hover */
+.scroll-y {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;                /* Firefox */
+  scrollbar-color: transparent transparent; /* thumb track (Firefox) */
+  transition: scrollbar-color 0.3s ease;
+}
+
+/* Chrome, Edge, Safari (WebKit) */
+.scroll-y::-webkit-scrollbar {
+  width: 8px;                           /* lebar scrollbar vertikal */
+  background-color: transparent;        /* track awal transparan */
+  transition: background-color 0.3s ease;
+}
+.scroll-y::-webkit-scrollbar-thumb {
+  background-color: transparent;        /* thumb awal transparan */
+  border-radius: 4px;
+}
+
+/* Saat hover pada container, tampilkan scrollbar (track + thumb) */
+.scroll-y:hover {
+  scrollbar-color: #bbb #eee;           /* Firefox: thumb #bbb, track #eee */
+}
+.scroll-y:hover::-webkit-scrollbar {
+  background-color: #eee;               /* track */
+}
+.scroll-y:hover::-webkit-scrollbar-thumb {
+  background-color: #bbb;               /* thumb */
+}
+
+
 </style>
 <div class="row p-3">
 	<div class="col-lg-12">
@@ -59,82 +91,126 @@ require 'public/component/toast.php';
 		</div>
 	</div>
 </div>
-<div class="row p-3">
-  <div class="col-md-12">
-    <form onsubmit="return false;">
-      <div class="row justify-content-center">
-        <div class="col-md-3">
-          <div class="input-group mb-1">
-            <button class="btn btn-secondary" type="button">
-              <i class="fas fa-search"></i>
-            </button>
-            <input
-              type="text"
-              id="search"
-              class="form-control"
-              placeholder="Pencarian......"
-            />
+<!-- Layout Awal -->
+<div id="mainLayout">
+  <div class="row p-3" id="searchRow">
+    <div class="col-md-12">
+      <form onsubmit="return false;">
+        <div class="row justify-content-center">
+          <div class="col-md-3">
+            <div class="input-group mb-1">
+              <button class="btn btn-secondary" type="button">
+                <i class="fas fa-search"></i>
+              </button>
+              <input
+                type="text"
+                id="search"
+                class="form-control"
+                placeholder="Pencarian......"
+              />
+            </div>
+            <small class="form-text text-muted text-center">
+              Anda bisa mencari kategori RKK di form pencarian di atas
+            </small>
           </div>
-          <small class="form-text text-muted text-center">
-            Anda bisa mencari katagori RKK di form pencarian diatas
-          </small>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
-</div>
 
-<div class="row p-3">
-  <div class="scroll-x">
-    <div id="card-container" class="d-flex flex-nowrap">
-      <!-- Data card akan dimuat di sini lewat AJAX -->
+  <div class="row p-3" id="cardRow">
+    <div class="scroll-x">
+      <div id="card-container" class="d-flex flex-nowrap">
+        <!-- Data card lewat AJAX -->
+      </div>
+    </div>
+  </div>
+
+  <div class="row" id="detailRow">
+    <div class="col-md-12" id="detailContainer">
+      <!-- konten detail muncul di sini -->
     </div>
   </div>
 </div>
 
-<div class="row">
-	<div class="col-md-12" id="detailContainer">
-		<!-- konten di sini -->
-	</div>
-</div>
 
 
 <script>
-	document.querySelector('.scroll-x').addEventListener('wheel', function(e) {
-    if (e.deltaY !== 0) {
-        e.preventDefault();
-        this.scrollLeft += e.deltaY;
-    }
-});
+// =====================================
+// Fungsi menampilkan layout detail (ubah ke 2 kolom)
+// =====================================
+function showDetail(content) {
+    document.getElementById('mainLayout').innerHTML = `
+      <div class="row p-3">
+        <!-- Kolom kiri -->
+        <div class="col-md-3">
+          <form onsubmit="return false;">
+            <div class="input-group mb-2">
+              <button class="btn btn-secondary" type="button">
+                <i class="fas fa-search"></i>
+              </button>
+              <input type="text" id="search" class="form-control" placeholder="Pencarian......" />
+            </div>
+            <small class="form-text text-muted">
+              Anda bisa mencari kategori RKK di form pencarian di atas
+            </small>
+            
+            <!-- Scroll vertikal -->
+            <div class="scroll-y mt-3" style="max-height:75vh; overflow-y:auto;">
+              <div id="card-container" class="d-flex flex-column gap-2">
+                <!-- Data card lewat AJAX -->
+              </div>
+            </div>
+          </form>
+        </div>
 
-</script>
-<script>
+        <!-- Kolom kanan -->
+        <div class="col-md-9">
+          <div id="detailContainer" style="max-height:80vh; overflow-y:auto;">
+            ${content}
+          </div>
+        </div>
+      </div>
+    `;
+
+    // load ulang data card dalam mode vertikal
+    loadData();
+}
+
+
+// =====================================
+// Fungsi load data card dari server
+// =====================================
 function loadData(query = '') {
     fetch('app/controller/keperawatan/search.php?q=' + encodeURIComponent(query))
         .then(response => response.text())
         .then(data => {
-            document.getElementById('card-container').innerHTML = data;
-        });
+            const container = document.getElementById('card-container');
+            if (container) container.innerHTML = data;
+        })
+        .catch(err => console.error("Gagal load data:", err));
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Load semua data saat halaman pertama kali dibuka
-    loadData();
-
-    // Pencarian realtime
-    document.getElementById('search').addEventListener('keyup', function(){
-        loadData(this.value);
-    });
-});
-
-// konten isi
+// =====================================
+// Fungsi load detail
+// =====================================
 function loadDetail(id) {
     fetch('app/controller/keperawatan/detail.php?id=' + id)
         .then(response => response.text())
         .then(data => {
+            showDetail(data); // ubah layout ke 2 kolom + tampilkan detail
+
             const container = document.getElementById('detailContainer');
+            // Fokus + scroll halus ke kolom kanan
+              detailContainer.focus();
+              detailContainer.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+              });
             if (container) {
                 container.innerHTML = data;
+
+                // Inisialisasi DataTable jika ada
                 if ($('#datatable_1').length) {
                     if ($.fn.DataTable.isDataTable('#datatable_1')) {
                         $('#datatable_1').DataTable().destroy();
@@ -146,62 +222,94 @@ function loadDetail(id) {
         .catch(err => console.error("Gagal load detail:", err));
 }
 
-
-$(document).ready(function () {
-    var table = $('#datatable_1').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: 'app/controller/keperawatan/data.php'
-    });
-
-    // Hapus
-$(document).on('click', '.btn-hapus', function (e) {
-    e.preventDefault();
-
-    var id = $(this).data('id');
-    var deskripsi = $(this).data('keterangan'); // pastikan atributnya data-keterangan
-
-    Swal.fire({
-        title: 'Apakah Anda yakin ingin menghapus ',
-        html: `<strong>${deskripsi}</strong> `,
-        imageUrl: 'public/bg/hapus2.webp',
-        showCancelButton: true,
-        confirmButtonText: 'Ya, Hapus!',
-        cancelButtonText: 'Batal',
-        customClass: {
-            confirmButton: 'btn btn-danger px-4 me-3',
-            cancelButton: 'btn btn-secondary px-4'
-        },
-        buttonsStyling: false
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = 'app/controller/keperawatan/hapus-master-rkk.php?id=' + id;
-        }
-    });
+// =====================================
+// Delegasi event untuk pencarian (realtime)
+// =====================================
+document.addEventListener('keyup', function (e) {
+    if (e.target && e.target.id === 'search') {
+        loadData(e.target.value);
+    }
 });
 
+// =====================================
+// Saat pertama kali halaman dibuka
+// =====================================
+document.addEventListener('DOMContentLoaded', function () {
+    loadData(); // load semua data default
+});
 
-    // Edit
+// =====================================
+// jQuery DataTable + Aksi (hapus & edit)
+// =====================================
+$(document).ready(function () {
+    // Init DataTable utama (jika ada)
+    if ($('#datatable_1').length) {
+        $('#datatable_1').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: 'app/controller/keperawatan/data.php'
+        });
+    }
+
+    // Hapus data
+    $(document).on('click', '.btn-hapus', function (e) {
+        e.preventDefault();
+        const id = $(this).data('id');
+        const deskripsi = $(this).data('keterangan');
+
+        Swal.fire({
+            title: 'Apakah Anda yakin ingin menghapus?',
+            html: `<strong>${deskripsi}</strong>`,
+            imageUrl: 'public/bg/hapus2.webp',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal',
+            customClass: {
+                confirmButton: 'btn btn-danger px-4 me-3',
+                cancelButton: 'btn btn-secondary px-4'
+            },
+            buttonsStyling: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'app/controller/keperawatan/hapus-master-rkk.php?id=' + id;
+            }
+        });
+    });
+
+    // Edit data
     $(document).on('click', '.btn-edit', function (e) {
-        e.preventDefault(); // cegah halaman loncat
+        e.preventDefault();
 
         const id = $(this).data('id');
         const keterangan = $(this).data('keterangan');
 
-        // Isi nilai ke form
+        // Isi form
         $('#input-keterangan').val(keterangan);
 
         // Ubah action form
         $('#form-detail-rkk').attr('action', 'app/controller/keperawatan/simpan-rkk.php?id=' + id);
 
-        // Ubah tampilan tombol
+        // Ubah tombol submit
         $('#btn-submit').text('Ubah')
             .removeClass('btn-primary')
             .addClass('btn-secondary');
     });
 });
 
-
+// =====================================
+// Scroll horizontal dengan mousewheel
+// =====================================
+document.addEventListener('DOMContentLoaded', function () {
+    const scrollX = document.querySelector('.scroll-x');
+    if (scrollX) {
+        scrollX.addEventListener('wheel', function (e) {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                this.scrollLeft += e.deltaY;
+            }
+        });
+    }
+});
 
 
 

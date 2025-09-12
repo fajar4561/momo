@@ -48,6 +48,10 @@
 .sliding:focus {
     scrollbar-width: thin;
 }
+
+.font-30 {
+  font-size: 30px !important;
+}
 </style>
 <div class="row justify-content-center p-3">
     <div class="col-12">
@@ -292,10 +296,13 @@
                                 <td>
                                     <div class="dropdown d-inline-block">
                                         <a class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                            <i class="las la-pen font-20 text-muted"></i>
+                                            <i class="las la-edit font-30 text-muted"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel<?= $data_rkk['id'] ?>">
-                                            <a href="#" class="dropdown-item btn-edit">Ubah</a>
+                                             <a href="#" class="dropdown-item btn-show-detail"  data-kode="<?=$data['kode_pengajuan']?>" 
+                                                 data-nama="<?=$row['nama']?>" 
+                                                 data-unit="<?=$data['unit']?>" 
+                                                 data-jenjang="<?=$data_rkk['nama_rkk'].' '.$data_rkk['unit_rkk']?>">lihat</a>
                                             <a href="#" class="dropdown-item btn-hapus">Hapus</a>
                                         </div>
                                     </div>
@@ -308,6 +315,20 @@
             </div>
         </div>
     </div>
+</div>
+<div class="row mt-3" id="detail-container" style="display:none;">
+  <div class="col-12">
+    <div class="card border-primary">
+      <div class="card-body">
+        <h5 class="card-title">Detail Pengajuan</h5>
+        <p><b>Kode:</b> <span id="detail-kode"></span></p>
+        <p><b>Nama:</b> <span id="detail-nama"></span></p>
+        <p><b>Unit:</b> <span id="detail-unit"></span></p>
+        <p><b>Jenjang:</b> <span id="detail-jenjang"></span></p>
+        <button class="btn btn-sm btn-danger" id="btn-close-detail">Tutup</button>
+      </div>
+    </div>
+  </div>
 </div>
 <script>
 const sliding = document.querySelector('.sliding');
@@ -337,5 +358,25 @@ sliding.addEventListener('wheel', (e) => {
         e.preventDefault();
         sliding.scrollLeft += e.deltaY;
     }
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll(".btn-show-detail").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      // ambil data dari atribut
+      document.getElementById("detail-kode").textContent = this.dataset.kode;
+      document.getElementById("detail-nama").textContent = this.dataset.nama;
+      document.getElementById("detail-unit").textContent = this.dataset.unit;
+      document.getElementById("detail-jenjang").textContent = this.dataset.jenjang;
+
+      // tampilkan card
+      document.getElementById("detail-container").style.display = "block";
+    });
+  });
+
+  // tombol tutup
+  document.getElementById("btn-close-detail").addEventListener("click", function() {
+    document.getElementById("detail-container").style.display = "none";
+  });
 });
 </script>

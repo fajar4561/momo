@@ -9502,43 +9502,12 @@ ul.steppedprogress li.complete:before {
     box-shadow: 0px 0px 0px 1.25px #7081b9;
 }
 
-/* step finish → hijau */
-ul.steppedprogress li.complete.finish:before {
-    background: #28a745;
-    /* hijau */
+ul.steppedprogress li.complete.continuous:before {
+    background: #0b51b7;
     color: #ffffff;
     border: 2px solid #ffffff;
-    -webkit-box-shadow: 0px 0px 0px 1.25px #28a745;
-    box-shadow: 0px 0px 0px 1.25px #28a745;
-    content: "\f12c";
-    font: normal normal normal 24px/1 "Material Design Icons";
-    font-size: 16px;
-    line-height: 20px;
-}
-
-ul.steppedprogress li.complete.finish span {
-    color: #28a745;
-    /* hijau teks */
-}
-
-/* step failed → merah */
-ul.steppedprogress li.failed:before {
-    background: #ef4d56;
-    /* merah */
-    color: #ffffff;
-    border: 2px solid #ffffff;
-    -webkit-box-shadow: 0px 0px 0px 1.25px #ef4d56;
-    box-shadow: 0px 0px 0px 1.25px #ef4d56;
-    content: "\f12a";
-    /* ikon close */
-    font: normal normal normal 24px/1 "Material Design Icons";
-    font-size: 16px;
-    line-height: 20px;
-}
-
-ul.steppedprogress li.failed span {
-    color: #ef4d56;
-    /* merah teks */
+    -webkit-box-shadow: 0px 0px 0px 1.25px #0b51b7;
+    box-shadow: 0px 0px 0px 1.25px #0b51b7;
 }
 
 ul.steppedprogress li.complete.continuous span {
