@@ -61,6 +61,7 @@ RewriteRule ^master-form-rkk$ index.php?halaman=master-form-rkk [L]
 RewriteRule ^pengajuan-kredensial$ index.php?halaman=pengajuan-kredensial [L]
 RewriteRule ^data-pengajuan-kredensial$ index.php?halaman=data-pengajuan-kredensial [L]
 RewriteRule ^data-kredensial$ index.php?halaman=data-kredensial [L]
+RewriteRule ^detail-kredensial$ index.php?halaman=detail-kredensial [L,QSA]
 
 # chat gpt
 RewriteRule ^chatbox$ index.php?halaman=chatbox [L]
