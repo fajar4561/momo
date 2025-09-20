@@ -20,7 +20,7 @@ require 'req/head-pengajuan-kredensial.php';
                                 <li>Pastikan Anda mengisi seluruh data dengan benar sebelum menekan tombol <strong>Simpan</strong> atau <strong>Ubah</strong>.</li>
                                 <li>Jika mengalami kendala teknis atau memiliki pertanyaan terkait pengisian form, silakan hubungi tim IT atau bagian kredensial rumah sakit.</li>
                             </ol>
-                            <!--end form-group-->
+                            <!--end form-group--> 
                             <div class="row">
                                 <div class="col-sm-8 justify-content-center align-self-center text-center">
                                     <!-- Thumbnail -->
@@ -127,17 +127,21 @@ require 'req/head-pengajuan-kredensial.php';
                                                     Upload Berkas
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="foto">Foto Terbaru</a>
-                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="ktp">Upload KTP</a>
-                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="kk">Upload KK</a>
-                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="ijazah">Upload Ijazah</a>
-                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="transkip">Transkip Nilai</a>
-                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="ppni">Upload PPNI</a>
-                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="sip">Upload SIP</a>
-                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="str">Upload STR</a>
-                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="npwp">Upload NPWP</a>
-                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="portofolio">Portofolio</a>
-                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="sertifikat">Upload Sertifikat</a>
+                                                    <?php if (!$isComplete): ?>
+                                                        <?php foreach ($missingKeys as $key): ?>
+                                                            <?php if (isset($files[$key])): ?>
+                                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="<?= strtolower($key); ?>">
+                                                                    Upload <?= $files[$key]; ?>
+                                                                </a>
+                                                            <?php elseif ($key === "sertifikat"): ?>
+                                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="sertifikat">
+                                                                    Upload Sertifikat
+                                                                </a>
+                                                            <?php endif; ?>
+                                                        <?php endforeach; ?>
+                                                    <?php else: ?>
+                                                        <span class="dropdown-item text-muted">✔ Semua berkas sudah lengkap</span>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -146,18 +150,51 @@ require 'req/head-pengajuan-kredensial.php';
                                         </div>
                                     </div>
                                     <p class="text-muted"><small>Kelengkapan Dokumen :</small></p>
-                                    <?php foreach ($files as $kolom => $judul ) : ?>
-                                    <span class="badge bg-soft-dark px-3 py-2 fw-semibold mb-2">
-                                        <?=$judul?>
-                                        <?php if (!empty($berkas[$kolom])): // hanya tampil kalau ada file ?>
-                                        <strong>✔</strong>
-                                        <?php endif; ?>
-                                    </span>
+                                    <?php foreach ($files as $kolom => $judul): ?>
+                                        <?php 
+                                            $key = strtolower($kolom);
+                                            $status = "belum"; // default
+                                            if (!empty($berkas[$kolom])) {
+                                                $cekDetail = $koneksi->query("SELECT * FROM file_detail WHERE nopeg='$n' AND jenis_file='$key'");
+                                                if ($cekDetail && $cekDetail->num_rows > 0) {
+                                                    $status = "valid"; // sudah divalidasi
+                                                } else {
+                                                    $status = "ada"; // ada file tapi belum divalidasi
+                                                }
+                                            }
+                                        ?>
+                                        <span class="badge 
+                                            <?= $status == "valid" ? 'bg-success' : ($status == "ada" ? 'bg-warning text-dark' : 'bg-soft-dark'); ?> 
+                                            px-3 py-2 fw-semibold mb-2">
+                                            <?= $judul ?>
+                                            <?php if ($status == "valid"): ?>
+                                                <strong>✔</strong>
+                                            <?php elseif ($status == "ada"): ?>
+                                                <strong>❗</strong>
+                                            <?php endif; ?>
+                                        </span>
                                     <?php endforeach; ?>
-                                    <span class="badge bg-soft-dark px-3 py-2 fw-semibold mb-2">
+
+                                    <?php 
+                                    // --- SERTIFIKAT ---
+                                    $sertifStatus = "belum";
+                                    if ($sertifikat >= 1) {
+                                        $cekDetailSertif = $koneksi->query("SELECT * FROM detail_file WHERE nopeg='$n' AND field='sertifikat'");
+                                        if ($cekDetailSertif && $cekDetailSertif->num_rows > 0) {
+                                            $sertifStatus = "valid";
+                                        } else {
+                                            $sertifStatus = "ada";
+                                        }
+                                    }
+                                    ?>
+                                    <span class="badge 
+                                        <?= $sertifStatus == "valid" ? 'bg-success' : ($sertifStatus == "ada" ? 'bg-warning text-dark' : 'bg-soft-dark'); ?> 
+                                        px-3 py-2 fw-semibold mb-2">
                                         Sertifikat
-                                        <?php if ($sertifikat >= 1): // hanya tampil kalau ada file ?>
-                                        <strong>✔</strong>
+                                        <?php if ($sertifStatus == "valid"): ?>
+                                            <strong>✔</strong>
+                                        <?php elseif ($sertifStatus == "ada"): ?>
+                                            <strong>❗</strong>
                                         <?php endif; ?>
                                     </span>
                                     <div class="file-box-content mt-2">
@@ -255,24 +292,7 @@ require 'req/head-pengajuan-kredensial.php';
                                 </div>
                             </div>
                             <!--end form-group-->
-                            <?php 
-                            $isComplete = true;
-                            $missingFiles = []; // simpan berkas yang belum ada
 
-                            // cek file utama
-                            foreach ($files as $field2 => $label2) { 
-                                if (empty($berkas[$field2])) {
-                                    $isComplete = false;
-                                    $missingFiles[] = $label2; 
-                                }
-                            }
-
-                            // cek sertifikat
-                            if ($sertifikat == 0) {
-                                $isComplete = false;
-                                $missingFiles[] = "Sertifikat";
-                            }
-                            ?>
                             <?php if ($isComplete): ?>
                             <!-- Kalau sudah lengkap -->
                             <button type="submit" class="btn btn-secondary btn-sm">Simpan Pengajuan</button>

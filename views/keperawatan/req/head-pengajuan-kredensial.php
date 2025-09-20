@@ -28,7 +28,7 @@ function getFileFormat($file) {
     } elseif ($file_extension == 'jpg') {
         $format = 'la-file-image text-info';
     } elseif ($file_extension == 'jpeg') {
-        $format = 'la-file-image text-success';
+        $format = 'la-file-image text-success'; 
     } else {
         $format = 'la-file text-secondary';
     }
@@ -41,6 +41,20 @@ function getFileFormat($file) {
     ];
 }
 
+
+$files = [
+    "FOTO"   => "Foto Terbaru",
+    "KTP"    => "KTP",
+    "KK"     => "Kartu Keluarga",
+    "IJAZAH" => "Ijazah Terkahir",
+    "PPNI"   => "PPNI",
+    "SIP"    => "SIP",
+    "STR"    => "STR",
+    "NPWP"   => "NPWP",
+    "PORTOFOLIO"   => "Portofolio",
+    "TRANSKIP"   => "Transkip Nilai",
+];
+
 // ambil data berkas 
 $n = $data_diri['nopeg'];
 $ambil_berkas = $koneksi->query("SELECT * FROM file WHERE nopeg='$n'");
@@ -48,6 +62,10 @@ $ambil_berkas_sertif = $koneksi->query("SELECT * FROM sertifikat WHERE nopeg='$n
 $sertifikat = $ambil_berkas_sertif->num_rows;
 
 $berkas = mysqli_fetch_assoc($ambil_berkas);
+
+// // ambil detail file
+// $ambil_detail_file = $koneksi->query("SELECT * FROM detail_file WHERE nopeg='$n'");
+// $ada_berks = $ambil_detail_file->num_rows;
 
 // Memanggil fungsi untuk setiap berkas
 $ktpData = getFileFormat($berkas['KTP']);
@@ -95,18 +113,42 @@ $file_size_npwp = $npwpData['file_size'];
 $display_name_npwp = $npwpData['display_name'];
 
 
-$files = [
-    "FOTO"   => "Foto Terbaru",
-    "KTP"    => "KTP",
-    "KK"     => "Kartu Keluarga",
-    "IJAZAH" => "Ijazah Terkahir",
-    "PPNI"   => "PPNI",
-    "SIP"    => "SIP",
-    "STR"    => "STR",
-    "NPWP"   => "NPWP",
-    "PORTOFOLIO"   => "Portofolio",
-    "TRANSKIP"   => "Transkip Nilai",
-];
+// --- LOGIKA CEK FILE DAN DETAIL ---
+$isComplete = true;
+$missingFiles = []; // simpan label
+$missingKeys  = []; // simpan key (field2) untuk dropdown
+
+foreach ($files as $field2 => $label2) {
+    $key = strtolower($field2);
+    // cek apakah file ada di tabel file
+    if (empty($berkas[$field2])) {
+        $isComplete = false;
+        $missingFiles[] = $label2 . " (Belum diupload)";
+        $missingKeys[]  = $field2;
+    } else {
+        // kalau sudah ada file, cek apakah sudah ada di detail_file
+        $cekDetail = $koneksi->query("SELECT * FROM file_detail WHERE nopeg='$n' AND jenis_file='$field2'");
+        if ($cekDetail && $cekDetail->num_rows == 0) {
+            $isComplete = false;
+            $missingFiles[] = $label2 . " (Berkas Kurang Valid)";
+            $missingKeys[]  = $field2;
+        }
+    }
+}
+
+// cek sertifikat
+if ($sertifikat == 0) {
+    $isComplete = false;
+    $missingFiles[] = "Sertifikat (Belum ada)";
+    $missingKeys[]  = "sertifikat";
+} else {
+    $cekDetailSertif = $koneksi->query("SELECT * FROM detail_file WHERE nopeg='$n' AND field='SERTIFIKAT'");
+    if ($cekDetailSertif && $cekDetailSertif->num_rows == 0) {
+        $isComplete = false;
+        $missingFiles[] = "Sertifikat (Belum divalidasi)";
+        $missingKeys[]  = "sertifikat";
+    }
+}
 
 
 ?>

@@ -182,7 +182,7 @@ function showCards() {
     document.getElementById('detailContainer').innerHTML = '';
 }
 
-
+ 
 // alert kalau berkas belum lengkap upload berkas 
 
 function showWarning(missing) {
@@ -197,7 +197,7 @@ function showWarning(missing) {
     });
     list += "</div>";
 
-        Swal.fire({
+    Swal.fire({
         imageUrl: 'public/bg/alert.webp',
         imageWidth: 330,
         imageHeight: 230,
@@ -214,7 +214,6 @@ function showWarning(missing) {
         background: '#fdfdfd',
         width: 430
     });
-
 }
 
 

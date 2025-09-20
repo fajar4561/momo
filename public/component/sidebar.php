@@ -80,6 +80,7 @@
                             $halaman_keperawatan_aktiv = [
                                 'master-form-rkk',
                                 'pengajuan-kredensial',
+                                'detail-kredensial',
                             ];
                             $halaman_keperawatan_yang_aktiv = in_array($halaman, $halaman_keperawatan_aktiv) ? ' active' : '';
 
@@ -296,7 +297,7 @@
                                     </ul>
                                 </div> -->
                                 <a class="nav-link" href="<?=$link?>master-form-rkk">Form RKK</a>
-                                <a class="nav-link" href="<?=$link?>data-kredensial">Data Kredensial</a>
+                                <a class="nav-link <?=($_GET['halaman']=='detail-kredensial' ? 'active' : '')?>" href="<?=$link?>data-kredensial">Data Kredensial</a>
                                 <a class="nav-link" href="<?=$link?>pengajuan-kredensial">Pengajuan</a>
                                 <a class="nav-link" href="<?=$link?>data-pengajuan-kredensial">Data Pengajuan</a>
                             </li>

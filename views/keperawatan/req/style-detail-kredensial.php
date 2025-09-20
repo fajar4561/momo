@@ -156,5 +156,35 @@ ul.steppedprogress li.in-progress:before {
 
 
 
-/*file box*/
+/* Hijau */
+.btn-check:checked + .btn-outline-success {
+  background: linear-gradient(135deg, #198754, #157347);
+  border-color: #157347;
+  color: #fff !important;
+  box-shadow: 0 0 0 4px rgba(25, 135, 84, 0.2);
+}
+
+/* Merah */
+.btn-check:checked + .btn-outline-danger {
+  background: linear-gradient(135deg, #dc3545, #bb2d3b);
+  border-color: #bb2d3b;
+  color: #fff !important;
+  box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.2);
+}
+
+/* Kuning */
+.btn-check:checked + .btn-outline-warning {
+  background: linear-gradient(135deg, #ffc107, #e0a800);
+  border-color: #e0a800;
+  color: #212529 !important;
+  box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.25);
+}
+
+
+.swal-premium {
+    border-radius: 16px !important;
+    padding: 25px 30px !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+}
+
 </style>

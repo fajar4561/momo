@@ -7,6 +7,10 @@ $nopeg = $_GET['nopeg'];
 $ambil_kredensial = $koneksi->query("SELECT * FROM pengajuan_kredensial WHERE nopeg='$nopeg'");
 $data_pengajuan = $ambil_kredensial->fetch_assoc();
 
+$id_jenjang = $data_pengajuan['jenjang_diajukan'];
+$ambil_rkk = $koneksi->query("SELECT * FROM master_rkk WHERE id='$id_jenjang'");
+$data_rkk = $ambil_rkk->fetch_assoc();
+
 // ambil data pegawai
 $ambil_pegawai = $koneksi->query("SELECT * FROM pegawai WHERE nopeg='$nopeg'");
 $data_pegawai = $ambil_pegawai->fetch_assoc();
@@ -184,19 +188,22 @@ require 'req/style-detail-kredensial.php';
                                                 <i class="fas fa-briefcase fa-lg"></i>
                                             </div>
                                             <div>
-                                                <small class="text-muted d-block">Jabatan</small>
-                                                <span class="fw-semibold text-dark">Staff IT</span>
+                                                <small class="text-muted d-block">Unit</small>
+                                                <span class="fw-semibold text-dark">
+                                                    <?=$data_pegawai['unit']?></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="d-flex align-items-center p-2 border rounded bg-light">
                                             <div class="icon me-3 text-danger">
-                                                <i class="fas fa-envelope fa-lg"></i>
+                                                <i class="fas fas fa-user-md fa-lg"></i>
                                             </div>
                                             <div>
-                                                <small class="text-muted d-block">Email</small>
-                                                <span class="fw-semibold text-dark">nama@email.com</span>
+                                                <small class="text-muted d-block">Jenjang Karir</small>
+                                                <span class="fw-semibold text-dark">
+                                                    <?=$data_rkk['nama_rkk']?>
+                                                    <?=$data_rkk['unit_rkk']?></span>
                                             </div>
                                         </div>
                                     </div>
@@ -291,9 +298,15 @@ require 'req/style-detail-kredensial.php';
                                                 <td class="">
                                                     <?=$label?>
                                                 </td>
-                                                <td class="text-center"><i class="fas fa-check text-success"></i></td>
-                                                <td class="text-center">-</td>
-                                                <td class="text-center">-</td>
+                                                <td class="text-center">
+                                                	<?=($data_detail['validasi']=='ada' ? '<i class="fas fa-check text-success"></i>' : '-') ?>
+                                                </td>
+                                                <td class="text-center">
+                                                	<?=($data_detail['validasi']=='tidak' ? '<i class="fas fa-check text-danger"></i>' : '-') ?>
+                                                </td>
+                                                <td class="text-center">
+                                                	<?=($data_detail['validasi']=='proses' ? '<i class="fas fa-check text-warning"></i>' : '-') ?>
+                                                </td>
                                                 <td class="text-center">
                                                     <?=($data_detail['tgl_keluar'] == '0000-00-00' || empty($data_detail['tgl_keluar'])) 
             										? '' : date("d F Y", strtotime($data_detail['tgl_keluar']))?>
@@ -307,7 +320,7 @@ require 'req/style-detail-kredensial.php';
                                                 </td>
                                                 <!-- modal data -->
                                                 <div class="modal fade" id="detailModal<?=$field?>" tabindex="-1" aria-hidden="true">
-                                                    <div class="modal-dialog modal-xl modal-dialog-centered">
+                                                    <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content border-0 shadow-lg rounded-4">
                                                             <!-- Header -->
                                                             <div class="modal-header bg-primary text-white rounded-top-4">
@@ -321,12 +334,17 @@ require 'req/style-detail-kredensial.php';
                                                             </div>
                                                             <!-- Preview File -->
                                                             <div class="p-3 text-center border-bottom bg-light">
-                                                                <?php 
-												                    $file_path = "public/file/berkas/".$data_detail['nama_file']; 
+                                                                <?php
+                                                                	if ($data_detail['jenis_file']=='FOTO') {
+												                    	$file_path = "public/img/".$data_detail['nama_file'];
+                                                                	 }
+                                                                	 else {
+                                                                	 	$file_path = "public/file/berkas/".$data_detail['nama_file'];
+                                                                	 } 
 												                    $ext = strtolower(pathinfo($file_path, PATHINFO_EXTENSION));
 												                    
 												                    if (in_array($ext, ['jpg','jpeg','png','gif','webp'])) {
-												                        echo '<img src="'.$file_path.'" class="img-fluid rounded-3 shadow-sm" style="max-height:400px;">';
+												                        echo '<img src="'.$file_path.'" class="img-fluid rounded-3 shadow-sm" style="width: 100%; max-width: 250px; height: auto; object-fit: cover;">';
 												                    } elseif ($ext === 'pdf') {
 												                        echo '<iframe src="'.$file_path.'" class="w-100 rounded-3 shadow-sm" style="height:400px;" frameborder="0"></iframe>';
 												                    } else {
@@ -334,55 +352,94 @@ require 'req/style-detail-kredensial.php';
 												                    }
 												                ?>
                                                             </div>
-                                                            <!-- Body -->
-                                                            <div class="modal-body">
-                                                                <div class="row g-4">
-                                                                    <div class="col-md-6">
-                                                                        <div class="p-3 border rounded-3 bg-white shadow-sm">
-                                                                            <h6 class="text-muted small mb-1">Materi</h6>
-                                                                            <p class="fw-semibold mb-0">
-                                                                                <?=$label?>
-                                                                            </p>
-                                                                        </div>
+                                                            <form method="post" action="app/controller/keperawatan/validasi-berkas.php" class="validasi-form">
+                                                                <!-- Body -->
+                                                                <div class="modal-body">
+                                                                    <div class="row g-4">
+                                                                        <ul class="list-group list-group-flush">
+                                                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                                <span class="text-muted">Materi</span>
+                                                                                <span class="fw-semibold">
+                                                                                    <?=$label?></span>
+                                                                            </li>
+                                                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                                <span class="text-muted">Nomor Surat</span>
+                                                                                <span class="fw-semibold">
+                                                                                    <?=$data_detail['no_file']?></span>
+                                                                            </li>
+                                                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                                <span class="text-muted">Tanggal Dikeluarkan</span>
+                                                                                <span class="fw-semibold">
+                                                                                    <?=($data_detail['tgl_keluar']=='0000-00-00' || empty($data_detail['tgl_keluar'])) ? '-' : date("d F Y", strtotime($data_detail['tgl_keluar']))?>
+                                                                                </span>
+                                                                            </li>
+                                                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                                <span class="text-muted">Tanggal Berakhir</span>
+                                                                                <span class="fw-semibold">
+                                                                                    <?=($data_detail['tgl_berakhir']=='0000-00-00' || empty($data_detail['tgl_berakhir'])) ? '-' : date("d F Y", strtotime($data_detail['tgl_berakhir']))?>
+                                                                                </span>
+                                                                            </li>
+                                                                            <?php
+																			$sisaMasa = '-'; // default
+
+																			if (!empty($data_detail['tgl_berakhir']) && $data_detail['tgl_berakhir'] != '0000-00-00') {
+																			    $today = new DateTime(); // tanggal hari ini
+																			    $tglBerakhir = new DateTime($data_detail['tgl_berakhir']);
+
+																			    if ($tglBerakhir >= $today) {
+																			        $interval = $today->diff($tglBerakhir);
+																			        $sisaMasa = $interval->y . " tahun, " . $interval->m . " bulan, " . $interval->d . " hari";
+																			    } else {
+																			        $sisaMasa = "Sudah Kadaluarsa";
+																			    }
+																			}
+																			?>
+                                                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                                <span class="text-muted">Sisa Masa Berlaku</span>
+                                                                                <span class="fw-semibold">
+                                                                                    <?= $sisaMasa ?></span>
+                                                                            </li>
+                                                                        </ul>
                                                                     </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="p-3 border rounded-3 bg-white shadow-sm">
-                                                                            <h6 class="text-muted small mb-1">Nomor Surat</h6>
-                                                                            <p class="fw-semibold mb-0">
-                                                                                <?=$data_detail['no_file']?>
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="p-3 border rounded-3 bg-white shadow-sm">
-                                                                            <h6 class="text-muted small mb-1">Tanggal Dikeluarkan</h6>
-                                                                            <p class="fw-semibold mb-0">
-                                                                                <?=($data_detail['tgl_keluar']=='0000-00-00' || empty($data_detail['tgl_keluar'])) ? '-' : date("d F Y", strtotime($data_detail['tgl_keluar']))?>
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="p-3 border rounded-3 bg-white shadow-sm">
-                                                                            <h6 class="text-muted small mb-1">Tanggal Berakhir</h6>
-                                                                            <p class="fw-semibold mb-0">
-                                                                                <?=($data_detail['tgl_berakhir']=='0000-00-00' || empty($data_detail['tgl_berakhir'])) ? '-' : date("d F Y", strtotime($data_detail['tgl_berakhir']))?>
-                                                                            </p>
+                                                                    <input type="hidden" name="id_berkas" value="<?=$data_detail['id']?>">
+                                                                    <input type="hidden" name="kode_pengajuan" value="<?=$kode?>">
+                                                                    <input type="hidden" name="nopeg" value="<?=$nopeg?>">
+                                                                    <div class="row gy-3">
+                                                                        <div class="col-12">
+																		    <label class="form-label fw-semibold">Validasi <span class="text-danger">*</span></label>
+																		    <div class="d-flex flex-wrap gap-3">
+																		        <input type="radio" class="btn-check" name="validasi" id="valid_<?=$field?>_1" value="ada" autocomplete="off" required>
+																		        <label class="btn btn-outline-success rounded-pill px-3 py-1" for="valid_<?=$field?>_1">
+																		            <i class="fas fa-check me-1"></i> Ada
+																		        </label>
+
+																		        <input type="radio" class="btn-check" name="validasi" id="valid_<?=$field?>_2" value="tidak" autocomplete="off">
+																		        <label class="btn btn-outline-danger rounded-pill px-3 py-1" for="valid_<?=$field?>_2">
+																		            <i class="fas fa-times me-1"></i> Tidak Ada
+																		        </label>
+
+																		        <input type="radio" class="btn-check" name="validasi" id="valid_<?=$field?>_3" value="proses" autocomplete="off">
+																		        <label class="btn btn-outline-warning rounded-pill px-3 py-1" for="valid_<?=$field?>_3">
+																		            <i class="fas fa-spinner me-1"></i> Sedang Proses
+																		        </label>
+																		    </div>
+																		</div>
+                                                                        <div class="col-12">
+                                                                            <label class="form-label fw-semibold">Catatan <small class="text-muted">(opsional)</small></label>
+                                                                            <textarea class="form-control rounded-3" name="catatan" rows="2" placeholder="Tambahkan catatan validasi (jika perlu)..."></textarea>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <!-- Footer -->
-                                                            <div class="modal-footer bg-light rounded-bottom-4 border-0">
-                                                                <a href="<?=$file_path?>" target="_blank" class="btn btn-outline-primary rounded-pill px-4">
-                                                                    <i class="fas fa-eye me-2"></i> Lihat
-                                                                </a>
-                                                                <a href="<?=$file_path?>" download class="btn btn-outline-success rounded-pill px-4">
-                                                                    <i class="fas fa-download me-2"></i> Download
-                                                                </a>
-                                                                <button class="btn btn-outline-danger rounded-pill px-4">
-                                                                    <i class="fas fa-trash-alt me-2"></i> Hapus
-                                                                </button>
-                                                            </div>
+                                                                <!-- Footer -->
+                                                                <div class="modal-footer border-0 bg-white">
+                                                                    <a href="<?=$file_path?>" target="_blank" class="btn btn-sm btn-primary">
+                                                                        <i class="fas fa-eye me-1"></i> Lihat
+                                                                    </a>
+                                                                    <button class="btn btn-sm btn-info" download type="sybmit">
+                                                                        <i class="fas fa-download me-1"></i> Simpan
+                                                                    </button>
+                                                                </div>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -479,5 +536,36 @@ fileBoxContent.addEventListener('wheel', (e) => {
         e.preventDefault();
         fileBoxContent.scrollLeft += e.deltaY; // geser horizontal dengan scroll wheel
     }
+});
+
+// sweet alert validasi berkas
+document.querySelectorAll('.validasi-form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); // cegah submit langsung
+
+        Swal.fire({
+            title: '<span style="font-size:16px;font-weight:600;color:#333;">Mohon tunggu...</span>',
+            html: `
+	        <p style="margin-top:8px;font-size:14px;color:#666;">
+	            Sedang diproses, jangan menutup halaman ini.
+	        </p>
+	    `,
+            imageUrl: 'public/bg/loading3.gif', // bisa pakai GIF / animasi SVG
+            imageWidth: 200,
+            imageHeight: 200,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            customClass: {
+                popup: 'swal-premium'
+            }
+        });
+
+
+        // setelah beberapa saat submit formnya
+        setTimeout(() => {
+            form.submit();
+        }, 1200); // 1.2 detik delay biar kelihatan smooth
+    });
 });
 </script>
