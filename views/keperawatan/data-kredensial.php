@@ -284,10 +284,23 @@ require 'req/style-data-kredensial.php'
                                                         <?=$data_rkk['unit_rkk']?>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-secondary btn-sm">
-                                                            Notifications <span class="badge bg-light text-dark">4</span>
-                                                        </button>
+                                                        <?php
+                                                        $statusMap = [
+                                                            'menunggu'   => ['color' => 'primary', 'label' => 'Menunggu'],
+                                                            'penilaian'  => ['color' => 'secondary',    'label' => 'Dalam Penilaian'],
+                                                            'selesai'    => ['color' => 'success', 'label' => 'Selesai'],
+                                                        ];
+
+                                                        $status = strtolower($data['status_pengajuan']);
+
+                                                        $warna = isset($statusMap[$status]['color']) ? $statusMap[$status]['color'] : 'secondary';
+                                                        $label = isset($statusMap[$status]['label']) ? $statusMap[$status]['label'] : ucfirst($status);
+                                                        ?>
+                                                        <span class="badge bg-<?= $warna ?> px-3 py-2 rounded-pill shadow-sm">
+                                                            <i class="fas fa-bell me-1"></i> <?= $label ?>
+                                                        </span>
                                                     </td>
+
                                                     <td>
                                                         <div class="row">
                                                             <div class="col-auto">
