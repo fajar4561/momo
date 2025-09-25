@@ -4,6 +4,7 @@ require 'req/style-pengajuan-kredensial.php';
 require 'req/head-pengajuan-kredensial.php';
 ?>
 <!-- akhir scroll file box -->
+<?php if (!$ada_pengajuan) { ?>
 <form method="post" action="app/controller/keperawatan/simpan-pengajuan.php" id="form_rkk">
     <div class="row">
         <div class="col-12">
@@ -133,15 +134,12 @@ require 'req/head-pengajuan-kredensial.php';
                                                                 <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="<?= strtolower($key); ?>">
                                                                     Upload <?= $files[$key]; ?>
                                                                 </a>
-                                                            <?php elseif ($key === "sertifikat"): ?>
-                                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="sertifikat">
-                                                                    Upload Sertifikat
-                                                                </a>
                                                             <?php endif; ?>
                                                         <?php endforeach; ?>
-                                                    <?php else: ?>
-                                                        <span class="dropdown-item text-muted">✔ Semua berkas sudah lengkap</span>
                                                     <?php endif; ?>
+                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadModal" data-jenis="sertifikat">
+                                                        Upload Sertifikat
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -164,7 +162,7 @@ require 'req/head-pengajuan-kredensial.php';
                                             }
                                         ?>
                                         <span class="badge 
-                                            <?= $status == "valid" ? 'bg-success' : ($status == "ada" ? 'bg-warning text-dark' : 'bg-soft-dark'); ?> 
+                                            <?= $status == "valid" ? 'bg-secondary' : ($status == "ada" ? 'bg-warning text-dark' : 'bg-soft-dark'); ?> 
                                             px-3 py-2 fw-semibold mb-2">
                                             <?= $judul ?>
                                             <?php if ($status == "valid"): ?>
@@ -179,7 +177,7 @@ require 'req/head-pengajuan-kredensial.php';
                                     // --- SERTIFIKAT ---
                                     $sertifStatus = "belum";
                                     if ($sertifikat >= 1) {
-                                        $cekDetailSertif = $koneksi->query("SELECT * FROM detail_file WHERE nopeg='$n' AND field='sertifikat'");
+                                        $cekDetailSertif = $koneksi->query("SELECT * FROM file_detail WHERE nopeg='$n' AND jenis_file='sertifikat'");
                                         if ($cekDetailSertif && $cekDetailSertif->num_rows > 0) {
                                             $sertifStatus = "valid";
                                         } else {
@@ -188,7 +186,7 @@ require 'req/head-pengajuan-kredensial.php';
                                     }
                                     ?>
                                     <span class="badge 
-                                        <?= $sertifStatus == "valid" ? 'bg-success' : ($sertifStatus == "ada" ? 'bg-warning text-dark' : 'bg-soft-dark'); ?> 
+                                        <?= $sertifStatus == "valid" ? 'bg-secondary' : ($sertifStatus == "ada" ? 'bg-warning text-dark' : 'bg-soft-dark'); ?> 
                                         px-3 py-2 fw-semibold mb-2">
                                         Sertifikat
                                         <?php if ($sertifStatus == "valid"): ?>
@@ -499,4 +497,7 @@ require 'req/head-pengajuan-kredensial.php';
         </div>
     </div>
 </div>
+<?php } else { ?>
+    <!-- Tampilan apabila pengajuannya kosong -->
+<?php } ?>
 <?php require_once 'req/js-pengajuan-kredensial.php'; ?>

@@ -151,4 +151,9 @@ if ($sertifikat == 0) {
 }
 
 
+// ambil data untuk mengechek apakah sudah melakukan pengajuan yang on progress
+$ambil_pengajuan = $koneksi->query("SELECT * FROM pengajuan_kredensial WHERE nopeg='$n' AND status_pengajuan='menunggu'");
+$ada_pengajuan = $ambil_pengajuan->num_rows;
+
+
 ?>
