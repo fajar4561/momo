@@ -253,7 +253,7 @@ require 'req/style-data-kredensial.php'
                                             <tbody>
                                                 <?php
                                                 $no =1 ; 
-                                                $ambil_data = $koneksi->query("SELECT * FROM pengajuan_kredensial ORDER BY tgl_pengajuan DESC");
+                                                $ambil_data = $koneksi->query("SELECT * FROM pengajuan_kredensial WHERE status_pengajuan='menunggu' ORDER BY tgl_pengajuan DESC");
                                                 while ($data = mysqli_fetch_assoc($ambil_data)) {
                                                     $nopeg = $data['nopeg'];
                                                     $ambil_perawat = $koneksi->query("SELECT * FROM pegawai WHERE nopeg='$nopeg'");
@@ -304,7 +304,9 @@ require 'req/style-data-kredensial.php'
                                                     <td>
                                                         <div class="row">
                                                             <div class="col-auto">
+                                                                <?php if ($data['status_pengajuan'] =='menunggu') { ?>
                                                                 <a href="detail-kredensial?k=<?=$data['kode_pengajuan']?>&nopeg=<?=$data['nopeg']?>" class="btn btn-secondary btn-sm">Validasi Berkas</a>
+                                                                <?php } ?>
                                                             </div>
                                                             <div class="col-auto">
                                                                 <div class="dropdown d-inline-block">

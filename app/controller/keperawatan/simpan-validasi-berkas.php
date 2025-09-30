@@ -77,6 +77,9 @@ $data_validator = $konek_Validator->fetch_assoc();
 // Simpan PDF hasil validasi berkas
 require 'req/hasil-verifikasi.php';
 
+// Generated undangan Ujian Kredensial
+require 'req/undangan.php';
+
 // Kirim emal ke pemohon (peserta kredensial)
 $tanggal_ujian = tgl_indo($tanggal);
 $jam_ujian = $jam.' s/d Selesai';
@@ -99,59 +102,60 @@ try {
     $mail->isHTML(true);
     $mail->Subject = 'Validasi Berkas Kredensial '.$nama_pemohon;
     $mail->Body = "
-	<div style='font-family:Segoe UI, sans-serif; max-width:640px; margin:auto; border:1px solid #e0e0e0; border-radius:12px; overflow:hidden; background:#ffffff;'>
+    <div style='font-family:Segoe UI, sans-serif; max-width:640px; margin:auto; border:1px solid #e0e0e0; border-radius:12px; overflow:hidden; background:#ffffff;'>
 
-	    <!-- Header -->
-	    <div style='background:linear-gradient(135deg, #0d47a1, #1976d2); color:#fff; padding:25px; text-align:center;'>
-	        <h2 style='margin:0; font-size:22px; font-weight:600;'>Hasil Validasi Berkas</h2>
-	    </div>
+        <!-- Header -->
+        <div style='background:linear-gradient(135deg, #0d47a1, #1976d2); color:#fff; padding:25px; text-align:center;'>
+            <h2 style='margin:0; font-size:22px; font-weight:600;'>Hasil Validasi Berkas</h2>
+        </div>
 
-	    <!-- Konten -->
-	    <div style='padding:30px; background:#fafafa; line-height:1.7; font-size:15px; color:#333;'>
-	        <p style='margin-top:0;'>
-	            Halo <strong style='color:#0d47a1;'>{$nama_pemohon}</strong>,<br><br>
-	            Selamat 🎉, berkas Anda telah <strong style='color:green;'>tervalidasi</strong> oleh Admin Kredensial.
-	            Silakan persiapkan diri untuk mengikuti <strong>ujian kredensial</strong>. Berikut detail informasi Anda:
-	        </p>
+        <!-- Konten -->
+        <div style='padding:30px; background:#fafafa; line-height:1.7; font-size:15px; color:#333;'>
+            <p style='margin-top:0;'>
+                Halo <strong style='color:#0d47a1;'>{$nama_pemohon}</strong>,<br><br>
+                Selamat 🎉, berkas Anda telah <strong style='color:green;'>tervalidasi</strong> oleh Admin Kredensial.
+                Silakan persiapkan diri untuk mengikuti <strong>ujian kredensial</strong>. Berikut detail informasi Anda:
+            </p>
 
-	        <div style='background:#fff; border:1px solid #ddd; border-radius:10px; padding:20px; margin:20px 0;'>
-	            <table style='width:100%; font-size:14px; color:#444;'>
-	                <tr><td style='padding:6px 0;'><strong>Nama</strong></td><td>: {$nama_pemohon}</td></tr>
-	                <tr><td style='padding:6px 0;'><strong>NIP / NIK</strong></td><td>: {$nopeg}</td></tr>
-	                <tr><td style='padding:6px 0;'><strong>Unit</strong></td><td>: {$pecah['unit']}</td></tr>
-	                <tr><td style='padding:6px 0;'><strong>Jenjang</strong></td><td>: {$data_rkk['nama_rkk']} {$data_rkk['unit_rkk']}</td></tr>
-	                <tr><td style='padding:6px 0;'><strong>Tanggal Ujian</strong></td><td>: {$tanggal_ujian}</td></tr>
-	                <tr><td style='padding:6px 0;'><strong>Jam</strong></td><td>: {$jam_ujian}</td></tr>
-	                <tr><td style='padding:6px 0;'><strong>Ruangan</strong></td><td>: {$ruangan}</td></tr>
-	                <tr><td style='padding:6px 0;'><strong>Catatan</strong></td><td>: {$catatan}</td></tr>
-	            </table>
-	        </div>
+            <div style='background:#fff; border:1px solid #ddd; border-radius:10px; padding:20px; margin:20px 0;'>
+                <table style='width:100%; font-size:14px; color:#444;'>
+                    <tr><td style='padding:6px 0;'><strong>Nama</strong></td><td>: {$nama_pemohon}</td></tr>
+                    <tr><td style='padding:6px 0;'><strong>NIP / NIK</strong></td><td>: {$nopeg}</td></tr>
+                    <tr><td style='padding:6px 0;'><strong>Unit</strong></td><td>: {$pecah['unit']}</td></tr>
+                    <tr><td style='padding:6px 0;'><strong>Jenjang</strong></td><td>: {$data_rkk['nama_rkk']} {$data_rkk['unit_rkk']}</td></tr>
+                    <tr><td style='padding:6px 0;'><strong>Tanggal Ujian</strong></td><td>: {$tanggal_ujian}</td></tr>
+                    <tr><td style='padding:6px 0;'><strong>Jam</strong></td><td>: {$jam_ujian}</td></tr>
+                    <tr><td style='padding:6px 0;'><strong>Ruangan</strong></td><td>: {$ruangan}</td></tr>
+                    <tr><td style='padding:6px 0;'><strong>Catatan</strong></td><td>: {$catatan}</td></tr>
+                </table>
+            </div>
 
-	        <p style='margin:15px 0; font-size:14px;'>
-	            Untuk informasi lebih lengkap, silakan cek <strong>lampiran</strong> atau klik tombol berikut:
-	        </p>
+            <p style='margin:15px 0; font-size:14px;'>
+                Untuk informasi lebih lengkap, silakan cek <strong>lampiran</strong> atau klik tombol berikut:
+            </p>
 
-	        <!-- Tombol Aksi -->
-	        <div style='text-align:center; margin:25px 0;'>
-	            <a href='http://157.10.3.26:29/rs/' style='background:#0d47a1; color:#fff; padding:14px 28px; border-radius:8px; text-decoration:none; font-size:15px; font-weight:500; display:inline-block;'>
-	                📄 Lihat Detail Ujian
-	            </a>
-	        </div>
-	    </div>
+            <!-- Tombol Aksi -->
+            <div style='text-align:center; margin:25px 0;'>
+                <a href='http://157.10.3.26:29/rs/' style='background:#0d47a1; color:#fff; padding:14px 28px; border-radius:8px; text-decoration:none; font-size:15px; font-weight:500; display:inline-block;'>
+                    📄 Lihat Detail Ujian
+                </a>
+            </div>
+        </div>
 
-	    <!-- Footer -->
-	    <div style='background:#f5f5f5; padding:18px; text-align:center; font-size:12px; color:#777;'>
-	        Email ini dikirim otomatis dari <strong>Sistem Kredensial</strong>.<br>
-	        Mohon untuk tidak membalas email ini.
-	    </div>
+        <!-- Footer -->
+        <div style='background:#f5f5f5; padding:18px; text-align:center; font-size:12px; color:#777;'>
+            Email ini dikirim otomatis dari <strong>Sistem Kredensial</strong>.<br>
+            Mohon untuk tidak membalas email ini.
+        </div>
 
-	</div>
-	";
+    </div>
+    ";
 
 
 
     // Attachment (contoh PDF atau gambar)
     $mail->addAttachment("../../../public/file/keperawatan/permohonan/hasil-verifikasi-".$kode_pengajuan."-".$nopeg.".pdf");
+    $mail->addAttachment("../../../public/file/keperawatan/undangan/".$kode_pengajuan."-".$nopeg.".pdf");
     // bisa juga lebih dari satu:
     // $mail->addAttachment('uploads/ijazah.jpg', 'Ijazah.jpg');
 
@@ -168,7 +172,9 @@ try {
 // simpan log
 simpanLog($koneksi, "$jenis_transaksi", "$keterangan_log");
 
-
-
+$_SESSION['pesan'] = 'Proses Validasi Berkas dengan Kode <strong>'.$kode_pengajuan.'</strong> Berhasil disimpan !';
+$_SESSION['info'] = 'Berhasil ! ';
+$_SESSION['warna'] = 'success';
+echo "<script>location='../../../data-kredensial';</script>";
 
 ?>
