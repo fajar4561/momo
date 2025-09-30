@@ -221,9 +221,9 @@ require 'req/style-detail-kredensial.php';
                                                 <i class="fas fa-map-marker-alt fa-lg"></i>
                                             </div>
                                             <div>
-                                                <small class="text-muted d-block">Alamat</small>
+                                                <small class="text-muted d-block">No Pegawai</small>
                                                 <span class="fw-semibold text-dark">
-                                                    <?=$data_pegawai['alamat']?></span>
+                                                    <?=$data_pegawai['nopeg']?></span>
                                             </div>
                                         </div>
                                     </div>
@@ -259,11 +259,20 @@ require 'req/style-detail-kredensial.php';
                                     <form id="kredensial" method="post" action="app/controller/keperawatan/simpan-validasi-berkas.php">
                                     	<div class="row">
                                     		<label for="inputHorizontalSuccess" class="col-sm-2 col-form-label text-end">Tanggal Ujian</label>
-                                    		<div class="col-sm-10">
-                                                <input type="date" class="form-control form-control-success" name="tanggal" required>
+                                    		<div class="col-sm-5 mb-2">
+                                                <input type="datetime-local" class="form-control form-control-success" id="tanggal" name="tanggal" required>
                                                 <input type="hidden" name="kode_pengajuan" value="<?=$kode?>">
                                                 <input type="hidden" name="nopeg" value="<?=$nopeg?>">
-                                                <small class="form-text text-muted"><em class="text-danger">Notes : </em> Silahkan Tentukan tanggal akan dilaksanakannya ujian</small>
+                                                
+                                            </div>
+                                            <div class="col-sm-5">
+                                            	<input type="text" name="tempat" placeholder="Temapt Dilaksanakannya Ujian" required class="form-control form-control-success">
+                                            </div>
+                                            <div class="col-sm-2">
+                                            	
+                                            </div>
+                                            <div class="col-sm-10">
+                                            	<small class="form-text text-muted"><em class="text-danger">Notes : </em> Silahkan Tentukan tanggal akan dilaksanakannya ujian</small>
                                             </div>
                                     	</div>
                                     	<div class="row">
@@ -280,7 +289,7 @@ require 'req/style-detail-kredensial.php';
                                     			<?php if ($cek_validasi > 0) { ?>
                                     				<button class="btn btn-secondary" type="button" onclick='showWarning()'>Simpan</button>
                                     			<?php } else { ?>
-                                    				<button class="btn btn-secondary" type="submit" >Simpan</button>
+                                    				<button class="btn btn-secondary" type="submit" onclick='konfirmasiSubmit()'>Simpan</button>
                                     			<?php } ?>
                                     			<a href="#" class="btn btn-danger" >Tolak Pengajuan</a>
                                     		</div>
@@ -750,4 +759,61 @@ function showWarning() {
         confirmButtonColor: '#3085d6',
     });
 }
+
+$('#form_rkk').on('submit', function(e) {
+
+   // 🔹 tampilkan SweetAlert2 loading
+        Swal.fire({
+        title: 'Sedang diproses...',
+        html: `
+            <p style="font-size:14px; color:#444; font-family:Segoe UI, sans-serif;">
+                Mohon tunggu sebentar, sistem sedang memproses pengajuan Anda...
+            </p>
+        `,
+        imageUrl: 'public/bg/loading3.gif', // ganti dengan GIF kamu
+        imageWidth: 200,
+        imageHeight: 200,
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        background: '#ffffff',
+    });
+
+    // form akan lanjut submit normal (ke PHP) dengan semua hidden input ikut
+});
+
+function konfirmasiSubmit() {
+    Swal.fire({
+        title: 'Sedang diproses...',
+        html: `
+            <p style="font-size:14px; color:#444; font-family:Segoe UI, sans-serif;">
+                Mohon tunggu sebentar, sistem sedang memproses...
+            </p>
+        `,
+        imageUrl: 'public/bg/loading3.gif', // ganti dengan path GIF kamu
+        imageWidth: 200,
+        imageHeight: 200,
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        background: '#ffffff',
+        didOpen: () => {
+            // submit setelah swal muncul
+            document.getElementById("kredensial").submit();
+        }
+    });
+}
+
+const inputTanggal = document.getElementById("tanggal");
+
+    // saat input diklik, langsung tampilkan picker
+    inputTanggal.addEventListener("focus", function() {
+        this.showPicker(); // khusus browser yang support (Chrome, Edge, dll.)
+    });
+
+    // alternatif: kalau mau langsung muncul juga ketika user klik
+    inputTanggal.addEventListener("click", function() {
+        this.showPicker();
+    });
 </script>
+
