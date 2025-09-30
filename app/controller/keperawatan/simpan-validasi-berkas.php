@@ -16,6 +16,8 @@ require '../../../env/tgl_indo.php';
 require '../../../env/tgl_indo2.php';
 require '../../../env/terbilang.php';
 require '../../../env/nama_bulan.php';
+// log
+require '../../../env/log.php';
 require('../../../public/plugins/fpdf/fpdf.php'); 
 
 
@@ -49,7 +51,7 @@ else {
 }
 
 // simpan log simpan validasi berkas
-$koneksi->query("INSERT INTO log (id,jenis_transaksi,jam,keterangan) VALUES (null, '$jenis_transaksi', '$tgl_hari_ini', '$keterangan_log')");
+simpanLog($koneksi, "$jenis_transaksi", "$keterangan_log");
 
 
 // biodata pemohon kredensial 
@@ -121,6 +123,7 @@ try {
 	                <tr><td style='padding:6px 0;'><strong>Tanggal Ujian</strong></td><td>: {$tanggal_ujian}</td></tr>
 	                <tr><td style='padding:6px 0;'><strong>Jam</strong></td><td>: {$jam_ujian}</td></tr>
 	                <tr><td style='padding:6px 0;'><strong>Ruangan</strong></td><td>: {$ruangan}</td></tr>
+	                <tr><td style='padding:6px 0;'><strong>Catatan</strong></td><td>: {$catatan}</td></tr>
 	            </table>
 	        </div>
 
@@ -153,12 +156,17 @@ try {
     // $mail->addAttachment('uploads/ijazah.jpg', 'Ijazah.jpg');
 
     // Send
-    $mail->send();
-    //echo "Email berhasil dikirim dengan lampiran!";
+    if ($mail->send()) {
+        $keterangan_log = "Email berhasil dikirim ke <strong>{$email_pemohon}</strong>";
+    } else {
+        $keterangan_log = "Email gagal dikirim. Error: {$mail->ErrorInfo}";
+    }
 } catch (Exception $e) {
-    echo "Email gagal dikirim. Error: {$mail->ErrorInfo}";
+    $keterangan_log = "Email gagal dikirim. Exception: {$mail->ErrorInfo}";
 }
 
+// simpan log
+simpanLog($koneksi, "$jenis_transaksi", "$keterangan_log");
 
 
 
