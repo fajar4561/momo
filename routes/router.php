@@ -54,6 +54,7 @@ $halaman_map = [
         "data-pengajuan-kredensial" => "views/keperawatan/data-pengajuan.php",
         "data-kredensial" => "views/keperawatan/data-kredensial.php",
         "detail-kredensial" => "views/keperawatan/detail-kredensial.php",
+        "penilaian-kredensial" => "views/keperawatan/penilaian-kredensial.php",
 
 	],
     0 => [ // Pengguna biasa

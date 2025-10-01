@@ -1,4 +1,5 @@
 <script>
+$('#datatable_2').DataTable();
 const sliding = document.querySelector('.sliding');
 let isDown = false;
 let startX;

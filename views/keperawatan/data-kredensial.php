@@ -19,13 +19,13 @@ require 'req/style-data-kredensial.php'
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" href="#profile" role="tab">
-                            <i class="fas fa-user me-2"></i> Validasi Berkas
+                        <a class="nav-link" data-bs-toggle="tab" href="#settings" role="tab">
+                            <i class="fas fa-clipboard-list me-2"></i> Penilaian
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" href="#settings" role="tab">
-                            <i class="fas fa-cog me-2"></i> Penilaian
+                        <a class="nav-link" data-bs-toggle="tab" href="#profile" role="tab">
+                            <i class="fas fa-user me-2"></i> Validasi Berkas
                         </a>
                     </li>
                 </ul>
@@ -241,9 +241,9 @@ require 'req/style-data-kredensial.php'
                                             <thead class="thead-light">
                                                 <tr>
                                                     <th class="text-center">No</th>
+                                                    <th>Nama</th>
                                                     <th>Kode Pengajuan.</th>
                                                     <th>Tgl Pengajuan</th>
-                                                    <th>Nama</th>
                                                     <th>Unit</th>
                                                     <th>Jenjang</th>
                                                     <th>Status</th>
@@ -268,13 +268,13 @@ require 'req/style-data-kredensial.php'
                                                         <?=$no++?>
                                                     </td>
                                                     <td>
+                                                        <?=$row['nama']?>
+                                                    </td>
+                                                    <td>
                                                         <?=$data['kode_pengajuan']?>
                                                     </td>
                                                     <td>
                                                         <?=date("d M Y", strtotime($data['tgl_pengajuan']))?>
-                                                    </td>
-                                                    <td>
-                                                        <?=$row['nama']?>
                                                     </td>
                                                     <td>
                                                         <?=$data['unit']?>
@@ -308,7 +308,7 @@ require 'req/style-data-kredensial.php'
                                                                 <a href="detail-kredensial?k=<?=$data['kode_pengajuan']?>&nopeg=<?=$data['nopeg']?>" class="btn btn-secondary btn-sm">Validasi Berkas</a>
                                                                 <?php } ?>
                                                             </div>
-                                                            <div class="col-auto">
+                                                            <!-- <div class="col-auto">
                                                                 <div class="dropdown d-inline-block">
                                                                     <a class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                                                                         <i class="las la-edit font-30 text-muted"></i>
@@ -318,7 +318,7 @@ require 'req/style-data-kredensial.php'
                                                                         <a href="#" class="dropdown-item btn-hapus">Hapus</a>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                            </div> -->
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -354,10 +354,83 @@ require 'req/style-data-kredensial.php'
                     </div>
                     <div class="tab-pane fade" id="settings" role="tabpanel">
                         <div class="tab-pane-box">
-                            <h5 class="fw-semibold text-primary mb-2">App Settings</h5>
+                            <h5 class="fw-semibold text-primary mb-2">Halaman Penilaian</h5>
                             <p class="mb-0 text-muted">
                                 Trust fund seitan letterpress, keytar raw denim keffiyeh etsy.
                             </p>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" id="datatable_2">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th class="text-center">No</th>
+                                                    <th>Nama</th>
+                                                    <th>Kode Pengajuan.</th>
+                                                    <th>Tgl Pengajuan</th>
+                                                    <th>Unit</th>
+                                                    <th>Jenjang</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $no =1 ; 
+                                                $ambil_data = $koneksi->query("SELECT * FROM pengajuan_kredensial WHERE status_pengajuan='penilaian' ORDER BY tgl_pengajuan DESC");
+                                                while ($data = mysqli_fetch_assoc($ambil_data)) {
+                                                    $nopeg = $data['nopeg'];
+                                                    $ambil_perawat = $koneksi->query("SELECT * FROM pegawai WHERE nopeg='$nopeg'");
+                                                    $row = $ambil_perawat->fetch_assoc();
+
+                                                    $id_jenjang = $data['jenjang_diajukan'];
+                                                    $ambil_rkk = $koneksi->query("SELECT * FROM master_rkk WHERE id='$id_jenjang'");
+                                                    $data_rkk = $ambil_rkk->fetch_assoc();
+                                                ?>
+                                                <tr onclick="window.location='penilaian-kredensial?k=<?=$data['kode_pengajuan']?>&nopeg=<?=$data['nopeg']?>'" style="cursor:pointer;">
+                                                    <td class="text-center">
+                                                        <?=$no++?>
+                                                    </td>
+                                                    <td>
+                                                        <?=$row['nama']?>
+                                                    </td>
+                                                    <td>
+                                                        <?=$data['kode_pengajuan']?>
+                                                    </td>
+                                                    <td>
+                                                        <?=date("d M Y", strtotime($data['tgl_pengajuan']))?>
+                                                    </td>
+                                                    <td>
+                                                        <?=$data['unit']?>
+                                                    </td>
+                                                    <td>
+                                                        <?=$data_rkk['nama_rkk']?>
+                                                        <?=$data_rkk['unit_rkk']?>
+                                                    </td>
+                                                    <td>
+                                                        <?php
+                                                        $statusMap = [
+                                                            'menunggu'   => ['color' => 'primary', 'label' => 'Menunggu'],
+                                                            'penilaian'  => ['color' => 'secondary',    'label' => 'Dalam Penilaian'],
+                                                            'selesai'    => ['color' => 'success', 'label' => 'Selesai'],
+                                                        ];
+
+                                                        $status = strtolower($data['status_pengajuan']);
+
+                                                        $warna = isset($statusMap[$status]['color']) ? $statusMap[$status]['color'] : 'secondary';
+                                                        $label = isset($statusMap[$status]['label']) ? $statusMap[$status]['label'] : ucfirst($status);
+                                                        ?>
+                                                        <span class="badge bg-<?= $warna ?> px-3 py-2 rounded-pill shadow-sm">
+                                                            <i class="fas fa-bell me-1"></i>
+                                                            <?= $label ?>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
