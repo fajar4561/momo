@@ -5,9 +5,9 @@ require 'req/style-data-kredensial.php'
     <div class="col-md-12">
         <div class="card shadow-sm border-0 rounded-3">
             <div class="card-header bg-white border-0 pb-2">
-                <h4 class="card-title mb-1 fw-bold">Navigation Tabs</h4>
+                <h4 class="card-title mb-1 fw-bold">Dashboard Kredensial</h4>
                 <p class="text-muted small mb-0">
-                    Tab modern dengan efek animasi & desain lebih profesional.
+                    Pusat informasi terpadu untuk memantau progres, memvalidasi berkas, dan mengelola kredensial dengan mudah.
                 </p>
             </div>
             <div class="card-body">
@@ -297,10 +297,10 @@ require 'req/style-data-kredensial.php'
                                                         $label = isset($statusMap[$status]['label']) ? $statusMap[$status]['label'] : ucfirst($status);
                                                         ?>
                                                         <span class="badge bg-<?= $warna ?> px-3 py-2 rounded-pill shadow-sm">
-                                                            <i class="fas fa-bell me-1"></i> <?= $label ?>
+                                                            <i class="fas fa-bell me-1"></i>
+                                                            <?= $label ?>
                                                         </span>
                                                     </td>
-
                                                     <td>
                                                         <div class="row">
                                                             <div class="col-auto">
