@@ -141,4 +141,134 @@ input:checked + .slider:before {
     font-weight: bold;
 }
 
+#progressBar {
+    transition: width 0.5s ease-in-out;
+    font-weight: bold;
+}
+
+
+#datatable_1_wrapper .dataTables_filter {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+#tableTools {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* === MODERN DATATABLE STYLE === */
+#datatable_2_wrapper {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    transition: box-shadow 0.3s ease;
+}
+#datatable_2_wrapper:hover {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+
+
+/* Baris data */
+#datatable_2 tbody tr {
+    border-bottom: 1px solid #f1f3f5;
+    transition: background-color 0.3s, transform 0.1s;
+}
+#datatable_2 tbody tr:hover {
+    background-color: rgba(112,129,185,0.07) !important;
+    transform: scale(1.005);
+}
+
+/* Sel */
+#datatable_2 td {
+    font-size: 14px;
+    color: #444;
+    vertical-align: middle;
+}
+
+/* Checkbox switch alignment */
+.switch {
+  width: 46px;
+  height: 24px;
+}
+.slider:before {
+  height: 18px; width: 18px;
+  left: 3px; bottom: 3px;
+}
+
+/* Checkbox aktif (warna indigo lebih lembut) */
+input:checked + .slider {
+  background: linear-gradient(135deg, rgba(112,129,185,1), rgba(152,168,220,1));
+}
+
+/* Tombol di atas tabel */
+#tableTools button {
+    border-radius: 8px;
+    padding: 5px 12px;
+    transition: all 0.2s ease;
+}
+#tableTools button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Dropdown filter */
+#tableTools select {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    background-color: #fff;
+    transition: all 0.2s ease;
+}
+#tableTools select:hover {
+    border-color: rgba(112,129,185,1);
+}
+
+/* Pagination modern */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border-radius: 6px;
+    padding: 5px 10px;
+    margin: 2px;
+    border: 1px solid #dee2e6;
+    background-color: #fff;
+    transition: all 0.2s ease;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: rgba(112,129,185,0.1);
+    color: rgba(112,129,185,1) !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color: rgba(112,129,185,1);
+    color: #fff !important;
+    border-color: rgba(112,129,185,1);
+}
+
+
+/* Search box modern */
+.dataTables_filter input {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding: 6px 10px;
+    transition: all 0.3s ease;
+}
+.dataTables_filter input:focus {
+    outline: none;
+    border-color: rgba(112,129,185,1);
+    box-shadow: 0 0 0 0.2rem rgba(112,129,185,0.25);
+}
+
+/* Baris aktif */
+.active-row {
+    background-color: rgba(112,129,185,0.12) !important;
+    border-left: 4px solid rgba(112,129,185,0.8);
+}
+.active-row:hover {
+    background-color: rgba(112,129,185,0.15) !important;
+}
+
+
 </style>

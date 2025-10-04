@@ -160,11 +160,18 @@ require 'req/style-penilaian-kredensial.php';
                                 0%
                             </div>
                         </div>
-                        <small><span id="checkedCount">0</span> dari <span id="totalCount">0</span> item dicentang</small>
+                        <small><span id="checkedCount">0</span> dari <span id="total">0</span> item dicentang</small>
                     </div>
                 </div>
                 <div class="col-12">
-                	
+                	<div class="mb-3">
+                		<label for="message">Catatan</label>
+                		<textarea class="form-control" rows="3" placeholder="Catatan Penilaian" name="catatan"></textarea>
+                	</div>
+                	<div class="mb-3">
+                		<button class="btn btn-secondary" type="submit" name="layak" value="1">Layak</button>
+                		<button class="btn btn-danger" type="submit" name="tidak-layak" value="0">Tidak Layak</button>
+                	</div>
                 </div>
             </div>
         </div>
@@ -174,10 +181,23 @@ require 'req/style-penilaian-kredensial.php';
                     <div class="row p-3">
                         <div class="col-12">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-hover align-middle shadow-sm" id="datatable_1">
+                                <table class="table table-bordered table-hover align-middle shadow-sm" id="datatable_2">
                                 	<caption>
-                                		<button id="selectAll" type="button" class="btn btn-sm btn-primary">Pilih Semua</button>
-									<button id="deselectAll" type="button" class="btn btn-sm btn-secondary">Hapus Semua</button>
+                                		<div id="tableTools" class="d-flex gap-2 align-items-center">
+		                            		<div class="col-auto">
+		                            			<button id="selectAll" type="button" class="btn btn-sm btn-primary">Pilih Semua</button>
+		                            		</div>
+		                            		<div class="col-auto">
+		                            			<button id="deselectAll" type="button" class="btn btn-sm btn-secondary">Hapus Semua</button>
+		                            		</div>
+		                            		<div class="col-auto">
+		                            			<select id="filterTable" class="form-select form-select-sm w-auto">
+			                            			<option value="all">Tampilkan Semua</option>
+			                            			<option value="checked">Sudah Dicentang</option>
+			                            			<option value="unchecked">Belum Dicentang</option>
+			                            		</select>
+		                            		</div>
+		                            	</div>
                                 	</caption>
                                     <thead class=" text-center align-middle">
                                         <tr>
