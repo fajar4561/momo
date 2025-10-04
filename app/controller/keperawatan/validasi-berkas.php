@@ -1,11 +1,10 @@
 <?php 
-// echo "<pre>";
-// print_r($_POST);
-// echo "</pre>";
 date_default_timezone_set('Asia/Jakarta');
 session_start();
-require '../../../env/koneksi.php'; 
+require '../../../env/koneksi.php';
+require '../../../env/log.php'; 
 
+$jenis_transaksi='validasi berkas kredensial';
 $id_berkas = $_POST['id_berkas'];
 $kode_pengajuan = $_POST['kode_pengajuan'];
 $nopeg = $_POST['nopeg'];
@@ -27,9 +26,16 @@ if ($update) {
 	$_SESSION['pesan'] = 'Berkas telah divalidasi !';
 	$_SESSION['info'] = 'Berhasil ! ';
 	$_SESSION['warna'] = 'success';
+	$keterangan_log = 'ID Berkas <strong>'.$id_berkas.'</strong> dengan Nopeg <strong>'.$nopeg.'</strong> dan Kode Pengajuan< strong>'.$kode_pengajuan.'</strong> telah divalidasi oleh <strong>'.$validator.'</strong>';
+	simpanLog($koneksi, "$jenis_transaksi", "$keterangan_log");
 	echo '<script>location="../../../detail-kredensial?k='.$kode_pengajuan.'&nopeg='.$nopeg.'";</script>';
 }
 else {
-	echo "Gagal Update detail berkas..... ".$koneksi->error;
+	$keterangan_log ="Gagal Update detail berkas..... ".$koneksi->error;
+	simpanLog($koneksi, "$jenis_transaksi", "$keterangan_log");
+	$_SESSION['pesan'] = $keterangan_log;
+	$_SESSION['info'] = 'Gagal ! ';
+	$_SESSION['warna'] = 'danger';
+	echo '<script>location="../../../detail-kredensial?k='.$kode_pengajuan.'&nopeg='.$nopeg.'";</script>';
 }
-?>
+?> 

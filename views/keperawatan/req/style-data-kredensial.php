@@ -113,10 +113,10 @@
 /* Tab content box */
 .tab-pane-box {
   background: #ffffff;
-  border: 1px solid #e6eaf0;
-  border-radius: 8px;
+  /*border: 1px solid #e6eaf0;
+  border-radius: 8px;*/
   padding: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  /*box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);*/
   animation: fadeIn 0.4s ease;
 }
 

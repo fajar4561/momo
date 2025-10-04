@@ -100,7 +100,7 @@ require 'req/head-pengajuan-kredensial.php';
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="form-group mb-1">
                                 <div class="row">
                                     <div class="col-lg-6 col-12 mb-2 mb-lg-0">
                                         <label class="form-label mt-2">Alamat Email <code class="highlighter-rouge">*</code></label>
@@ -110,6 +110,14 @@ require 'req/head-pengajuan-kredensial.php';
                                     <div class="col-lg-6 col-12 mb-2 mb-lg-0">
                                         <label class="form-label mt-2">Nomor Telepon <code class="highlighter-rouge">*</code></label>
                                         <input type="text" class="form-control" name="telepon" placeholder="Nomor Telepon / Whatsapp" required value="<?=$data_diri['telpon']?>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <div class="row">
+                                    <div class="col-lg-12 col-12 mb-2 mb-lg-0">
+                                        <label class="form-label mt-2">Jenjang Saat ini</label>
+                                        <input type="text" class="form-control" name="jenjang_saat_ini" placeholder="Jenjang Karir Saat ini">
                                     </div>
                                 </div>
                             </div>
@@ -248,14 +256,6 @@ require 'req/head-pengajuan-kredensial.php';
                                 </div>
                             </div>
                             <!--end form-group-->
-                            <div class="form-group mb-3">
-                                <div class="row">
-                                    <div class="col-lg-12 col-12 mb-2 mb-lg-0">
-                                        <label class="form-label mt-2">Jenjang Saat ini <code class="highlighter-rouge">*</code></label>
-                                        <input type="text" class="form-control" name="jenjang_saat_ini" placeholder="Jenjang Karir Saat ini" required>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="row mt-2 mb-2">
                                 <div class="col-lg-12 col-12 mb-lg-0">
                                     <h4 class="mt-0 card-title mb-3">Jenjang Yang Diajukan</h4>
