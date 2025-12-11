@@ -2,7 +2,7 @@
 $kode = $_GET['k'];
 $nopeg = $_GET['nopeg'];
 
-$ambil_kredensial = $koneksi->query("SELECT * FROM pengajuan_kredensial WHERE nopeg='$nopeg'");
+$ambil_kredensial = $koneksi->query("SELECT * FROM pengajuan_kredensial WHERE kode_pengajuan='$kode'");
 $data_pengajuan = $ambil_kredensial->fetch_assoc();
 
 $id_jenjang = $data_pengajuan['jenjang_diajukan'];

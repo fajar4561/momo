@@ -66,46 +66,55 @@ else {
     $no = 0;
 	foreach ($data as $index => $row) {
 		// echo "<pre>";
-		// print_r($row);
+		// print_r($row); 
 		// echo "</pre>";
 
 		$nopeg = str_replace("'", "", $row[1]);
-		$bulan = $row[5];
-		$tahun = $row[6];
+        $bulan = $row[5];
+        $tahun = $row[6];
 
-		$upah_awal = isset($row[7]) ? clean_number($row[7]) : 0;
-		$penambahan = isset($row[8]) ? clean_number($row[8]) : 0;
-		$revisi = isset($row[9]) ? clean_number($row[9]) : 0;
+        // 1. Total Gaji
+        $upah_awal = isset($row[7]) ? clean_number($row[7]) : 0;
+        $penambahan = isset($row[8]) ? clean_number($row[8]) : 0;
+        $revisi = isset($row[9]) ? clean_number($row[9]) : 0;
 
-		$tj_jabatan = isset($row[10]) ? clean_number($row[10]) : 0;
+        // 2. tunjangan
+        $tj_jabatan = isset($row[10]) ? clean_number($row[10]) : 0;
         $tj_fungsional = isset($row[11]) ? clean_number($row[11]) : 0;
         $tj_resiko = isset($row[12]) ? clean_number($row[12]) : 0;
         $tj_tpbri = isset($row[13]) ? clean_number($row[13]) : 0;
         $fee_for_service = isset($row[14]) ? clean_number($row[14]) : 0;
         $tj_mcu = isset($row[15]) ? clean_number($row[15]) : 0;
         $tj_bpjs = isset($row[16]) ? clean_number($row[16]) : 0;
-        $lembur = isset($row[17]) ? clean_number($row[17]) : 0;
-        $thr = isset($row[18]) ? clean_number($row[18]) : 0;
-        $tj_lain = isset($row[19]) ? clean_number($row[19]) : 0;
+        $fee_pembimbing = isset($row[17]) ? clean_number($row[17]) : 0;
+        $lembur = isset($row[18]) ? clean_number($row[18]) : 0;
+        $thr = isset($row[19]) ? clean_number($row[19]) : 0;
+        $tj_lain = isset($row[20]) ? clean_number($row[20]) : 0;
 
-        $gaji_bruto = $revisi+ $tj_jabatan + $tj_fungsional + $tj_resiko + $tj_tpbri + $fee_for_service +$tj_mcu + $tj_bpjs+ $lembur + $thr + $tj_lain;
+        // 3. total gaji kotor
+        $gaji_bruto = isset($row[21]) ? clean_number($row[21]) : 0;
 
-        $bpjs_tenaga = isset($row[21]) ? clean_number($row[21]) : 0;
-        $bpjs_kesehatan = isset($row[22]) ? clean_number($row[22]) : 0;
+        //4. potongan
+        $bpjs_tk = isset($row[22]) ? clean_number($row[22]) : 0;
+        $bpjs_kes =  isset($row[23]) ? clean_number($row[23]) : 0;
+        $pph21 = isset($row[24]) ? clean_number($row[24]) : 0;
+        $ppni = isset($row[25]) ? clean_number($row[25]) : 0;
+        $lelayu = isset($row[26]) ? clean_number($row[26]) : 0;
+        $potongan_lain = isset($row[27]) ? clean_number($row[27]) : 0;
+        $total_potongan = isset($row[28]) ? clean_number($row[28]) : 0;
 
-        $pph21 = isset($row[23]) ? clean_number($row[23]) : 0;
-        $ppni = isset($row[24]) ? clean_number($row[24]) : 0;
-        $lain = isset($row[25]) ? clean_number($row[25]) : 0;
+        //5. Gaji bersih
+        $gaji_netto = isset($row[29]) ? clean_number($row[29]) : 0;
 
-        $total_potongan = $bpjs_tenaga + $bpjs_kesehatan+$pph21+$ppni+$lain;
-
-        $gaji_netto = $gaji_bruto-$total_potongan;
-
-        $obat = isset($row[28]) ? clean_number($row[28]) : 0;
-        $seragam = isset($row[29]) ? clean_number($row[29]) : 0;
-        $kredit = isset($row[30]) ? clean_number($row[30]) : 0;
-        $pelatihan = isset($row[31]) ? clean_number($row[31]) : 0;
-        $uang_gedung = isset($row[32]) ? clean_number($row[32]) : 0;
+        // 6. Potongan diluar slip
+        $obat = isset($row[30]) ? clean_number($row[30]) : 0;
+        $seragam = isset($row[31]) ? clean_number($row[31]) : 0;
+        $kredit = isset($row[32]) ? clean_number($row[32]) : 0;
+        $pelatihan = isset($row[33]) ? clean_number($row[33]) : 0;
+        $acls_rs = isset($row[34]) ? clean_number($row[34]) : 0;
+        $acls_ppni = isset($row[35]) ? clean_number($row[35]) : 0;
+        $total_potongan_slip = isset($row[36]) ? clean_number($row[36]) : 0;
+        $transfer = isset($row[37]) ? clean_number($row[37]) : 0;
 
         $total_potongan_slip = $obat + $seragam + $kredit+$pelatihan + $uang_gedung;
 
@@ -116,7 +125,7 @@ else {
 
         if ($ada_data>=1) { // jika ada data gaji berdasarkan bulan
 
-            if ($gaji_netto > 0) {
+            if ($gaji_netto > 0 && $transfer > 0) {
                 $update = $koneksi->query("UPDATE gaji SET
                     tgl_gaji='$tanggal_hari_ini', 
                     upah_awal ='$upah_awal',
@@ -154,7 +163,7 @@ else {
         // apabila tidak ada data gaji dari hasil file import excel
         else { 
             // tambah data insert=>into
-            if ($gaji_netto > 0) {
+            if ($gaji_netto > 0 && $transfer > 0) {
                 $no ++;
                  $koneksi->query("INSERT INTO gaji 
                     (id,kode_transaksi,bulan,tahun,no_gaji,tgl_gaji,nopeg,upah_awal,penambahan,revisi,bpjs_kerja,bpjs_kes,pph21,ppni,lain,tj_jbtn,tj_fungsional,tj_resiko,fee_for_servis,tj_tpbri,tj_mcu,tj_bpjs,lembur,thr,tj_lain,bruto,total_pendapatan,total_potongan,obat,seragam,kredit,pelatihan,uang_gedung,total_potongan_slip,transfer,status)

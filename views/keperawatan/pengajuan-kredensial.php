@@ -2,15 +2,15 @@
 require 'public/component/toast.php';
 require 'req/style-pengajuan-kredensial.php';
 require 'req/head-pengajuan-kredensial.php';
-?>
-<!-- akhir scroll file box -->
+?> 
+<!-- akhir scroll file box --> 
 <?php if (!$ada_pengajuan) { ?>
 <form method="post" action="app/controller/keperawatan/simpan-pengajuan.php" id="form_rkk">
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
+                    <div class="row"> 
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <img src="public/bg/kre.png" style="width: 100%; max-width: 450px; height: auto; object-fit: cover;" class="img-fluid rounded" alt="Header Image">
@@ -40,28 +40,13 @@ require 'req/head-pengajuan-kredensial.php';
                             <div class="row mt-2">
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label class="form-label" for="team-leader">Project team members</label>
+                                        <label class="form-label" for="team-leader">Keterangan Berkas :</label>
                                         <ul class="list-inline">
-                                            <li class="list-inline-item">
-                                                <img src="public/resources/assets/images/users/user-10.jpg" alt="user" class="rounded-circle thumb-xs">
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <img src="public/resources/assets/images/users/user-9.jpg" alt="user" class="rounded-circle thumb-xs">
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <img src="public/resources/assets/images/users/user-8.jpg" alt="user" class="rounded-circle thumb-xs">
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <img src="public/resources/assets/images/users/user-5.jpg" alt="user" class="rounded-circle thumb-xs">
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <img src="public/resources/assets/images/users/user-4.jpg" alt="user" class="rounded-circle thumb-xs">
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <a href="" class="user-avatar">
-                                                    <span class="thumb-xs justify-content-center d-flex align-items-center bg-soft-info rounded-circle fw-semibold">+6</span>
-                                                </a>
-                                            </li>
+                                            <li><span class="badge badge-item bg-soft-dark">Berkas</span> = Berkas belum diupload</li>
+                                            <li><span class="badge badge-item bg-secondary">Berkas</span> = Berkas Sudah diupload Tapi belum diValidasi</li>
+                                            <li><span class="badge badge-item bg-secondary">Berkas <strong>✔</strong></span> = Berkas Sudah tervalidasi</li>
+                                            <li><span class="badge badge-item bg-secondary">Berkas <strong>❗</strong></span> = Berkas tidak valid</li>
+                                            
                                         </ul>
                                         <!-- <input id="add-member" type="file" name="files[]" multiple style='display: none;'> -->
                                     </div>
@@ -83,9 +68,15 @@ require 'req/head-pengajuan-kredensial.php';
                                     <div class="col-lg-4 col-12 mb-lg-0">
                                         <label for="projectName" class="form-label">Unit : <code class="highlighter-rouge">*</code></label>
                                         <select class="form-select" name="unit" required>
-                                            <option value="<?=$data_diri['unit']?>">
-                                                <?=$data_diri['unit']?>
-                                            </option>
+                                            <?php if (isset($_SESSION['form_data']['unit'])) { ?>
+                                                <option value="<?=$_SESSION['form_data']['unit']?>">
+                                                    <?=$_SESSION['form_data']['unit']?>
+                                                </option>
+                                            <?php } else { ?>
+                                                <option value="<?=$data_diri['unit']?>">
+                                                    <?=$data_diri['unit']?>
+                                                </option>
+                                            <?php } ?>
                                             <option>---Pilih Unit Kerja---</option>
                                             <?php 
                                             $sql=$koneksi->query("SELECT * FROM master_unit ORDER BY unit_kerja ASC");
@@ -104,12 +95,21 @@ require 'req/head-pengajuan-kredensial.php';
                                 <div class="row">
                                     <div class="col-lg-6 col-12 mb-2 mb-lg-0">
                                         <label class="form-label mt-2">Alamat Email <code class="highlighter-rouge">*</code></label>
-                                        <input type="email" class="form-control" name="email" placeholder="Alamat Email Aktif" required value="<?=$data_diri['email']?>">
+                                        <input type="email" class="form-control" name="email" placeholder="Alamat Email Aktif" required 
+                                        <?php if (isset($_SESSION['form_data']['email'])) {  ?> 
+                                            value="<?=$_SESSION['form_data']['email']?>">
+                                        <?php } else { ?>
+                                            value="<?=$data_diri['email']?>">
+                                        <?php  } ?>
                                         <small class="form-text text-muted">Pastikan alamat email terisi dengan benar karena hasil pengajuan akan dikirimkan melalui alamat email.</small>
                                     </div>
                                     <div class="col-lg-6 col-12 mb-2 mb-lg-0">
                                         <label class="form-label mt-2">Nomor Telepon <code class="highlighter-rouge">*</code></label>
-                                        <input type="text" class="form-control" name="telepon" placeholder="Nomor Telepon / Whatsapp" required value="<?=$data_diri['telpon']?>">
+                                        <?php if (isset($_SESSION['form_data']['telepon'])) { ?>
+                                            <input type="text" class="form-control" name="telepon" placeholder="Nomor Telepon / Whatsapp" required  value="<?=$_SESSION['form_data']['telepon']?>">
+                                        <?php } else { ?>
+                                            <input type="text" class="form-control" name="telepon" placeholder="Nomor Telepon / Whatsapp" required  value="<?=$data_diri['telpon']?>">
+                                        <?php  } ?>
                                     </div>
                                 </div>
                             </div>
@@ -117,7 +117,7 @@ require 'req/head-pengajuan-kredensial.php';
                                 <div class="row">
                                     <div class="col-lg-12 col-12 mb-2 mb-lg-0">
                                         <label class="form-label mt-2">Jenjang Saat ini</label>
-                                        <input type="text" class="form-control" name="jenjang_saat_ini" placeholder="Jenjang Karir Saat ini">
+                                        <input type="text" class="form-control" name="jenjang_saat_ini" placeholder="Jenjang Karir Saat ini (Kosongkan saja apabila belum pernah melakukan kredensial)(Kosongkan saja apabila belum pernah melakukan kredensial)">
                                     </div>
                                 </div>
                             </div>
@@ -150,59 +150,64 @@ require 'req/head-pengajuan-kredensial.php';
                                                     </a>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> 
                                         <div class="col-auto">
                                             <a href="#" class="btn btn-de-primary dropdown-toggle" data-bs-toggle="modal" data-bs-target="#modaldetail"> Lihat Detail</a>
                                         </div>
                                     </div>
                                     <p class="text-muted"><small>Kelengkapan Dokumen :</small></p>
-                                    <?php foreach ($files as $kolom => $judul): ?>
-                                        <?php 
-                                            $key = strtolower($kolom);
-                                            $status = "belum"; // default
-                                            if (!empty($berkas[$kolom])) {
-                                                $cekDetail = $koneksi->query("SELECT * FROM file_detail WHERE nopeg='$n' AND jenis_file='$key'");
-                                                if ($cekDetail && $cekDetail->num_rows > 0) {
-                                                    $status = "valid"; // sudah divalidasi
-                                                } else {
-                                                    $status = "ada"; // ada file tapi belum divalidasi
+                                    <div class="badge-wrapper">
+                                        <?php foreach ($files as $kolom => $judul): ?>
+                                            <?php 
+                                                $key = strtolower($kolom);
+                                                $status = "belum"; // default
+                                                if (!empty($berkas[$kolom])) {
+                                                    $cekDetail = $koneksi->query("SELECT * FROM file_detail WHERE nopeg='$n' AND jenis_file='$key'");
+                                                    if ($cekDetail && $cekDetail->num_rows > 0) {
+                                                        $status = "valid"; // sudah divalidasi
+                                                    } else {
+                                                        $status = "ada"; // ada file tapi belum divalidasi
+                                                    }
+                                                    $data_validasi = $cekDetail->fetch_assoc();
+                                                    $status_ikon = $data_validasi['validasi'];
                                                 }
+                                                else {
+                                                    $status_ikon ='';
+                                                }
+                                            ?>
+                                            <span class="badge badge-item 
+                                                <?= $status_ikon == "ada" || $status == "valid" ? 'bg-secondary' : ($status_ikon == "tidak" && $status=='valid' ? 'bg-warning text-dark' : 'bg-soft-dark'); ?>">
+                                                <?= $judul ?>
+                                                <?php if ($status_ikon == "ada"): ?>
+                                                    <strong>✔</strong>
+                                                <?php elseif ($status_ikon == "tidak"): ?>
+                                                    <strong>❗</strong>
+                                                <?php endif; ?>
+                                            </span>
+                                        <?php endforeach; ?>
+
+                                        <?php 
+                                        // --- SERTIFIKAT ---
+                                        $sertifStatus = "belum";
+                                        if ($sertifikat >= 1) {
+                                            $cekDetailSertif = $koneksi->query("SELECT * FROM file_detail WHERE nopeg='$n' AND jenis_file='sertifikat'");
+                                            if ($cekDetailSertif && $cekDetailSertif->num_rows > 0) {
+                                                $sertifStatus = "valid";
+                                            } else {
+                                                $sertifStatus = "ada";
                                             }
+                                        }
                                         ?>
-                                        <span class="badge 
-                                            <?= $status == "valid" ? 'bg-secondary' : ($status == "ada" ? 'bg-warning text-dark' : 'bg-soft-dark'); ?> 
-                                            px-3 py-2 fw-semibold mb-2">
-                                            <?= $judul ?>
-                                            <?php if ($status == "valid"): ?>
+                                        <span class="badge badge-item 
+                                            <?= $sertifStatus == "valid" ? 'bg-secondary' : ($sertifStatus == "ada" ? 'bg-warning text-dark' : 'bg-soft-dark'); ?>">
+                                            Sertifikat
+                                            <?php if ($sertifStatus == "valid"): ?>
                                                 <strong>✔</strong>
-                                            <?php elseif ($status == "ada"): ?>
+                                            <?php elseif ($sertifStatus == "ada"): ?>
                                                 <strong>❗</strong>
                                             <?php endif; ?>
                                         </span>
-                                    <?php endforeach; ?>
-
-                                    <?php 
-                                    // --- SERTIFIKAT ---
-                                    $sertifStatus = "belum";
-                                    if ($sertifikat >= 1) {
-                                        $cekDetailSertif = $koneksi->query("SELECT * FROM file_detail WHERE nopeg='$n' AND jenis_file='sertifikat'");
-                                        if ($cekDetailSertif && $cekDetailSertif->num_rows > 0) {
-                                            $sertifStatus = "valid";
-                                        } else {
-                                            $sertifStatus = "ada";
-                                        }
-                                    }
-                                    ?>
-                                    <span class="badge 
-                                        <?= $sertifStatus == "valid" ? 'bg-secondary' : ($sertifStatus == "ada" ? 'bg-warning text-dark' : 'bg-soft-dark'); ?> 
-                                        px-3 py-2 fw-semibold mb-2">
-                                        Sertifikat
-                                        <?php if ($sertifStatus == "valid"): ?>
-                                            <strong>✔</strong>
-                                        <?php elseif ($sertifStatus == "ada"): ?>
-                                            <strong>❗</strong>
-                                        <?php endif; ?>
-                                    </span>
+                                    </div>
                                     <div class="file-box-content mt-2">
                                         <?php
                                         $colors = ['text-primary', 'text-success', 'text-danger', 'text-warning', 'text-info', 'text-secondary'];
@@ -226,8 +231,13 @@ require 'req/head-pengajuan-kredensial.php';
                                                     </div>
                                                 </a>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#">Download</a>
-                                                    <a class="dropdown-item" href="#">Hapus</a>
+                                                    <a class="dropdown-item" href="public/file/berkas/<?= htmlspecialchars($berkas[$field]) ?>">Download</a>
+                                                    <a href="app/controller/keperawatan/hapus-berkas.php?id=<?= $berkas[$field] ?>&jenis=<?= $field ?>" 
+                                                       class="dropdown-item btn-hapus"  
+                                                       data-deskripsi="Berkas <?= htmlspecialchars($label) ?> akan dihapus!">
+                                                       Hapus
+                                                    </a>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -240,15 +250,26 @@ require 'req/head-pengajuan-kredensial.php';
                                          
                                         ?>
                                         <div class="file-box">
-                                            <a href="public/file/berkas/<?= htmlspecialchars($data_sertifikat['berkas']) ?>" class="download-icon-link" download>
-                                                <i class="las la-download file-download-icon"></i>
-                                            </a>
-                                            <div class="text-center">
-                                                <i class="lar la-file-alt <?= $randColor2 ?>"></i>
-                                                <h6 class="text-truncate">
-                                                    <?= htmlspecialchars($data_sertifikat['berkas']) ?>
-                                                </h6>
-                                                <small class="text-muted">Sertifikat</small>
+                                            <div class="dropdown dropend">
+                                                <a href="#" data-bs-toggle="dropdown" class="download-icon-link" download>
+                                                    <i class="las la-download file-download-icon"></i>
+                                                    <div class="text-center">
+                                                        <i class="lar la-file-alt <?= $randColor2 ?>"></i>
+                                                        <h6 class="text-truncate">
+                                                            <?= htmlspecialchars($data_sertifikat['berkas']) ?>
+                                                        </h6>
+                                                        <small class="text-muted">Sertifikat</small>
+                                                    </div>
+                                                </a>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="public/file/berkas/<?= htmlspecialchars($data_sertifikat['berkas']) ?>">Download</a>
+                                                    <a href="app/controller/keperawatan/hapus-berkas.php?id=<?= $data_sertifikat['berkas'] ?>&jenis=SERTIFIKAT" 
+                                                       class="dropdown-item btn-hapus"  
+                                                       data-deskripsi="Berkas <?= htmlspecialchars('SERTIFIKAT') ?> akan dihapus!">
+                                                       Hapus
+                                                    </a>
+
+                                                </div>
                                             </div>
                                         </div>
                                         <?php } } ?>
@@ -346,7 +367,7 @@ require 'req/head-pengajuan-kredensial.php';
                             <input type="date" class="form-control" name="tgl_berakhir">
                         </div>
                     </div>
-                    <div class="row" id="nosurat">
+                    <div class="row" id="nosurat"> 
                         <div class="col-lg-12">
                             <label class="form-label">No surat :</label>
                             <input type="text" name="nomor" class="form-control" placeholder="Nomor dari Surat/Sertifikat/Kartu">
@@ -499,5 +520,29 @@ require 'req/head-pengajuan-kredensial.php';
 </div>
 <?php } else { ?>
     <!-- Tampilan apabila pengajuannya kosong -->
+<div class="row p-3">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body p-0">
+                <div class="row d-flex align-items-center">
+                    <div class="col-md-7 col-xl-12 col-lg-12 p-0 vh-100 d-flex justify-content-center" style="background: url('public/bg/bg_kredensial.webp') no-repeat center center; background-size: cover;">
+                        <div class="d-flex align-items-center">
+                            <div class="account-title text-center text-dark">
+                                <img src="public/bg/nurse.webp" alt="" style="width: 100%; max-width: 550px; height: auto; object-fit: cover;" class="img-fluid rounded">
+                                <h4 class="mt-3 text-dark">MAAF, Pengajuan Kredensial anda <span class="text-warning">Sedang Diproses</span> </h4>
+                                <h1 class="text-dark">Mohon Bersabar</h1>
+                                <p class="mt-0">Silahkan anda tunggu notifikasi email yang nanti secara otomatis dikirimkan oleh sistem.</p>
+                                <div class="border w-25 mx-auto border-warning"></div>
+                            </div>
+                        </div>
+                        <!--end /div-->
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+        </div>
+    </div>
+</div>
 <?php } ?>
 <?php require_once 'req/js-pengajuan-kredensial.php'; ?>

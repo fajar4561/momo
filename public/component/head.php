@@ -2,12 +2,12 @@
 
 session_start();
 
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 // header('Cache-Control: max-age=3600');
 $title = str_replace("-", " ", $_GET['halaman']);
 
-if ($_GET['halaman']=='detail-pegawai' OR $_GET['halaman']=='detail-transaksi-gaji' OR $_GET['halaman']=='transaksi-gaji' OR $_GET['halaman']=='detail-gaji' OR $_GET['halaman']=='ubah-gaji' OR isset($_GET['page']) OR isset($_GET['pesan']) || $_GET['halaman']=='detail-transaksi-pembelian' || $_GET['halaman']=='ubah-transaksi-pembelian' || $_GET['halaman']=='ubah-pegawai') 
+if ($_GET['halaman']=='detail-pegawai' OR $_GET['halaman']=='detail-transaksi-gaji' OR $_GET['halaman']=='transaksi-gaji' OR $_GET['halaman']=='detail-gaji' OR $_GET['halaman']=='ubah-gaji' OR isset($_GET['page']) OR isset($_GET['pesan']) || $_GET['halaman']=='detail-transaksi-pembelian' || $_GET['halaman']=='ubah-transaksi-pembelian' || $_GET['halaman']=='ubah-pegawai' ) 
 {
     $link = "../";
     require 'env/koneksi.php'; 

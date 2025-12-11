@@ -1,130 +1,48 @@
 <?php 
-if (isset($_SESSION['pesan']) && $_SESSION['pesan'] <> '') {
-    echo '<div class="row mb-3"><div class="p-2"><div id="pesan" class="alert alert-'.$_SESSION['warna'].' alert-dismissible fade show border-0 b-round" role="alert"><strong>'.$_SESSION['info'].'</strong> '.$_SESSION['pesan'].'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div></div>';
-}
-$_SESSION['pesan'] = '';
-
-require 'env/koneksi.php';
-require 'vendor/autoload.php'; // Pastikan path ini sesuai dengan instalasi Composer Anda
-
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-if ($koneksi->connect_error) {
-    die("Connection failed: " . $koneksi->connect_error);
-}
-
-$sql = "SELECT nopeg, nama, gender,CAST(nik AS CHAR) AS nik, jabatan, unit, tmt, skpt, alamat, tmpt_lahir, tgl_lahir, status_kawin, Status_pegawai, telpon, email FROM pegawai ORDER BY unit ASC, nama ASC";
-$result = $koneksi->query($sql);
-
-// hapus file
-unlink('public/file/pegawai/data-pegawai.xlsx');
-
-if ($result->num_rows > 0) {
-    // Nama file Excel
-    $nama_file = 'public/file/pegawai/data-pegawai.xlsx';
-    // Buat instance Spreadsheet
-    $spreadsheet = new Spreadsheet();
-    $sheet = $spreadsheet->getActiveSheet();
-
-    // Header kolom
-    $header = array("No", "NIP", "Nama", "Gender", 'NIK', "Jabatan", "UNIT", "TMT", "SKPT", "Alamat", "Tempat Lahir", "Tanggal Lahir", "Status Perkawinan", "Status Pegawai", "Nomor Telepon", "Email");
-
-    // Set header kolom di Excel
-    foreach ($header as $index => $columnName) {
-        $sheet->setCellValueByColumnAndRow($index + 1, 1, $columnName);
-    }
-
-    // Tulis data ke sheet
-    $nomor_baris = 2; // Mulai dari baris ke-2 karena baris ke-1 adalah header
-
-    while ($row = $result->fetch_assoc()) {
-        $sheet->setCellValueByColumnAndRow(1, $nomor_baris, $nomor_baris - 1); // No
-        $sheet->setCellValueByColumnAndRow(2, $nomor_baris, "'" . $row['nopeg']); // NIP dengan tanda kutip
-        $sheet->setCellValueByColumnAndRow(3, $nomor_baris, $row['nama']); // Nama
-        $sheet->setCellValueByColumnAndRow(4, $nomor_baris, $row['gender']); // Gender
-        $sheet->setCellValueByColumnAndRow(5, $nomor_baris, "'" . $row['nik']); // NIK dengan tanda kutip
-        $sheet->setCellValueByColumnAndRow(6, $nomor_baris, $row['jabatan']); // Jabatan
-        $sheet->setCellValueByColumnAndRow(7, $nomor_baris, $row['unit']); // UNIT
-        $sheet->setCellValueByColumnAndRow(8, $nomor_baris, $row['tmt']); // TMT
-        $sheet->setCellValueByColumnAndRow(9, $nomor_baris, $row['skpt']); // SKPT
-        $sheet->setCellValueByColumnAndRow(10, $nomor_baris, $row['alamat']); // Alamat
-        $sheet->setCellValueByColumnAndRow(11, $nomor_baris, $row['tmpt_lahir']); // Tempat Lahir
-        $sheet->setCellValueByColumnAndRow(12, $nomor_baris, $row['tgl_lahir']); // Tanggal Lahir
-        $sheet->setCellValueByColumnAndRow(13, $nomor_baris, $row['status_kawin']); // Status Perkawinan
-        $sheet->setCellValueByColumnAndRow(14, $nomor_baris, $row['Status_pegawai']); // Status Pegawai
-        $sheet->setCellValueByColumnAndRow(15, $nomor_baris, "'" . $row['telpon']); // NIP dengan tanda kutip
-        $sheet->setCellValueByColumnAndRow(16, $nomor_baris, $row['email']); // Email
-
-        $nomor_baris++;
-    }
-
-    // Simpan file Excel
-    $writer = new Xlsx($spreadsheet);
-    $writer->save($nama_file);
-
-    //echo "File Excel berhasil dibuat: <a href='$nama_file' download>$nama_file</a>";
-}
-
+require 'req/head-data-pegawai.php';
+require 'req/style-data-pegawai.php';
+require 'public/component/toast.php';
 ?>
-
-<style type="text/css">
-table tbody tr:hover {
-    background-color: #f5f5f5; /* Warna latar saat hover */
-    color: #333; /* Warna teks saat hover */
-    transition: background-color 0.3s, color 0.3s; /* Animasi transisi */
-}
-/* Efek hover untuk baris tabel */
-table tbody tr.clickable-row:hover {
-    background-color: #f8f9fa;
-    cursor: pointer;
-}
-
-/* Pointer khusus pada tombol dropdown */
-table tbody tr .dropdown-toggle {
-    cursor: pointer;
-}
-.context-menu {
-    position: absolute;
-    display: none;
-    background: #fff;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-    z-index: 1000;
-    max-width: 90%; /* Membatasi lebar menu konteks di perangkat kecil */
-    overflow: hidden; /* Mencegah elemen dalam menu meluap */
-    word-wrap: break-word; /* Membungkus teks panjang dalam menu */
-}
-.context-menu a {
-    display: block;
-    padding: 10px 20px;
-    color: #333;
-    text-decoration: none;
-}
-.context-menu a:hover {
-    background: #f0f0f0;
-}
-</style>
-<div class="row">
+<div class="row mb-3">
     <div class="col-lg-12">
-        <div class="card">
+        <div class="card border-0">
             <div class="card-body">
                 <div class="row align-items-center">
                     <!-- Gambar Header -->
-                    <div class="col-md-3 col-sm-4 text-center">
-                        <img src="public/bg/bg01.jpg" class="img-fluid rounded" alt="Header Image">
+                    <div class="col-md-3 text-center">
+                        <img src="public/bg/pegawai.webp" class="img-fluid rounded-3" alt="Informasi Pegawai">
                     </div>
-                    <!-- Teks Header -->
-                    <div class="col-md-9 col-sm-8">
-                        <h3 class="fw-bold mb-3">Informasi Halaman</h3>
-                        <p class="mb-0 text-muted">
-                            1. Pada tombol <button type="button" class="btn btn-primary btn-square btn-outline-dashed dropdown-toggle btn-sm">Opsi <i class="mdi mdi-chevron-down"></i></button>
-                                terdapat menu tambah data pegawai baru, export data dan import data . 
-                            <br>
-                            2. File import & export harus berformatkan <strong>".xlsx"</strong> , untuk teknis Tambah data pegawai baru melalui fitur import & export bisa <strong><a href="#">Klik Disini</a></strong><br>
-                            3. Maksimalkan Fungsi pencarian data pegawai pada fitur <button type="button" class="btn btn-sm btn-de-dark">Search...</button> yang terletak di pojok kanan atas tabel<br>
-                            4. Pada Tombol <i class="las la-pen font-20"></i> atau dengan klik kanan <i class="las la-mouse-pointer font-20"></i> pada kolom tabel Terdapat menu detail pegawai, ubah, hapus dan reset password<br>
-                            5. Menu " <button type="button" class="btn btn-primary btn-de-dark dropdown-toggle btn-sm">10<i class="mdi mdi-chevron-down"></i></button> entries per page" Digunakan untuk menampilkan jumlah data tiap tabel
-                        </p>
+                    <!-- Teks Informasi -->
+                    <div class="col-md-9">
+                        <h4 class="fw-bold mb-3 text-primary">
+                            <i class="bi bi-info-circle"></i> Informasi Halaman
+                        </h4>
+                        <ul class="list-unstyled text-muted mb-0">
+                            <li class="mb-2">
+                                <i class="bi bi-chevron-right text-primary"></i>
+                                Gunakan tombol <button type="button" class="btn btn-primary btn-sm">Opsi</button>
+                                untuk menambah, mengimpor, atau mengekspor data pegawai.
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-chevron-right text-primary"></i>
+                                Format file <strong>import/export</strong> yang didukung adalah <code>.xlsx</code>.
+                                <a href="#" class="text-decoration-underline">Klik di sini</a> untuk panduan teknis.
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-chevron-right text-primary"></i>
+                                Gunakan fitur <button type="button" class="btn btn-outline-secondary btn-sm">Search...</button>
+                                di pojok kanan atas tabel untuk mencari data pegawai.
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-chevron-right text-primary"></i>
+                                Klik ikon <i class="las la-pen"></i> atau klik kanan pada baris tabel untuk melihat
+                                detail, ubah, hapus, atau reset password pegawai.
+                            </li>
+                            <li>
+                                <i class="bi bi-chevron-right text-primary"></i>
+                                Menu <strong>entries per page</strong> digunakan untuk mengatur jumlah data yang tampil di tabel.
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -286,165 +204,4 @@ table tbody tr .dropdown-toggle {
     </div><!--end modal-dialog-->
 </div>
 <script src="env/js/notif.js"></script>
-<script>
-function handleChange() {
-    // Ambil input file
-    var inputFile = document.getElementById('input-file');
-    
-    // Cek apakah file telah dipilih
-    if (inputFile.files.length > 0) {
-        // Jika file dipilih, tampilkan tombol submit dan submitkan formulir
-        document.getElementById('submit-btn').click();
-    }
-}
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-    // Fungsi untuk menginisialisasi popover
-    function initializePopover() {
-        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-        popoverTriggerList.forEach(function (popoverTriggerEl) {
-            new bootstrap.Popover(popoverTriggerEl, {
-                container: 'body',
-                trigger: 'hover',
-                placement: 'top',
-                html: true
-            });
-        });
-    }
-
-    // Inisialisasi popover pertama kali
-    initializePopover();
-
-    // Setup MutationObserver untuk mendeteksi perubahan DOM pada tabel
-    var observer = new MutationObserver(function(mutationsList, observer) {
-        // Periksa apakah ada perubahan pada elemen dengan id 'datatable_1'
-        mutationsList.forEach(function(mutation) {
-            if (mutation.type === 'childList') {
-                // Memastikan popover diinisialisasi ulang setelah data baru dimuat
-                initializePopover();
-            }
-        });
-    });
-
-    // Memulai observer pada tabel
-    var targetNode = document.getElementById('datatable_1');
-    var config = { childList: true, subtree: true };
-    observer.observe(targetNode, config);
-});
-
-</script>
-
-<!-- <script>
-     document.addEventListener("DOMContentLoaded", function () {
-        // Inisialisasi DataTables
-        var table = $('#datatable_2').DataTable({
-            responsive: true, // Membuat tabel responsif
-            lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "Semua"]],
-            pageLength: 10,
-            language: {
-                search: "Cari:",
-                lengthMenu: "Tampilkan _MENU_ entri",
-                info: "Menampilkan _START_ hingga _END_ dari _TOTAL_ entri",
-                infoEmpty: "Tidak ada data tersedia",
-                paginate: {
-                    first: "Awal",
-                    last: "Akhir",
-                    next: "Berikutnya",
-                    previous: "Sebelumnya"
-                }
-            }
-        });
-
-        // Inisialisasi Popover
-        function initPopover() {
-            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-            popoverTriggerList.forEach(function (popoverTriggerEl) {
-                new bootstrap.Popover(popoverTriggerEl, {
-                    container: 'body',
-                    trigger: 'hover',
-                    placement: 'top',
-                    html: true
-                });
-            });
-        }
-
-        initPopover();
-        table.on('draw', function () {
-            initPopover();
-        });
-    });
-</script> -->
-
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Ambil semua baris tabel dengan kelas 'clickable-row'
-        const rows = document.querySelectorAll(".clickable-row");
-
-        rows.forEach(function (row) {
-            row.addEventListener("click", function (event) {
-                // Pastikan klik bukan pada dropdown menu agar tidak bertabrakan
-                if (event.target.closest(".dropdown-menu") || event.target.closest(".dropdown-toggle")) return;
-
-                // Ambil ID dropdown dari atribut data
-                const dropdownId = row.getAttribute("data-dropdown-id");
-                const dropdownToggle = document.getElementById(dropdownId);
-
-                if (dropdownToggle) {
-                    // Buat dropdown terbuka
-                    const dropdownInstance = bootstrap.Dropdown.getOrCreateInstance(dropdownToggle);
-                    dropdownInstance.show();
-                }
-            });
-        });
-    });
-</script>
-<script type="text/javascript">
-document.addEventListener('DOMContentLoaded', () => {
-    const table = document.querySelector('table');
-    const contextMenu = document.createElement('div');
-    contextMenu.className = 'context-menu';
-
-    document.body.appendChild(contextMenu);
-
-    table.addEventListener('contextmenu', (event) => {
-        event.preventDefault();
-
-        const row = event.target.closest('tr');
-        if (row) {
-            const nopeg = row.getAttribute('data-dropdown-id');
-            contextMenu.innerHTML = `
-                <a href="detail-pegawai/${nopeg}">Detail Pegawai</a>
-                <a href="ubah-pegawai/${nopeg}">Ubah</a>
-                <a href="app/controller/pegawai/reset-password.php?n=${nopeg}" onclick="return confirm('Reset password pegawai?')">Reset Password</a>
-                <a href="app/controller/pegawai/hapus-pegawai.php?n=${nopeg}" onclick="return confirm('Hapus data pegawai?')">Hapus</a>
-            `;
-
-            // Mendapatkan posisi dari elemen <tr> dan mengubahnya menjadi posisi absolut
-            const rect = row.getBoundingClientRect();
-
-            // Menentukan posisi menu konteks di bawah klik
-            const contextMenuHeight = contextMenu.offsetHeight || 100; // Estimasi tinggi menu konteks
-            const menuTop = (rect.top + window.scrollY) + event.offsetY;
-            const menuLeft = (rect.left + window.scrollX) + event.offsetX;
-
-            // Menyesuaikan posisi agar menu konteks tidak keluar dari viewport (jika perlu)
-            const bottomSpace = window.innerHeight - menuTop;
-            if (bottomSpace < contextMenuHeight) {
-                contextMenu.style.top = `${menuTop - contextMenuHeight}px`; // Jika kurang ruang di bawah, tampilkan di atas
-            } else {
-                contextMenu.style.top = `${menuTop}px`; // Jika ada cukup ruang di bawah
-            }
-
-            contextMenu.style.left = `${menuLeft}px`;
-            contextMenu.style.display = 'block';
-        }
-    });
-
-    // Hide the context menu when clicking elsewhere
-    document.addEventListener('click', () => {
-        contextMenu.style.display = 'none';
-    });
-});
-</script>
+<?php require 'req/js-data-pegawai.php' ?>

@@ -131,7 +131,7 @@ if ($ada_koneksi_email == 1) {
 
 
             $pdf->Cell(6,5,"1.",0,0);
-            $pdf->Cell(55,5,"Upah Sebelum Kenaikan Th 2024",0,0);
+            $pdf->Cell(55,5,"Upah Sebelum Kenaikan Th 2025",0,0);
             $pdf->Cell(6,5,':',0,0);
             $pdf->Cell(47,5,format_currency($pecah['upah_awal']),0,0);
 
@@ -153,7 +153,7 @@ if ($ada_koneksi_email == 1) {
 
             $pdf->Ln();
             $pdf->Cell(6,5,"3.",0,0);
-            $pdf->Cell(55,5,"Upah Setelah Kenaikan Th 2024",0,0);
+            $pdf->Cell(55,5,"Upah Setelah Kenaikan Th 2025",0,0);
             $pdf->Cell(6,5,':',0,0);
             $pdf->Cell(47,5,format_currency($pecah['revisi']),0,0);
 
@@ -243,7 +243,7 @@ if ($ada_koneksi_email == 1) {
             $pdf->Cell(1,5,format_currency($pecah['total_potongan']),0,0);
             $pdf->Ln(8);
 
-
+ 
             $pdf->Cell(44,5,' ',0,0);
             $pdf->Cell(7,5,' ',0,0);
             $pdf->Cell(62,5,' ',80,0);
@@ -267,8 +267,9 @@ if ($ada_koneksi_email == 1) {
             $pdf->Output($folder.$nopeg.".pdf", 'F');
         }
 
-        echo "<script>location='kirim-email.php?kode=".$kode_get."';</script>";    
 
     }
+     echo "<script>location='kirim-email.php?kode=".$kode_get."';</script>";    
+        exit();
 
 ?>

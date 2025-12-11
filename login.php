@@ -115,7 +115,7 @@ session_destroy();
             color: #666;
         }
         .input-group-text {
-            background-color: #007bff;
+            background-color: rgba(45, 147, 206);
             color: #fff;
             border: none;
             border-top-right-radius: 25px;
@@ -127,13 +127,45 @@ session_destroy();
             background-color: #0056b3;
             cursor: pointer;
         }
+        .form-control {
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background-color: rgba(255,255,255,0.8);
+    transition: all 0.3s ease;
+}
+.form-control:focus {
+    border-color: #0d6efd;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(13,110,253,0.2);
+}
 
+.btn-primary {
+    background: rgba(45, 147, 206);
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,123,255,0.4);
+}
     </style>
 </head>
 
 <body>
     <div class="login-container">
         <h2 class="text-center">RSPM</h2>
+        <div class="row justify-content-center">
+                <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.5/dist/dotlottie-wc.js" type="module"></script>
+                <dotlottie-wc 
+                  src="public/bg/hospital.lottie" 
+                  style="width: 500px; height: 200px" 
+                  autoplay 
+                  loop>
+                </dotlottie-wc>
+            </div>
         <form id="loginForm" action="app/controller/cek-login.php" method="post">
             <div class="form-group">
                 <label for="email">Username</label>
@@ -150,10 +182,8 @@ session_destroy();
                     </div>
                 </div>
             </div>
-
             <button type="submit" class="btn btn-primary btn-block">Masuk</button>
         </form>
-        
         <!-- Changelog Box -->
         <div class="changelog-box">
             <h5>Changelog</h5>
@@ -163,10 +193,12 @@ session_destroy();
             <p>Apa yang Baru ? <a id="toggleChangelog" href="#">Klik Saya</a></p>
         </div>
         <div class="footer-note">
-            <p class="text-muted">V2.0.1</p>
+            <p class="text-muted">V3.0.1 Beta</p>
         </div>
+        <p class="text-center text-muted small mt-4 mb-0 opacity-75">
+            © <?= date('Y') ?> RSPM • Powered by IT Support
+        </p>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
@@ -196,7 +228,7 @@ session_destroy();
         });
     });
 
-     $('#togglePassword').on('click', function () {
+    $('#togglePassword').on('click', function() {
         const passwordField = $('#password');
         const eyeIcon = $('#eyeIcon');
 

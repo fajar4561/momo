@@ -1,8 +1,8 @@
 <?php 
 $kode = $_GET['k'];
 $nopeg = $_GET['nopeg'];
-
-$ambil_kredensial = $koneksi->query("SELECT * FROM pengajuan_kredensial WHERE nopeg='$nopeg'");
+ 
+$ambil_kredensial = $koneksi->query("SELECT * FROM pengajuan_kredensial WHERE nopeg='$nopeg' AND kode_pengajuan='$kode'");
 $data_pengajuan = $ambil_kredensial->fetch_assoc();
 
 $id_jenjang = $data_pengajuan['jenjang_diajukan'];
@@ -121,5 +121,10 @@ $files = [
     "PORTOFOLIO"   => "Portofolio",
     "TRANSKIP"   => "Transkip Nilai",
 ];
+
+$datetime = $data_pengajuan['tgl_pengajuan'];
+$obj = new DateTime($datetime);
+$tanggal = $obj->format('Y-m-d'); // hanya tanggal
+$jam = $obj->format('H:i:s');     // hanya jam
 
 ?>

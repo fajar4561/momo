@@ -63,6 +63,9 @@ $sertifikat = $ambil_berkas_sertif->num_rows;
 
 $berkas = mysqli_fetch_assoc($ambil_berkas);
 
+
+
+
 // // ambil detail file
 // $ambil_detail_file = $koneksi->query("SELECT * FROM detail_file WHERE nopeg='$n'");
 // $ada_berks = $ambil_detail_file->num_rows;
@@ -125,16 +128,21 @@ foreach ($files as $field2 => $label2) {
         $isComplete = false;
         $missingFiles[] = $label2 . " (Belum diupload)";
         $missingKeys[]  = $field2;
-    } else {
-        // kalau sudah ada file, cek apakah sudah ada di detail_file
-        $cekDetail = $koneksi->query("SELECT * FROM file_detail WHERE nopeg='$n' AND jenis_file='$field2'");
-        if ($cekDetail && $cekDetail->num_rows == 0) {
-            $isComplete = false;
-            $missingFiles[] = $label2 . " (Berkas Kurang Valid)";
-            $missingKeys[]  = $field2;
-        }
+    } 
+}
+
+// kalau sudah ada file, cek apakah sudah ada di detail_file
+$cekDetail = $koneksi->query("SELECT * FROM file_detail WHERE nopeg='$n' AND validasi='tidak' ");
+$ada_cekdetail = mysqli_num_rows($cekDetail);
+
+if ($ada_cekdetail > 0) {
+    $isComplete = false;
+    while ($data_cekdetail = mysqli_fetch_assoc($cekDetail)) {
+        $missingFiles[] = $data_cekdetail['jenis_file'] . " (Tidak Valid)";
+        $missingKeys[]  = $data_cekdetail['jenis_file'];
     }
 }
+
 
 // cek sertifikat
 if ($sertifikat == 0) {
@@ -152,7 +160,7 @@ if ($sertifikat == 0) {
 
 
 // ambil data untuk mengechek apakah sudah melakukan pengajuan yang on progress
-$ambil_pengajuan = $koneksi->query("SELECT * FROM pengajuan_kredensial WHERE nopeg='$n' AND status_pengajuan='menunggu'");
+$ambil_pengajuan = $koneksi->query("SELECT * FROM pengajuan_kredensial WHERE nopeg='$n' AND status_pengajuan IN ('menunggu', 'penilaian')");
 $ada_pengajuan = $ambil_pengajuan->num_rows;
 
 

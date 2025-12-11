@@ -179,14 +179,17 @@ if (isMobileDevice()) { ?>
             <div class="card-body" style="height: 50px;">
                 <div class="row">
                     <div class="col-4" style="border-right: 1px solid #ccc;">
-			            <center><strong><span><small>INCOME</small></span></strong></center>
-			        </div>
-			        <div class="col-4" style="border-right: 1px solid #ccc;">
-			            <center><strong><span><small>Rp.<?=number_format($data_gaji_baru['total_pendapatan'])?></small></span></strong></center>
-			        </div>
-			        <div class="col-4">
-			            <center><span class="badge rounded-pill badge-outline-primary"><?=bulan_indonesia($data_gaji_baru['bulan'])?> <?=$data_gaji_baru['tahun']?></span></center>
-			        </div>
+                        <center><strong><span><small>INCOME</small></span></strong></center>
+                    </div>
+                    <div class="col-4" style="border-right: 1px solid #ccc;">
+                        <center><strong><span><small>Rp.
+                                        <?=number_format($data_gaji_baru['total_pendapatan'])?></small></span></strong></center>
+                    </div>
+                    <div class="col-4">
+                        <center><span class="badge rounded-pill badge-outline-primary">
+                                <?=bulan_indonesia($data_gaji_baru['bulan'])?>
+                                <?=$data_gaji_baru['tahun']?></span></center>
+                    </div>
                 </div>
             </div>
             <div class="card-footer card-footer2 bg-primary">
@@ -228,7 +231,7 @@ if (isMobileDevice()) { ?>
                                     <div class="row mb-2">
                                         <div class="col-sm-12">
                                             <small><span class="text-muted"> Update
-                                                <?= date("d, M Y", strtotime($data['tgl_gaji'])) ?></small></p></span>
+                                                    <?= date("d, M Y", strtotime($data['tgl_gaji'])) ?></small></p></span>
                                             </small>
                                         </div>
                                     </div>
@@ -259,65 +262,65 @@ if (isMobileDevice()) { ?>
                             </div>
                         </div>
                         <div class="modal fade" id="exampleModalPrimaryy<?=$data['id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalPrimary1" aria-hidden="true">
-						    <div class="modal-dialog" role="document">
-						        <div class="modal-content">
-						            <div class="modal-header bg-primary">
-						                <h6 class="modal-title m-0 text-white" id="exampleModalPrimary1">Slip Potongan</h6>
-						                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						            </div>
-						            <!--end modal-header-->
-						            <div class="modal-body">
-						                <div class="row p-3">
-						                    <div class="col-lg-12">
-						                        <h5>Potongan
-						                            <?=bulan_indonesia($data['bulan'])?>
-						                            <?=$data['tahun']?>
-						                        </h5>
-						                        <span class="badge bg-soft-secondary">
-						                            <?=$pecah['nama']?></span>
-						                        <small class="text-muted ml-2">No :
-						                            <?=$data['no_gaji']?></small>
-						                        <ul class="mt-3 mb-0">
-						                            <li>Gaji Netto : Rp.
-						                                <?=number_format($data['total_pendapatan'])?>
-						                            </li>
-						                            <li>Obat : Rp.
-						                                <?=number_format($data['obat'])?>
-						                            </li>
-						                            <li>Seragam : Rp.
-						                                <?=number_format($data['seragam'])?>
-						                            </li>
-						                            <li>Kredit BTN : Rp.
-						                                <?=number_format($data['kredit'])?>
-						                            </li>
-						                            <li>Pelatihan : Rp.
-						                                <?=number_format($data['pelatihan'])?>
-						                            </li>
-						                            <li>Uang Gedung PPNI : Rp.
-						                                <?=number_format($data['uang_gedung'])?>
-						                            </li>
-						                            <li>Total Potongan : Rp.
-						                                <?=number_format($data['total_potongan_slip'])?>
-						                            </li>
-						                            <li>Transfer : Rp.
-						                                <?=number_format($data['transfer'])?>
-						                            </li>
-						                        </ul>
-						                    </div>
-						                    <!--end col-->
-						                </div>
-						                <!--end row-->
-						            </div>
-						            <!--end modal-body-->
-						            <div class="modal-footer">
-						                <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-						            </div>
-						            <!--end modal-footer-->
-						        </div>
-						        <!--end modal-content-->
-						    </div>
-						    <!--end modal-dialog-->
-						</div>
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-primary">
+                                        <h6 class="modal-title m-0 text-white" id="exampleModalPrimary1">Slip Potongan</h6>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <!--end modal-header-->
+                                    <div class="modal-body">
+                                        <div class="row p-3">
+                                            <div class="col-lg-12">
+                                                <h5>Potongan
+                                                    <?=bulan_indonesia($data['bulan'])?>
+                                                    <?=$data['tahun']?>
+                                                </h5>
+                                                <span class="badge bg-soft-secondary">
+                                                    <?=$pecah['nama']?></span>
+                                                <small class="text-muted ml-2">No :
+                                                    <?=$data['no_gaji']?></small>
+                                                <ul class="mt-3 mb-0">
+                                                    <li>Gaji Netto : Rp.
+                                                        <?=number_format($data['total_pendapatan'])?>
+                                                    </li>
+                                                    <li>Obat : Rp.
+                                                        <?=number_format($data['obat'])?>
+                                                    </li>
+                                                    <li>Seragam : Rp.
+                                                        <?=number_format($data['seragam'])?>
+                                                    </li>
+                                                    <li>Kredit BTN : Rp.
+                                                        <?=number_format($data['kredit'])?>
+                                                    </li>
+                                                    <li>Pelatihan : Rp.
+                                                        <?=number_format($data['pelatihan'])?>
+                                                    </li>
+                                                    <li>Uang Gedung PPNI : Rp.
+                                                        <?=number_format($data['uang_gedung'])?>
+                                                    </li>
+                                                    <li>Total Potongan : Rp.
+                                                        <?=number_format($data['total_potongan_slip'])?>
+                                                    </li>
+                                                    <li>Transfer : Rp.
+                                                        <?=number_format($data['transfer'])?>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <!--end col-->
+                                        </div>
+                                        <!--end row-->
+                                    </div>
+                                    <!--end modal-body-->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                    <!--end modal-footer-->
+                                </div>
+                                <!--end modal-content-->
+                            </div>
+                            <!--end modal-dialog-->
+                        </div>
                         <?php } ?>
                     </div>
                 </div>
@@ -338,25 +341,24 @@ if (isMobileDevice()) { ?>
 						    background-size: cover; 
 						    background-blend-mode: overlay; 
 						    background-position: center center;">
-						    <div class="row">
-						        <!-- Teks Header -->
-						        <div class="col-8">
-						            <h5 class="fw-bold">Perbaharui Profil Anda !!</h5>
-						            <p class="text-muted"><small>Pastikan Anda selalu mengupdate profil anda. klik <a href="profil"><strong>disini</strong></a> untuk update profil</small></p>
-						        </div>
-						        <!-- Gambar Header -->
-						        <div class="col-4 text-center">
-						            <img src="public/bg/objek2.webp" class="img-fluid rounded" alt="Header Image" 
-						                 style="aspect-ratio: 1 / 1; width: 100%; max-width: 150px; height: auto; object-fit: cover;">
-						        </div>
-						    </div>
-						</div>
+                            <div class="row">
+                                <!-- Teks Header -->
+                                <div class="col-8">
+                                    <h5 class="fw-bold">Perbaharui Profil Anda !!</h5>
+                                    <p class="text-muted"><small>Pastikan Anda selalu mengupdate profil anda. klik <a href="profil"><strong>disini</strong></a> untuk update profil</small></p>
+                                </div>
+                                <!-- Gambar Header -->
+                                <div class="col-4 text-center">
+                                    <img src="public/bg/objek2.webp" class="img-fluid rounded" alt="Header Image" style="aspect-ratio: 1 / 1; width: 100%; max-width: 150px; height: auto; object-fit: cover;">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div> 
+                </div>
                 <!-- Slide 2 -->
                 <div class="carousel-item">
                     <div class="card card2">
-                        <div class="card-body"  style="
+                        <div class="card-body" style="
 						    background: url('<?=$link?>public/bg/bg06.webp'); 
 						    background-size: cover; 
 						    background-blend-mode: overlay; 
@@ -398,49 +400,46 @@ if (isMobileDevice()) { ?>
                     </div>
                 </div>
             </div>
-
-          
         </div>
     </div>
 </div>
-
 <div class="row">
     <div class="col-lg-12">
         <!-- Wrapper for horizontal scroll -->
         <div class="scrollable-container">
             <div class="col-2">
-			    <a href="profil" type="button" class="btn btn2 btn-icon-square-xl">
-			        <img src="public/bg/3.gif" alt="Icon" style="width: 50px; height: 50px;">
-			    </a>
-			    <center><small class="text-center">Profil</small></center>
-			</div>
+                <a href="profil" type="button" class="btn btn2 btn-icon-square-xl">
+                    <img src="public/bg/3.gif" alt="Icon" style="width: 50px; height: 50px;">
+                </a>
+                <center><small class="text-center">Profil</small></center>
+            </div>
             <div class="col-2">
                 <a href="upload-berkas" type="button" class="btn btn2 btn-icon-square-xl">
-                	<img src="public/bg/2.gif" alt="Icon" style="width: 50px; height: 50px;">
+                    <img src="public/bg/2.gif" alt="Icon" style="width: 50px; height: 50px;">
                 </a>
                 <center><small class="text-center">Berkas</small></center>
             </div>
             <div class="col-2">
                 <a href="absensi" type="button" class="btn btn2 btn-icon-square-xl">
-                	<img src="public/bg/4.gif" alt="Icon" style="width: 40px; height: 40px;">
+                    <img src="public/bg/4.gif" alt="Icon" style="width: 40px; height: 40px;">
                 </a>
                 <center><small class="text-center">Absensi</small></center>
             </div>
             <div class="col-2">
                 <a href="kritik" type="button" class="btn btn2 btn-icon-square-xl">
-                	<img src="public/bg/1.gif" alt="Icon" style="width: 50px; height: 50px;">
+                    <img src="public/bg/1.gif" alt="Icon" style="width: 50px; height: 50px;">
                 </a>
                 <center><small class="text-center">Q&A</small></center>
             </div>
             <div class="col-2">
                 <a href="#" type="button" class="btn btn2 btn-icon-square-xl">
-                	<img src="public/bg/5.gif" alt="Icon" style="width: 50px; height: 50px;">
+                    <img src="public/bg/5.gif" alt="Icon" style="width: 50px; height: 50px;">
                 </a>
                 <center><small class="text-center">INV</small></center>
             </div>
             <div class="col-2">
                 <a href="login" type="button" class="btn btn2 btn-icon-square-xl">
-                	<img src="public/bg/6.gif" alt="Icon" style="width: 50px; height: 50px;">
+                    <img src="public/bg/6.gif" alt="Icon" style="width: 50px; height: 50px;">
                 </a>
                 <center><small class="text-center">Logout</small></center>
             </div>
@@ -455,15 +454,18 @@ $dua_kata_pertama = implode(' ', array_slice($nama_parts, 0, 2));
 
 ?>
 <div class="row justify-content-center align-items-center mt-2">
-	<div class="col-lg-12 text-center">
-		<center>
-			<img src="public/bg/bg04.webp" style="max-width: 70%; height: auto;" class="img-fluid rounded d-block" alt="Header Image">
-		</center>
-        <small><h5><?=$ucapan?> <?=ucfirst($dua_kata_pertama)?></h5></small>
-	</div>
+    <div class="col-lg-12 text-center">
+        <center>
+            <img src="public/bg/dashboard.webp" style="max-width: 70%; height: auto;" class="img-fluid rounded d-block" alt="Header Image">
+        </center>
+        <small>
+            <h5>
+                <?=$ucapan?>
+                <?=ucfirst($dua_kata_pertama)?>
+            </h5>
+        </small>
+    </div>
 </div>
-
-
 <script>
     document.getElementById('toggleButton').addEventListener('click', function(event) {
         event.preventDefault(); // Mencegah tindakan default (navigasi ke `#`)
@@ -513,8 +515,6 @@ $dua_kata_pertama = implode(' ', array_slice($nama_parts, 0, 2));
         });
     });
 </script>
-
-
 <?php } else { ?>
 <div class="row">
     <div class="col-sm-12">
@@ -661,8 +661,8 @@ $dua_kata_pertama = implode(' ', array_slice($nama_parts, 0, 2));
                                                                                 <?=number_format($data['pelatihan'])?>
                                                                             </li>
                                                                             <li>Uang Gedung PPNI : Rp.
-												                                <?=number_format($data['uang_gedung'])?>
-												                            </li>
+                                                                                <?=number_format($data['uang_gedung'])?>
+                                                                            </li>
                                                                             <li>Total Potongan : Rp.
                                                                                 <?=number_format($data['total_potongan_slip'])?>
                                                                             </li>

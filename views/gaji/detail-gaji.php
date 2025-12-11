@@ -124,7 +124,6 @@ $data = $koneksi->query("SELECT * FROM pegawai WHERE nopeg='$nopeg'")->fetch_ass
                                     'tj_jbtn' => $pecah['tj_jbtn'],
                                     'tj_fungsional' => $pecah['tj_fungsional'],
                                     'tj_resiko' => $pecah['tj_resiko'],
-                                    'tj_tpbri' => $pecah['tj_tpbri'],
                                     'fee_for_servis' => $pecah['fee_for_servis'],
                                     'tj_mcu' => $pecah['tj_mcu'],
                                     'tj_bpjs' => $pecah['tj_bpjs'],
@@ -134,13 +133,12 @@ $data = $koneksi->query("SELECT * FROM pegawai WHERE nopeg='$nopeg'")->fetch_ass
                                 ];
 
                                 $labels = [
-                                    'upah_awal' => 'Upah Sebelum Kenaikan Th 2024',
+                                    'upah_awal' => 'Upah Sebelum Kenaikan Th 2025',
                                     'penambahan' => 'Penambahan',
-                                    'revisi' => 'Upah Setelah Kenaikan Th 2024',
+                                    'revisi' => 'Upah Setelah Kenaikan Th 2025',
                                     'tj_jbtn' => 'TJ. Jabatan',
                                     'tj_fungsional' => 'TJ. Fungsional',
                                     'tj_resiko' => 'TJ. Resiko',
-                                    'tj_tpbri' => 'TJ. TPBRI / Khusus',
                                     'fee_for_servis' => 'Fee For Servis',
                                     'tj_mcu' => 'Fee Petugas MCU',
                                     'tj_bpjs' => 'Fee Tim BPJS',

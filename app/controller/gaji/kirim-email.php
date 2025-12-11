@@ -1,4 +1,5 @@
 <?php
+session_start();
 ini_set('max_execution_time', 0); // Tidak ada batas waktu
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -23,12 +24,12 @@ try {
     $mail->isSMTP();
     $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'maulanafajar751@gmail.com';
-    $mail->Password   = 'scpf fpyi pyrz fsce';
+    $mail->Username   = 'maulanafajar752@gmail.com';
+    $mail->Password   = 'aciq nuly oxjx vzvm';
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port       = 587;
-    $mail->setFrom('maulanafajar751@gmail.com', 'Fajar Maulana Shidiq');
-    $mail->addReplyTo('maulanafajar751@gmail.com', 'Fajar Maulana Shidiq');
+    $mail->setFrom('maulanafajar752@gmail.com', 'RSPM');
+    $mail->addReplyTo('maulanafajar752@gmail.com', 'RSPM');
     $mail->isHTML(true);
 
     // Tambahan pengaturan performa
@@ -92,6 +93,8 @@ try {
                 <tr><td>Kredit BTN</td><td align='right'>Rp " . number_format($row_pegawai['kredit'],0,',','.') . "</td></tr>
                 <tr><td>Potongan Pelatihan</td><td align='right'>Rp " . number_format($row_pegawai['pelatihan'],0,',','.') . "</td></tr>
                 <tr><td>Uang Gedung PPNI</td><td align='right'>Rp " . number_format($row_pegawai['uang_gedung'],0,',','.') . "</td></tr>
+                <tr><td>Uang ACLS Rumah Sakit</td><td align='right'>Rp " . number_format($row_pegawai['acls_rs'],0,',','.') . "</td></tr>
+                <tr><td>Uang ACLS Rumah PPNI</td><td align='right'>Rp " . number_format($row_pegawai['acls_ppni'],0,',','.') . "</td></tr>
                 <tr style='background:#eaf4ff; font-weight:bold;'>
                   <td>Total Ditransfer</td>
                   <td align='right'>Rp " . number_format($row_pegawai['transfer'],0,',','.') . "</td>
@@ -134,9 +137,12 @@ try {
     }
 
 } catch (Exception $e) {
-    // echo "Terjadi kesalahan global: {$mail->ErrorInfo}";
+    echo "Terjadi kesalahan global: {$mail->ErrorInfo}";
 }
 
 $koneksi->query("UPDATE transaksi_gaji SET email=1 WHERE kode_transaksi='$kode'");
+$_SESSION['pesan'] = 'Berhasil Import Data !';
+$_SESSION['info'] = 'Import data';
+$_SESSION['warna'] = 'success';
 echo "<script>location='../../../data-gaji';</script>";
 ?>

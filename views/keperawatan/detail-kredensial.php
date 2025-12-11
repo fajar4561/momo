@@ -1,6 +1,6 @@
 <?php
 require 'public/component/toast.php';
-require 'env/tgl_indo.php'; 
+require 'env/tgl_indo.php';  
 require 'req/head-detail-kredensial.php';
 require 'req/style-detail-kredensial.php';
 ?>
@@ -30,49 +30,47 @@ require 'req/style-detail-kredensial.php';
                                 <!-- <li class="in-progress"><span>Penilaian</span></li> -->
                                 <!-- belum mulai -->
                                 <!-- <li class=""><span>Selesai</span></li> -->
-                               <?php 
-								$statusMap = [
-								    'menunggu'   => [
-								        'status1' => 'complete continuous',
-								        'status2' => 'in-progress',
-								        'status3' => '',
-								        'status4' => ''
-								    ],
-								    'penilaian'  => [
-								        'status1' => 'complete continuous',
-								        'status2' => 'complete continuous',
-								        'status3' => 'in-progress',
-								        'status4' => ''
-								    ],
-								    'selesai'    => [
-								        'status1' => 'complete continuous',
-								        'status2' => 'complete continuous',
-								        'status3' => 'complete continuous',
-								        'status4' => 'complete finish'
-								    ],
-								    'validasi gagal'    => [
-								        'status1' => 'complete continuous',
-								        'status2' => 'failed',
-								        'status3' => '',
-								        'status4' => ''
-								    ],
-								    'mengulang'    => [
-								        'status1' => 'complete continuous',
-								        'status2' => 'complete continuous',
-								        'status3' => 'failed',
-								        'status4' => ''
-								    ],
-								];
+                                <?php 
+                                $statusMap = [ 
+                                    'menunggu'   => [
+                                        'status1' => 'complete continuous',
+                                        'status2' => 'in-progress',
+                                        'status3' => '',
+                                        'status4' => ''
+                                    ],
+                                    'penilaian'  => [
+                                        'status1' => 'complete continuous',
+                                        'status2' => 'complete continuous',
+                                        'status3' => 'in-progress',
+                                        'status4' => ''
+                                    ],
+                                    'selesai'    => [
+                                        'status1' => 'complete continuous',
+                                        'status2' => 'complete continuous',
+                                        'status3' => 'complete continuous',
+                                        'status4' => 'complete finish'
+                                    ],
+                                    'validasi gagal'    => [
+                                        'status1' => 'complete continuous',
+                                        'status2' => 'failed',
+                                        'status3' => '',
+                                        'status4' => ''
+                                    ],
+                                    'mengulang'    => [
+                                        'status1' => 'complete continuous',
+                                        'status2' => 'complete continuous',
+                                        'status3' => 'failed',
+                                        'status4' => ''
+                                    ],
+                                ];
 
-								$status_kredensial = strtolower($data_pengajuan['status_pengajuan']);
-								$map = isset($statusMap[$status_kredensial]) ? $statusMap[$status_kredensial] : [];
-								?>
-
-								<li class="<?php echo isset($map['status1']) ? $map['status1'] : ''; ?>"><span>Pengajuan</span></li>
-								<li class="<?php echo isset($map['status2']) ? $map['status2'] : ''; ?>"><span>Verifikasi Berkas</span></li>
-								<li class="<?php echo isset($map['status3']) ? $map['status3'] : ''; ?>"><span>Penilaian</span></li>
-								<li class="<?php echo isset($map['status4']) ? $map['status4'] : ''; ?>"><span>Selesai</span></li>
-
+                                $status_kredensial = strtolower($data_pengajuan['status_pengajuan']);
+                                $map = isset($statusMap[$status_kredensial]) ? $statusMap[$status_kredensial] : [];
+                                ?>
+                                <li class="<?php echo isset($map['status1']) ? $map['status1'] : ''; ?>"><span>Pengajuan</span></li>
+                                <li class="<?php echo isset($map['status2']) ? $map['status2'] : ''; ?>"><span>Verifikasi Berkas</span></li>
+                                <li class="<?php echo isset($map['status3']) ? $map['status3'] : ''; ?>"><span>Penilaian</span></li>
+                                <li class="<?php echo isset($map['status4']) ? $map['status4'] : ''; ?>"><span>Selesai</span></li>
                             </ul>
                         </div>
                         <div class="row mt-3 p-3">
@@ -135,43 +133,40 @@ require 'req/style-detail-kredensial.php';
                             <div class="col-md-6">
                                 <div class="row p-3 mt-3">
                                     <form id="kredensial" method="post" action="app/controller/keperawatan/simpan-validasi-berkas.php">
-                                    	<div class="row">
-                                    		<label for="inputHorizontalSuccess" class="col-sm-2 col-form-label text-end">Tanggal Ujian</label>
-                                    		<div class="col-sm-5 mb-2">
+                                        <div class="row">
+                                            <label for="inputHorizontalSuccess" class="col-sm-2 col-form-label text-end">Tanggal Ujian</label>
+                                            <div class="col-sm-5 mb-2">
                                                 <input type="datetime-local" class="form-control form-control-success" id="tanggal" name="tanggal" required>
                                                 <input type="hidden" name="kode_pengajuan" value="<?=$kode?>">
                                                 <input type="hidden" name="nopeg" value="<?=$nopeg?>">
-                                                
                                             </div>
                                             <div class="col-sm-5">
-                                            	<input type="text" name="tempat" placeholder="Temapt Dilaksanakannya Ujian" required class="form-control form-control-success">
+                                                <input type="text" name="tempat" placeholder="Temapt Dilaksanakannya Ujian" required class="form-control form-control-success">
                                             </div>
                                             <div class="col-sm-2">
-                                            	
                                             </div>
                                             <div class="col-sm-10">
-                                            	<small class="form-text text-muted"><em class="text-danger">Notes : </em> Silahkan Tentukan tanggal akan dilaksanakannya ujian</small>
+                                                <small class="form-text text-muted"><em class="text-danger">Notes : </em> Silahkan Tentukan tanggal akan dilaksanakannya ujian</small>
                                             </div>
-                                    	</div>
-                                    	<div class="row">
-                                    		<label for="inputHorizontalSuccess" class="col-sm-2 col-form-label text-end">Catatan</label>
-                                    		<div class="col-sm-10">
+                                        </div>
+                                        <div class="row">
+                                            <label for="inputHorizontalSuccess" class="col-sm-2 col-form-label text-end">Catatan</label>
+                                            <div class="col-sm-10">
                                                 <textarea class="form-control" name="catatan" placeholder="catatan (opsional)"></textarea>
                                             </div>
-                                    	</div>
-                                    	<div class="row mt-2">
-                                    		<div class="col-md-2">
-                                    			
-                                    		</div>
-                                    		<div class="col-md-8">
-                                    			<?php if ($cek_validasi > 0) { ?>
-                                    				<button class="btn btn-secondary" type="button" onclick='showWarning()'>Simpan</button>
-                                    			<?php } else { ?>
-                                    				<button class="btn btn-secondary" type="submit" onclick='konfirmasiSubmit()'>Simpan</button>
-                                    			<?php } ?>
-                                    			<a href="#" class="btn btn-danger" >Tolak Pengajuan</a>
-                                    		</div>
-                                    	</div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-md-2">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <?php if ($cek_validasi > 0) { ?>
+                                                <button class="btn btn-secondary" type="button" onclick='showWarning()'>Simpan</button>
+                                                <?php } else { ?>
+                                                <button class="btn btn-secondary" type="submit" onclick='konfirmasiSubmit()'>Simpan</button>
+                                                <?php } ?>
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModalLogin" class="btn btn-danger">Tolak Pengajuan</a>
+                                            </div>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -184,8 +179,8 @@ require 'req/style-detail-kredensial.php';
                                             <tr>
                                                 <th rowspan="2" style="width: 50px;">No</th>
                                                 <th rowspan="2">Materi</th>
-                                                <th rowspan="2" class="text-center">Ada</th>
-                                                <th rowspan="2" class="text-center">Tidak Ada</th>
+                                                <th rowspan="2" class="text-center">Valid</th>
+                                                <th rowspan="2" class="text-center">Tidak Valid</th>
                                                 <th rowspan="2" class="text-center">Sedang Proses</th>
                                                 <th colspan="3" class="text-center">Verifikasi</th>
                                             </tr>
@@ -197,19 +192,19 @@ require 'req/style-detail-kredensial.php';
                                         </thead>
                                         <tbody>
                                             <?php
-                                        		$no = 1;
-                                        		$no2 = 1; 
-                                        		foreach ($files as $field => $label) :
-												    $ambil_detail_file = $koneksi->query("SELECT * FROM file_detail WHERE nama_file ='$berkas[$field]' AND nopeg='$nopeg' ");
-												    $data_detail = $ambil_detail_file->fetch_assoc();
-                                        	?>
+                                                $no = 1;
+                                                $no2 = 1; 
+                                                foreach ($files as $field => $label) :
+                                                    $ambil_detail_file = $koneksi->query("SELECT * FROM file_detail WHERE nama_file ='$berkas[$field]' AND nopeg='$nopeg' ");
+                                                    $data_detail = $ambil_detail_file->fetch_assoc();
+                                            ?>
                                             <tr data-bs-toggle="modal" data-bs-target="#detailModal<?=$field?>" style="cursor:pointer;">
                                                 <td class="text-center position-relative">
                                                     <?=$no++?>
                                                 </td>
                                                 <td>
                                                     <span class="fw-semibold">
-                                                    <?=$label?></span>
+                                                        <?=$label?></span>
                                                     <?php if (!empty($data_detail['catatan'])): ?>
                                                     <i class="fas fa-info-circle text-danger ms-1" data-bs-toggle="tooltip" title="<?=$data_detail['catatan']?>"></i>
                                                     <?php endif; ?>
@@ -225,11 +220,11 @@ require 'req/style-detail-kredensial.php';
                                                 </td>
                                                 <td class="text-center">
                                                     <?=($data_detail['tgl_keluar'] == '0000-00-00' || empty($data_detail['tgl_keluar'])) 
-            										? '' : date("d F Y", strtotime($data_detail['tgl_keluar']))?>
+                                                    ? '' : date("d F Y", strtotime($data_detail['tgl_keluar']))?>
                                                 </td>
                                                 <td class="text-center">
                                                     <?=($data_detail['tgl_berakhir'] == '0000-00-00' || empty($data_detail['tgl_berakhir'])) 
-                                                	? '' : date("d F Y", strtotime($data_detail['tgl_berakhir']))?>
+                                                    ? '' : date("d F Y", strtotime($data_detail['tgl_berakhir']))?>
                                                 </td>
                                                 <td class="text-center">
                                                     <?=(in_array($field, ['FOTO','PORTOFOLIO']) ? '~' : $data_detail['no_file'])?>
@@ -251,22 +246,22 @@ require 'req/style-detail-kredensial.php';
                                                             <!-- Preview File -->
                                                             <div class="p-3 text-center border-bottom bg-light">
                                                                 <?php
-                                                                	if ($data_detail['jenis_file']=='FOTO') {
-												                    	$file_path = "public/img/".$data_detail['nama_file'];
-                                                                	 }
-                                                                	 else {
-                                                                	 	$file_path = "public/file/berkas/".$data_detail['nama_file'];
-                                                                	 } 
-												                    $ext = strtolower(pathinfo($file_path, PATHINFO_EXTENSION));
-												                    
-												                    if (in_array($ext, ['jpg','jpeg','png','gif','webp'])) {
-												                        echo '<img src="'.$file_path.'" class="img-fluid rounded-3 shadow-sm" style="width: 100%; max-width: 250px; height: auto; object-fit: cover;">';
-												                    } elseif ($ext === 'pdf') {
-												                        echo '<iframe src="'.$file_path.'" class="w-100 rounded-3 shadow-sm" style="height:400px;" frameborder="0"></iframe>';
-												                    } else {
-												                        echo '<p class="text-muted fst-italic">Preview tidak tersedia</p>';
-												                    }
-												                ?>
+                                                                    if ($data_detail['jenis_file']=='FOTO') {
+                                                                        $file_path = "public/img/".$data_detail['nama_file'];
+                                                                     }
+                                                                     else {
+                                                                        $file_path = "public/file/berkas/".$data_detail['nama_file'];
+                                                                     } 
+                                                                    $ext = strtolower(pathinfo($file_path, PATHINFO_EXTENSION));
+                                                                    
+                                                                    if (in_array($ext, ['jpg','jpeg','png','gif','webp'])) {
+                                                                        echo '<img src="'.$file_path.'" class="img-fluid rounded-3 shadow-sm" style="width: 100%; max-width: 250px; height: auto; object-fit: cover;">';
+                                                                    } elseif ($ext === 'pdf') {
+                                                                        echo '<iframe src="'.$file_path.'" class="w-100 rounded-3 shadow-sm" style="height:400px;" frameborder="0"></iframe>';
+                                                                    } else {
+                                                                        echo '<p class="text-muted fst-italic">Preview tidak tersedia</p>';
+                                                                    }
+                                                                ?>
                                                             </div>
                                                             <form method="post" action="app/controller/keperawatan/validasi-berkas.php" class="validasi-form">
                                                                 <!-- Body -->
@@ -296,20 +291,20 @@ require 'req/style-detail-kredensial.php';
                                                                                 </span>
                                                                             </li>
                                                                             <?php
-																			$sisaMasa = '-'; // default
+                                                                            $sisaMasa = '-'; // default
 
-																			if (!empty($data_detail['tgl_berakhir']) && $data_detail['tgl_berakhir'] != '0000-00-00') {
-																			    $today = new DateTime(); // tanggal hari ini
-																			    $tglBerakhir = new DateTime($data_detail['tgl_berakhir']);
+                                                                            if (!empty($data_detail['tgl_berakhir']) && $data_detail['tgl_berakhir'] != '0000-00-00') {
+                                                                                $today = new DateTime(); // tanggal hari ini
+                                                                                $tglBerakhir = new DateTime($data_detail['tgl_berakhir']);
 
-																			    if ($tglBerakhir >= $today) {
-																			        $interval = $today->diff($tglBerakhir);
-																			        $sisaMasa = $interval->y . " tahun, " . $interval->m . " bulan, " . $interval->d . " hari";
-																			    } else {
-																			        $sisaMasa = "Sudah Kadaluarsa";
-																			    }
-																			}
-																			?>
+                                                                                if ($tglBerakhir >= $today) {
+                                                                                    $interval = $today->diff($tglBerakhir);
+                                                                                    $sisaMasa = $interval->y . " tahun, " . $interval->m . " bulan, " . $interval->d . " hari";
+                                                                                } else {
+                                                                                    $sisaMasa = "Sudah Kadaluarsa";
+                                                                                }
+                                                                            }
+                                                                            ?>
                                                                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                                                                 <span class="text-muted">Sisa Masa Berlaku</span>
                                                                                 <span class="fw-semibold">
@@ -326,11 +321,11 @@ require 'req/style-detail-kredensial.php';
                                                                             <div class="d-flex flex-wrap gap-3">
                                                                                 <input type="radio" class="btn-check" name="validasi" id="valid_<?=$field?>_1" value="ada" autocomplete="off" required>
                                                                                 <label class="btn btn-outline-success rounded-pill px-3 py-1" for="valid_<?=$field?>_1">
-                                                                                    <i class="fas fa-check me-1"></i> Ada
+                                                                                    <i class="fas fa-check me-1"></i> Valid
                                                                                 </label>
                                                                                 <input type="radio" class="btn-check" name="validasi" id="valid_<?=$field?>_2" value="tidak" autocomplete="off">
                                                                                 <label class="btn btn-outline-danger rounded-pill px-3 py-1" for="valid_<?=$field?>_2">
-                                                                                    <i class="fas fa-times me-1"></i> Tidak Ada
+                                                                                    <i class="fas fa-times me-1"></i> Tidak Valid
                                                                                 </label>
                                                                                 <input type="radio" class="btn-check" name="validasi" id="valid_<?=$field?>_3" value="proses" autocomplete="off">
                                                                                 <label class="btn btn-outline-warning rounded-pill px-3 py-1" for="valid_<?=$field?>_3">
@@ -367,19 +362,19 @@ require 'req/style-detail-kredensial.php';
                                         </thead>
                                         <tbody>
                                             <?php 
-                                        		$ambil_sertifikat = $koneksi->query("SELECT * FROM sertifikat WHERE nopeg='$nopeg'");
-												while ($data_sertifikat= mysqli_fetch_assoc($ambil_sertifikat)) {
-												    $sertifikat_berkas = $data_sertifikat['berkas'];
-												    $ambil_sertif = $koneksi->query("SELECT * FROM file_detail WHERE nama_file = '$sertifikat_berkas' ");
-												    $pecah_sertifikat = $ambil_sertif->fetch_assoc();
-                                        	?>
+                                                $ambil_sertifikat = $koneksi->query("SELECT * FROM sertifikat WHERE nopeg='$nopeg'");
+                                                while ($data_sertifikat= mysqli_fetch_assoc($ambil_sertifikat)) {
+                                                    $sertifikat_berkas = $data_sertifikat['berkas'];
+                                                    $ambil_sertif = $koneksi->query("SELECT * FROM file_detail WHERE nama_file = '$sertifikat_berkas' ");
+                                                    $pecah_sertifikat = $ambil_sertif->fetch_assoc();
+                                            ?>
                                             <tr data-bs-toggle="modal" data-bs-target="#sertifikatModal<?=$data_sertifikat['id']?>" style="cursor:pointer;">
                                                 <td class="text-center">
                                                     <?=$no2++?>
                                                 </td>
                                                 <td>
-                                                	<span class="fw-semibold">
-                                                    <?=$data_sertifikat['keterangan']?></span>
+                                                    <span class="fw-semibold">
+                                                        <?=$data_sertifikat['keterangan']?></span>
                                                     <?php if (!empty($pecah_sertifikat['catatan'])): ?>
                                                     <i class="fas fa-info-circle text-danger ms-1" data-bs-toggle="tooltip" title="<?=$pecah_sertifikat['catatan']?>"></i>
                                                     <?php endif; ?>
@@ -395,13 +390,13 @@ require 'req/style-detail-kredensial.php';
                                                 </td>
                                                 <td class="text-center">
                                                     <?=
-                                                		($pecah_sertifikat['tgl_keluar'] == '0000-00-00' || empty($pecah_sertifikat['tgl_keluar'])) ? '' : date("d F Y", strtotime($pecah_sertifikat['tgl_keluar']))
-                                                	?>
+                                                        ($pecah_sertifikat['tgl_keluar'] == '0000-00-00' || empty($pecah_sertifikat['tgl_keluar'])) ? '' : date("d F Y", strtotime($pecah_sertifikat['tgl_keluar']))
+                                                    ?>
                                                 </td>
                                                 <td class="text-center">
                                                     <?=
-                                                		($pecah_sertifikat['tgl_berakhir'] == '0000-00-00' || empty($pecah_sertifikat['tgl_berakhir'])) ? '' : date("d F Y", strtotime($pecah_sertifikat['tgl_berakhir']))
-                                                	?>
+                                                        ($pecah_sertifikat['tgl_berakhir'] == '0000-00-00' || empty($pecah_sertifikat['tgl_berakhir'])) ? '' : date("d F Y", strtotime($pecah_sertifikat['tgl_berakhir']))
+                                                    ?>
                                                 </td>
                                                 <td class="text-center">
                                                     <?=$pecah_sertifikat['no_file']?>
@@ -424,17 +419,17 @@ require 'req/style-detail-kredensial.php';
                                                             <!-- Preview File -->
                                                             <div class="p-3 text-center border-bottom bg-light">
                                                                 <?php
-                                                                	$file_path2 = "public/file/berkas/".$pecah_sertifikat['nama_file'];
-												                    $ext2 = strtolower(pathinfo($file_path2, PATHINFO_EXTENSION));
-												                    
-												                    if (in_array($ext2, ['jpg','jpeg','png','gif','webp'])) {
-												                        echo '<img src="'.$file_path2.'" class="img-fluid rounded-3 shadow-sm" style="width: 100%; max-width: 250px; height: auto; object-fit: cover;">';
-												                    } elseif ($ext2 === 'pdf') {
-												                        echo '<iframe src="'.$file_path2.'" class="w-100 rounded-3 shadow-sm" style="height:400px;" frameborder="0"></iframe>';
-												                    } else {
-												                        echo '<p class="text-muted fst-italic">Preview tidak tersedia</p>';
-												                    }
-												                ?>
+                                                                    $file_path2 = "public/file/berkas/".$pecah_sertifikat['nama_file'];
+                                                                    $ext2 = strtolower(pathinfo($file_path2, PATHINFO_EXTENSION));
+                                                                    
+                                                                    if (in_array($ext2, ['jpg','jpeg','png','gif','webp'])) {
+                                                                        echo '<img src="'.$file_path2.'" class="img-fluid rounded-3 shadow-sm" style="width: 100%; max-width: 250px; height: auto; object-fit: cover;">';
+                                                                    } elseif ($ext2 === 'pdf') {
+                                                                        echo '<iframe src="'.$file_path2.'" class="w-100 rounded-3 shadow-sm" style="height:400px;" frameborder="0"></iframe>';
+                                                                    } else {
+                                                                        echo '<p class="text-muted fst-italic">Preview tidak tersedia</p>';
+                                                                    }
+                                                                ?>
                                                             </div>
                                                             <form method="post" action="app/controller/keperawatan/validasi-berkas.php" class="validasi-form">
                                                                 <!-- body -->
@@ -464,19 +459,19 @@ require 'req/style-detail-kredensial.php';
                                                                                 </span>
                                                                             </li>
                                                                             <?php
-																			$sisaMasa2 = '-'; // default
+                                                                            $sisaMasa2 = '-'; // default
 
-																			if (!empty($pecah_sertifikat['tgl_berakhir']) && $pecah_sertifikat['tgl_berakhir'] != '0000-00-00') {
-																			    $tglBerakhir2 = new DateTime($pecah_sertifikat['tgl_berakhir']);
+                                                                            if (!empty($pecah_sertifikat['tgl_berakhir']) && $pecah_sertifikat['tgl_berakhir'] != '0000-00-00') {
+                                                                                $tglBerakhir2 = new DateTime($pecah_sertifikat['tgl_berakhir']);
 
-																			    if ($tglBerakhir2 >= $today) {
-																			        $interval2 = $today->diff($tglBerakhir2);
-																			        $sisaMasa2 = $interval2->y . " tahun, " . $interval2->m . " bulan, " . $interval2->d . " hari";
-																			    } else {
-																			        $sisaMasa2 = "Sudah Kadaluarsa";
-																			    }
-																			}
-																			?>
+                                                                                if ($tglBerakhir2 >= $today) {
+                                                                                    $interval2 = $today->diff($tglBerakhir2);
+                                                                                    $sisaMasa2 = $interval2->y . " tahun, " . $interval2->m . " bulan, " . $interval2->d . " hari";
+                                                                                } else {
+                                                                                    $sisaMasa2 = "Sudah Kadaluarsa";
+                                                                                }
+                                                                            }
+                                                                            ?>
                                                                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                                                                 <span class="text-muted">Sisa Masa Berlaku</span>
                                                                                 <span class="fw-semibold">
@@ -488,25 +483,23 @@ require 'req/style-detail-kredensial.php';
                                                                     <input type="hidden" name="kode_pengajuan" value="<?=$kode?>">
                                                                     <input type="hidden" name="nopeg" value="<?=$nopeg?>">
                                                                     <div class="row gy-3">
-                                                                         <div class="col-12">
-																	        <label class="form-label fw-semibold">Validasi <span class="text-danger">*</span></label>
-																	        <div class="d-flex flex-wrap gap-3">
-																	            <input type="radio" class="btn-check" name="validasi" value="ada" id="valid_<?=$pecah_sertifikat['id']?>_1" autocomplete="off" required>
-																	            <label class="btn btn-outline-success rounded-pill px-3 py-1" for="valid_<?=$pecah_sertifikat['id']?>_1">
-																	                <i class="fas fa-check me-1"></i> Ada
-																	            </label>
-
-																	            <input type="radio" class="btn-check" name="validasi" value="tidak" id="valid_<?=$pecah_sertifikat['id']?>_2" autocomplete="off">
-																	            <label class="btn btn-outline-danger rounded-pill px-3 py-1" for="valid_<?=$pecah_sertifikat['id']?>_2">
-																	                <i class="fas fa-times me-1"></i> Tidak Ada
-																	            </label>
-
-																	            <input type="radio" class="btn-check" name="validasi" value="proses" id="valid_<?=$pecah_sertifikat['id']?>_3" autocomplete="off">
-																	            <label class="btn btn-outline-warning rounded-pill px-3 py-1" for="valid_<?=$pecah_sertifikat['id']?>_3">
-																	                <i class="fas fa-spinner me-1"></i> Sedang Proses
-																	            </label>
-																	        </div>
-																	    </div>
+                                                                        <div class="col-12">
+                                                                            <label class="form-label fw-semibold">Validasi <span class="text-danger">*</span></label>
+                                                                            <div class="d-flex flex-wrap gap-3">
+                                                                                <input type="radio" class="btn-check" name="validasi" value="ada" id="valid_<?=$pecah_sertifikat['id']?>_1" autocomplete="off" required>
+                                                                                <label class="btn btn-outline-success rounded-pill px-3 py-1" for="valid_<?=$pecah_sertifikat['id']?>_1">
+                                                                                    <i class="fas fa-check me-1"></i> Valid
+                                                                                </label>
+                                                                                <input type="radio" class="btn-check" name="validasi" value="tidak" id="valid_<?=$pecah_sertifikat['id']?>_2" autocomplete="off">
+                                                                                <label class="btn btn-outline-danger rounded-pill px-3 py-1" for="valid_<?=$pecah_sertifikat['id']?>_2">
+                                                                                    <i class="fas fa-times me-1"></i> Tidak Valid
+                                                                                </label>
+                                                                                <input type="radio" class="btn-check" name="validasi" value="proses" id="valid_<?=$pecah_sertifikat['id']?>_3" autocomplete="off">
+                                                                                <label class="btn btn-outline-warning rounded-pill px-3 py-1" for="valid_<?=$pecah_sertifikat['id']?>_3">
+                                                                                    <i class="fas fa-spinner me-1"></i> Sedang Proses
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
                                                                         <div class="col-12">
                                                                             <label class="form-label fw-semibold">Catatan <small class="text-muted">(opsional)</small></label>
                                                                             <textarea class="form-control rounded-3" name="catatan" rows="2" placeholder="Tambahkan catatan validasi (jika perlu)..."></textarea>
@@ -543,6 +536,66 @@ require 'req/style-detail-kredensial.php';
         </div>
     </div>
 </div>
+<!-- Modal tolak Pengajuan -->
+<div class="modal fade" id="exampleModalLogin" tabindex="-1" role="dialog" aria-labelledby="exampleModalDefaultLogin" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title m-0" id="exampleModalDefaultLogin">Form Tolak Pengajuan</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!--end modal-header-->
+            <div class="modal-body">
+                <div class="card-body p-0 auth-header-box">
+                    <div class="text-center">
+                        <a href="index.html" class="logo logo-admin">
+                            <img src="public/bg/tolak.webp" style="width: 100%; max-width: 200px; aspect-ratio: 1/1; height: auto; object-fit: cover;" alt="logo" class="auth-logo">
+                        </a>
+                        <h4 class="mt-3 mb-1 font-weight-semibold font-18">Tolak Pengajuan Kredensial</h4>
+                        <p class="text-muted  mb-0">Pastikan anda mengisi alasan / catatan penolakan pengajuan kredensial</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Tab panes -->
+                    <div class="row">
+                        <div class="col-12">
+                            <form id="form-tolak" class="form-horizontal auth-form my-4" method="post" action="app/controller/keperawatan/tolak-pengajuan.php">
+                                <!--end form-group-->
+                                <div class="form-group">
+                                    <label for="userpassword">Catatan</label>
+                                    <div class="input-group mb-3">
+                                        <input type="hidden" name="nopeg" value="<?=$nopeg?>">
+                                        <input type="hidden" name="kode" value="<?=$kode?>">
+                                        <textarea class="form-control" rows="3" name="catatan" placeholder="Catatan dilakukan penolakan pengajuan kredensial"></textarea>
+                                    </div>
+                                </div>
+                                <!--end form-group-->
+                                <!--end form-group-->
+                                <div class="form-group mb-0 row">
+                                    <div class="col-12 mt-2">
+                                        <div class="d-grid">
+                                            <button class="btn btn-de-primary btn-block" type="submit">Simpan <i class="fas fa-sign-in-alt ml-1"></i></button>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                </div>
+                                <!--end form-group-->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!--end card-body-->
+                <div class="card-body bg-light-alt text-center mx-n3 mb-n3">
+                    <span class="text-muted d-none d-sm-inline-block">RSPM © 2025</span>
+                </div>
+            </div>
+            <!--end modal-body-->
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+<!-- end modal -->
 <?php 
 require 'req/js-detail-kredensial.php';
-?>
+?> 

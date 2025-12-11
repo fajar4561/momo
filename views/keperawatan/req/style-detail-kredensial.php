@@ -26,7 +26,7 @@ ul.steppedprogress li.failed:before {
     content: "✖";
     /* unicode silang */
     font-size: 16px;
-    line-height: 20px;
+    line-height: 20px; 
     font-family: "Roboto", sans-serif;
 }
 
@@ -185,6 +185,23 @@ ul.steppedprogress li.in-progress:before {
     border-radius: 16px !important;
     padding: 25px 30px !important;
     box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+}
+
+
+.swal2-popup {
+    border-radius: 18px !important;
+    backdrop-filter: blur(6px) !important;
+    box-shadow: 0px 5px 25px rgba(0,0,0,0.2) !important;
+}
+
+.swal2-title {
+    font-size: 22px !important;
+    font-weight: 600 !important;
+}
+@media (max-width: 576px) {
+  .swal2-popup {
+    width: 90% !important;
+  }
 }
 
 </style>

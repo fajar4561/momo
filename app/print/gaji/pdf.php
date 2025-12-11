@@ -97,7 +97,7 @@ $pdf->SetFont('Arial', '', 10);
 
 
 $pdf->Cell(6,5,"1.",0,0);
-$pdf->Cell(55,5,"Upah Sebelum Kenaikan Th 2024",0,0);
+$pdf->Cell(55,5,"Upah Sebelum Kenaikan Th 2025",0,0);
 $pdf->Cell(6,5,':',0,0);
 $pdf->Cell(47,5,format_currency($pecah['upah_awal']),0,0);
 
@@ -119,7 +119,7 @@ $pdf->Cell(1,5,format_currency($pecah['bpjs_kes']),0,0);
 
 $pdf->Ln();
 $pdf->Cell(6,5,"3.",0,0);
-$pdf->Cell(55,5,"Upah Setelah Kenaikan Th 2024",0,0);
+$pdf->Cell(55,5,"Upah Setelah Kenaikan Th 2025",0,0);
 $pdf->Cell(6,5,':',0,0);
 $pdf->Cell(47,5,format_currency($pecah['revisi']),0,0);
 
@@ -152,9 +152,9 @@ $pdf->Cell(1,5,format_currency($pecah['lain']),0,0);
 
 $pdf->Ln();
 $pdf->Cell(6,5,"6.",0,0);
-$pdf->Cell(55,5,"Tunjangan TPBR/Khusus",0,0);
+$pdf->Cell(55,5,"Tunjangan Resiko",0,0);
 $pdf->Cell(6,5,':',0,0);
-$pdf->Cell(47,5,format_currency($pecah['tj_tpbri']),0,0);
+$pdf->Cell(47,5,format_currency($pecah['tj_resiko']),0,0);
 
 $pdf->Cell(4,5,"6.",0,0);
 $pdf->Cell(40,5,"Lelayu",0,0);

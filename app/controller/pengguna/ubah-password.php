@@ -6,11 +6,14 @@ function isMobileDevice() {
     return preg_match("/(android|iphone|ipod|opera mini|iemobile)/i", $_SERVER['HTTP_USER_AGENT']);
 }
 
+// echo "<pre>";
+// print_r($_POST);
+// echo "</pre>";
 
 $id = $_POST['id'];
 $ijazah = $_POST['ijazah'];
 $noktp = $_POST['noktp'];
-$agama = $_POST['agama'];
+//$agama = $_POST['agama'];
 $alamat = $_POST['alamat'];
 $alamat2 = $_POST['alamat2'];
 $kawin = $_POST['kawin'];
@@ -20,7 +23,7 @@ $telepon = $_POST['telepon'];
 $password = md5($_POST['password']);
 
 
-$foto = $_FILES['foto']['name'];
+$foto = $_FILES['foto']['name']; 
 $lokasi = $_FILES['foto']['tmp_name'];
 
 if (!empty($ijazah)) {
@@ -31,9 +34,9 @@ if (!empty($noktp)) {
 	$koneksi->query("UPDATE pegawai SET nik='$noktp' WHERE id='$id'");
 }
 
-if (!empty($agama)) {
-	$koneksi->query("UPDATE pegawai SET agama='$agama' WHERE id='$id'");
-}
+// if (!empty($agama)) {
+// 	$koneksi->query("UPDATE pegawai SET agama='$agama' WHERE id='$id'");
+// }
 
 if (!empty($alamat)) {
 	$koneksi->query("UPDATE pegawai SET alamat='$alamat' WHERE id='$id'");

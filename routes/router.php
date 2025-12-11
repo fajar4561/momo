@@ -5,6 +5,7 @@ $halaman_map = [
 		"beranda" => function () {
             return isMobileDevice() ? "views/user/base.php" : "views/base.php";
         },
+        // Kepegawaian
         "input-pegawai" => "views/pegawai/input-pegawai.php",
         "data-pegawai" => "views/pegawai/data-pegawai.php",
         "detail-pegawai" => "views/pegawai/detail-pegawai.php",
@@ -22,6 +23,8 @@ $halaman_map = [
         "kritik" => "views/pegawai/saran.php",
         "kepegawaian" => "views/pegawai/kepegawaian.php",
         "upload-berkas" => "views/pegawai/berkas.php",
+        // Penambahan fitur SP => 29/11/2025
+        "data-sp" => "views/pegawai/data-sp.php",
 
         // inventaris
         "input-pembelian" => "views/inventaris/input-pembelian.php",
@@ -55,6 +58,7 @@ $halaman_map = [
         "data-kredensial" => "views/keperawatan/data-kredensial.php",
         "detail-kredensial" => "views/keperawatan/detail-kredensial.php",
         "penilaian-kredensial" => "views/keperawatan/penilaian-kredensial.php",
+        "detail-data-kredensial" => "views/keperawatan/detail-data-kredensial.php",
 
 	],
     0 => [ // Pengguna biasa
@@ -68,6 +72,7 @@ $halaman_map = [
         // perawat / bidan
         "pengajuan-kredensial" => "views/keperawatan/pengajuan-kredensial.php",
         "data-pengajuan-kredensial" => "views/keperawatan/data-pengajuan.php",
+        "detail-data-kredensial" => "views/keperawatan/detail-data-kredensial.php",
     ],
     2 => [ // HRD
         "beranda" => function () {
@@ -113,6 +118,25 @@ $halaman_map = [
         "laporan-penyusutan" => "views/inventaris/laporan-penyusutan.php",
         "unit-inv" => "views/inventaris/unit-inv.php",
         "input-unit" => "views/inventaris/input-unit.php"
+    ],
+    // admin Kredensial
+    4 => [
+        "beranda" => "views/user/base.php",
+        "detail-gaji" => "views/gaji/detail-gaji.php",
+        "profil" => "views/pegawai/profil.php",
+        "absensi" => "views/pegawai/absensi.php",
+        "kritik" => "views/pegawai/saran.php",
+        "upload-berkas" => "views/pegawai/berkas.php",
+
+        "master-jabatan" => "views/pegawai/master-jabatan.php",
+        "master-form-rkk" => "views/keperawatan/master-form-rkk.php",
+        "pengajuan-kredensial" => "views/keperawatan/pengajuan-kredensial.php",
+        "data-pengajuan-kredensial" => "views/keperawatan/data-pengajuan.php",
+        "data-kredensial" => "views/keperawatan/data-kredensial.php",
+        "detail-kredensial" => "views/keperawatan/detail-kredensial.php",
+        "penilaian-kredensial" => "views/keperawatan/penilaian-kredensial.php",
+
+
     ],
 ];
 

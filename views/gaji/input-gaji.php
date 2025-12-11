@@ -15,6 +15,8 @@ $sheet = $spreadsheet->getActiveSheet();
 
 if (isset($_POST['cari'])) {
     
+
+
     // deklarasikan session bulan dan tahun yang dipilih
     $bulan2 = $_SESSION['bulan'];
     $tahun = $_SESSION['tahun'];
@@ -195,8 +197,6 @@ else {
                                                     <th>Tj. Resiko</th>
                                                     <th>Tj. TPBR/Khusus</th>
                                                     <th>Fee For Service</th>
-                                                    <th>Fee Petugas MCU</th>
-                                                    <th>Fee Tim BPJS</th>
                                                     <th>Lembur</th>
                                                     <th>THR/Thn</th>
                                                     <th>tj. Lain-lain</th>
@@ -232,9 +232,6 @@ else {
                                                        <td><input type="text" id="rupiah6<?=$data['id']?>" name="tj_resiko[]" style="width: 120px;" class="form-control"></td>
                                                        <td><input type="text" id="rupiah7<?=$data['id']?>" name="tj_tpbri[]" style="width: 120px;" class="form-control"></td>
                                                        <td><input type="text" id="rupiah8<?=$data['id']?>" name="fee_for_service[]" style="width: 120px;" class="form-control"></td>
-                                                       <td><input type="text" id="rupiah21<?=$data['id']?>" name="tj_mcu[]" style="width: 120px;" class="form-control"></td>
-                                                       <td><input type="text" id="rupiah22<?=$data['id']?>" name="tj_bpjs[]" style="width: 120px;" class="form-control"></td>
-
                                                        <td><input type="text" id="rupiah9<?=$data['id']?>" name="lembur[]" style="width: 120px;" class="form-control"></td>
                                                        <td><input type="text" id="rupiah10<?=$data['id']?>" name="thr[]" style="width: 120px;" class="form-control"></td>
                                                        <td><input type="text" id="rupiah11<?=$data['id']?>" name="tj_lain[]" style="width: 120px;" class="form-control" ></td>

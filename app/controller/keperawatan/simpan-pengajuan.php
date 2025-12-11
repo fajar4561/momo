@@ -24,7 +24,7 @@ if (empty($_POST['rkk_id']) || $_POST['rkk_id'] == 0) {
     </html>";
     exit;
 }
-
+ 
 
 date_default_timezone_set('Asia/Jakarta');
 session_start();
@@ -39,7 +39,8 @@ require '../../../env/tgl_indo.php';
 require '../../../env/tgl_indo2.php';
 require '../../../env/terbilang.php';
 require '../../../env/nama_bulan.php';
-require('../../../public/plugins/fpdf/fpdf.php'); 
+require('../../../public/plugins/fpdf/fpdf.php');
+require '../../../env/log.php'; 
 
 // kode pengajuan
 $today = date("Ymd");
@@ -116,86 +117,96 @@ require 'req/log-book.php';
 // fungsinya untk menampilkan notifikasi atas pengajuan
 // Ambil Data Pegawai
 $data_pegawai = $koneksi->query("SELECT * FROM pegawai WHERE nopeg='$nopeg'")->fetch_assoc();
-$mail = new PHPMailer(true);
+// ambil data admin
+// ambil data admin
+$konek_admin = $koneksi->query("SELECT * FROM pegawai WHERE admin IN(1,4) AND email != '' ");
 
 $mail = new PHPMailer(true);
 
 try {
-    // Server settings
+    // SMTP Settings
     $mail->isSMTP();                                            
-    $mail->Host       = 'smtp.gmail.com';                      
+    $mail->Host       = 'smtp.gmail.com';                       
     $mail->SMTPAuth   = true;                                   
-    $mail->Username   = 'maulanafajar751@gmail.com'; 
-    $mail->Password   = 'scpf fpyi pyrz fsce';    // App Password
+    $mail->Username   = 'maulanafajar752@gmail.com'; 
+    $mail->Password   = 'aciq nuly oxjx vzvm';       // app password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         
     $mail->Port       = 587;
+    $mail->setFrom('maulanafajar752@gmail.com', 'RSPM');
+    // $mail->SMTPDebug = 2; // debug hanya saat testing
+    // $mail->Debugoutput = 'html';
 
-    // Recipients
-    $mail->setFrom('maulanafajar751@gmail.com', 'Fajar Maulana Shidiq');
-    $mail->addAddress('maulanafajar752@gmail.com', 'Fajar');
+    
+    // Loop admin
+    while ($data_admin = mysqli_fetch_assoc($konek_admin)) {
+        $email_admin = $data_admin['email'];
+        $nama_admin  = $data_admin['nama'];
 
-    // Subject & Body
+        // kirim ke masing-masing admin
+        $mail->addAddress($email_admin, $nama_admin);
+    }
+
+    // Content Email
     $mail->isHTML(true);
     $mail->Subject = 'Pengajuan Kredensial '.$nama;
     $mail->Body = "
-    <div style='font-family:Segoe UI, sans-serif; max-width:600px; margin:auto; border:1px solid #e0e0e0; border-radius:10px; overflow:hidden; background:#ffffff;'>
+        <div style='font-family:Segoe UI, sans-serif; max-width:600px; margin:auto; border:1px solid #e0e0e0; border-radius:10px; overflow:hidden; background:#ffffff;'>
 
-        <!-- Header -->
-        <div style='background:linear-gradient(135deg, #1976d2, #2196f3); color:#fff; padding:20px; text-align:center;'>
-            <h2 style='margin:0; font-size:22px;'>Pengajuan Kredensial Baru</h2>
-        </div>
-
-        <!-- Konten -->
-        <div style='padding:25px; background:#fafafa; line-height:1.6;'>
-            <p style='font-size:15px; color:#333; margin-top:0;'>
-                Halo <strong>Admin</strong>, ada pengajuan baru dari:
-            </p>
-
-            <div style='background:#fff; border:1px solid #ddd; border-radius:8px; padding:15px; margin:15px 0;'>
-                <p style='margin:8px 0;'><strong>Nama:</strong> {$data_pegawai['nama']}</p>
-                <p style='margin:8px 0;'><strong>NIP / NIK:</strong> {$data_pegawai['nopeg']}</p>
-                <p style='margin:8px 0;'><strong>Unit:</strong> {$data_pegawai['unit']}</p>
-                <p style='margin:8px 0;'><strong>Jenjang:</strong> {$jenjang_yang_dipilih}</p>
+            <!-- Header -->
+            <div style='background:linear-gradient(135deg, #1976d2, #2196f3); color:#fff; padding:20px; text-align:center;'>
+                <h2 style='margin:0; font-size:22px;'>Pengajuan Kredensial Baru</h2>
             </div>
 
-            <p style='margin:15px 0; font-size:14px;'>
-                Silakan periksa <strong>lampiran</strong> untuk detail lengkap pengajuan.
-            </p>
+            <!-- Konten -->
+            <div style='padding:25px; background:#fafafa; line-height:1.6;'>
+                <p style='font-size:15px; color:#333; margin-top:0;'>
+                    Halo <strong>Admin</strong>, ada pengajuan baru dari:
+                </p>
 
-            <!-- Tombol Aksi -->
-            <div style='text-align:center; margin:25px 0;'>
-                <a href='http://157.10.3.26:29/rs/' style='background:#1976d2; color:#fff; padding:12px 25px; border-radius:6px; text-decoration:none; font-size:15px; display:inline-block;'>
-                    Lihat Detail
-                </a>
+                <div style='background:#fff; border:1px solid #ddd; border-radius:8px; padding:15px; margin:15px 0;'>
+                    <p style='margin:8px 0;'><strong>Nama:</strong> {$data_pegawai['nama']}</p>
+                    <p style='margin:8px 0;'><strong>NIP / NIK:</strong> {$data_pegawai['nopeg']}</p>
+                    <p style='margin:8px 0;'><strong>Unit:</strong> {$data_pegawai['unit']}</p>
+                    <p style='margin:8px 0;'><strong>Jenjang:</strong> {$jenjang_yang_dipilih}</p>
+                </div>
+
+                <p style='margin:15px 0; font-size:14px;'>
+                    Silakan periksa <strong>lampiran</strong> untuk detail lengkap pengajuan.
+                </p>
+
+                <!-- Tombol Aksi -->
+                <div style='text-align:center; margin:25px 0;'>
+                    <a href='http://157.10.3.26:29/rs/' style='background:#1976d2; color:#fff; padding:12px 25px; border-radius:6px; text-decoration:none; font-size:15px; display:inline-block;'>
+                        Lihat Detail
+                    </a>
+                </div>
             </div>
+
+            <!-- Footer -->
+            <div style='background:#f5f5f5; padding:15px; text-align:center; font-size:12px; color:#777;'>
+                Email ini dikirim otomatis dari <strong>Sistem Kredensial</strong>.<br>
+                Mohon tidak membalas email ini.
+            </div>
+
         </div>
+        ";
 
-        <!-- Footer -->
-        <div style='background:#f5f5f5; padding:15px; text-align:center; font-size:12px; color:#777;'>
-            Email ini dikirim otomatis dari <strong>Sistem Kredensial</strong>.<br>
-            Mohon tidak membalas email ini.
-        </div>
+    // Attachment PDF
+    $mail->addAttachment("../../../public/file/keperawatan/permohonan/surat-permohonan-$kode-$nopeg.pdf");
+    $mail->addAttachment("../../../public/file/keperawatan/permohonan/lembar-verifikasi-$kode-$nopeg.pdf");
 
-    </div>
-    ";
-
-
-    // Attachment (contoh PDF atau gambar)
-    $mail->addAttachment("../../../public/file/keperawatan/permohonan/surat-permohonan-".$kode."-".$nopeg.".pdf");
-    $mail->addAttachment("../../../public/file/keperawatan/permohonan/lembar-verifikasi-".$kode."-".$nopeg.".pdf");
-    //$mail->addAttachment("../../../public/file/keperawatan/permohonan/log-book-".$kode."-".$nopeg.".pdf"); 
-    // bisa juga lebih dari satu:
-    // $mail->addAttachment('uploads/ijazah.jpg', 'Ijazah.jpg');
-
-    // Send
+    // Kirim email
     $mail->send();
-    //echo "Email berhasil dikirim dengan lampiran!";
+
 } catch (Exception $e) {
     echo "Email gagal dikirim. Error: {$mail->ErrorInfo}";
 }
 
+    
 
-
+$jenis_transaksi ='Pengajuan Kredensial';
+$keterangan_log='Berhasil Melakukan proses pengajuan Kredensial dengan kdoe <strong>'.$kode.'</strong>';
+simpanriwayat($koneksi,"$nopeg", "$jenis_transaksi", "$keterangan_log");
 
 $_SESSION['pesan'] = 'Pengajuan Kredensial dengan kode'.$kode.' Berhasil disimpan !';
 $_SESSION['info'] = 'Berhasil ! ';

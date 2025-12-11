@@ -1,3 +1,7 @@
+<script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+ 
 <script>
 // script upload berkas
 document.querySelectorAll('.dropdown-item').forEach(item => {
@@ -21,7 +25,7 @@ document.querySelectorAll('.dropdown-item').forEach(item => {
             document.getElementById('nosurat').style.display = 'block';
         }
     });
-  });
+  }); 
 
 document.querySelector('.scroll-x').addEventListener('wheel', function(e) {
     if (e.deltaY !== 0) {
@@ -115,12 +119,13 @@ function loadDetail(id) {
     fetch('views/keperawatan/req/detail.php?id=' + id)
         .then(response => response.text())
         .then(data => {
-            // sembunyikan daftar card & search bar
             document.querySelector('.scroll-x').style.display = 'none';
             document.getElementById('searchBar').style.display = 'none';
 
-            // isi detail + tombol kembali
             document.getElementById('detailContainer').innerHTML = data;
+
+            // init wizard setelah html dimasukkan
+            initWizard();
 
             // datatable
             if ($.fn.DataTable.isDataTable('#datatable_1')) {
@@ -131,6 +136,9 @@ function loadDetail(id) {
 }
 
 $('#form_rkk').on('submit', function(e) {
+    e.preventDefault(); // STOP submit dulu
+    var form = this;    // simpan form
+
     var table = $('#datatable_1').DataTable();
 
     // Ambil semua input dari semua halaman
@@ -149,27 +157,83 @@ $('#form_rkk').on('submit', function(e) {
             // kalau sudah ada → update
             $('#form_rkk input[type=hidden][name="'+name+'"]').val(value);
         }
+    });
 
-        // 🔹 tampilkan SweetAlert2 loading
-        Swal.fire({
+    // 🔹 tampilkan SweetAlert2 loading
+    Swal.fire({
         title: 'Sedang diproses...',
         html: `
-            <p style="font-size:14px; color:#444; font-family:Segoe UI, sans-serif;">
-                Mohon tunggu sebentar, sistem sedang memproses pengajuan Anda...
-            </p>
+            <div style="padding:10px;">
+                <lottie-player 
+                    src="public/bg/loading.json" 
+                    background="transparent"
+                    speed="1"
+                    style="width: 220px; height: 220px; margin:auto;"
+                    loop autoplay>
+                </lottie-player>
+
+                <h4 style="margin-top: 10px; font-weight:600; color:#2b2b2b;">
+                    Sedang Diproses...
+                </h4>
+                <p id="loadingText" style="font-size:14px; color:#555;">
+                    Mohon tunggu sebentar
+                </p>
+            </div>
         `,
-        imageUrl: 'public/bg/loading3.gif', // ganti dengan GIF kamu
-        imageWidth: 200,
-        imageHeight: 200,
-        showConfirmButton: false,
         allowOutsideClick: false,
-        allowEscapeKey: false,
-        background: '#ffffff',
+        showConfirmButton: false,
+        background: 'rgba(255,255,255,0.9)',
+        width: 380,
+        didOpen: () => {
+            let steps = [
+                "Mengecek data file...",
+                "Validasi data...",
+                "Menyimpan ke database...",
+            ];
+            let i = 0;
+            setInterval(() => {
+                document.getElementById('loadingText').innerText = steps[i];
+                i = (i + 1) % steps.length;
+            }, 1500);
+
+            // ⏳ submit form setelah 1 detik
+            setTimeout(() => {
+                form.submit(); // SUBMIT manual
+            }, 1000);
+        }
     });
 
-    });
+});
 
-    // form akan lanjut submit normal (ke PHP) dengan semua hidden input ikut
+
+// simpan session yang dinput
+
+$(document).ready(function() {
+
+    // Saat modal detail akan dibuka
+    $('#uploadModal').on('show.bs.modal', function () {
+        var form = $('#form_rkk');
+        var formData = {
+            nama: form.find('[name="nama"]').val(),
+            nik: form.find('[name="nik"]').val(),
+            unit: form.find('[name="unit"]').val(),
+            email: form.find('[name="email"]').val(),
+            telepon: form.find('[name="telepon"]').val(),
+            jenjang_saat_ini: form.find('[name="jenjang_saat_ini"]').val()
+        };
+
+        $.ajax({
+            url: 'app/controller/keperawatan/req/save_session.php',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                console.log('✅ Session response:', response);
+            },
+            error: function(xhr, status, error) {
+                console.error('❌ Gagal simpan session:', error);
+            }
+        });
+    });
 });
 
 // tombol menampilkan isi detelah di hide
@@ -216,6 +280,120 @@ function showWarning(missing) {
     });
 }
 
+$(document).on('click', '.btn-hapus', function (e) {
+    e.preventDefault(); // Mencegah link langsung berjalan
+
+    const url = $(this).attr('href'); // ambil URL dari href
+    const deskripsi = $(this).data('deskripsi'); // ambil deskripsi dari data atribut
+
+    Swal.fire({
+        title: 'Apakah Anda yakin ingin menghapus?',
+        html: `<strong>${deskripsi}</strong>`,
+        imageUrl: 'public/bg/hapus2.webp',
+        imageWidth: 210,
+        imageHeight: 200,
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal',
+        customClass: {
+            confirmButton: 'btn btn-danger px-4 me-3',
+            cancelButton: 'btn btn-secondary px-4'
+        },
+        buttonsStyling: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = url; // arahkan ke link jika dikonfirmasi
+        }
+    });
+});
+
+// ---------------------------------------------------------
+// WIZARD MOBILE (tetap berfungsi meski dimuat via innerHTML)
+// ---------------------------------------------------------
+
+let currentStep = 0;
+
+function initWizard() {
+    const wizard = document.querySelector("#wizard");
+    if (!wizard) return;
+
+    const steps = wizard.querySelectorAll(".wizard-step");
+
+    steps.forEach((step, i) => {
+        step.style.display = (i === 0 ? "block" : "none");
+    });
+
+    currentStep = 0;
+    updateWizardButtons();
+
+    // FIX: ganti addEventListener → onclick
+    const nextBtn = document.getElementById("nextBtn");
+    const prevBtn = document.getElementById("prevBtn");
+
+    if (nextBtn) {
+        nextBtn.onclick = function(e){
+            e.preventDefault();
+            nextStep();
+        };
+    }
+
+    if (prevBtn) {
+        prevBtn.onclick = function(e){
+            e.preventDefault();
+            prevStep();
+        };
+    }
+}
+
+
+function nextStep() {
+    const steps = document.querySelectorAll("#wizard .wizard-step");
+
+    if (currentStep < steps.length - 1) {
+        currentStep++;
+        showWizardStep();
+    } else {
+        console.log("Sudah di step terakhir (tidak ada submit)");
+    }
+}
+
+function prevStep() {
+    if (currentStep > 0) {
+        currentStep--;
+        showWizardStep();
+    }
+}
+
+function showWizardStep() {
+    const steps = document.querySelectorAll("#wizard .wizard-step");
+
+    steps.forEach((step, i) => {
+        step.style.display = (i === currentStep ? "block" : "none");
+    });
+
+    updateWizardButtons();
+}
+
+function updateWizardButtons() {
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const steps = document.querySelectorAll("#wizard .wizard-step");
+
+    if (!prevBtn || !nextBtn) return;
+
+    // TOMBOL PREV
+    prevBtn.style.display = (currentStep === 0 ? "none" : "inline-block");
+
+    // TOMBOL NEXT – HILANGKAN di step terakhir
+    if (currentStep === steps.length - 1) {
+        nextBtn.style.display = "none"; // sembunyikan tombol next
+    } else {
+        nextBtn.style.display = "inline-block";
+        nextBtn.innerText = "Lanjut";   // tetap "Lanjut"
+    }
+}
+
+
 
 </script>
-<script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
+

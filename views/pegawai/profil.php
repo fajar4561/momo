@@ -290,7 +290,7 @@ $sk_bulan = $sk_bulan % 12;
                                     <input class="form-control" type="password" name="password" id="password" placeholder="Kata Sandi Baru">
                                 </div>
                             </div>
-                            <div class="form-group mb-3 row">
+                            <!-- <div class="form-group mb-3 row">
                                 <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Ulangi Password</label>
                                 <div class="col-lg-9 col-xl-8">
                                     <input class="form-control" type="password" id="konfirmasiPassword" placeholder="Ulangi Password" onkeyup="confirmPassword()">
@@ -300,8 +300,8 @@ $sk_bulan = $sk_bulan % 12;
                                       * Pastikan Jumlah password 6 karakter
                                   </div>
                               </div>
-                          </div>
-                          <div class="form-group mb-3 row">
+                          </div> -->
+                          <!-- <div class="form-group mb-3 row">
                             <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label"> </label>
                             <div class="col-lg-9 col-xl-8">
                                 <div class="form-check form-check-inline switch">
@@ -309,7 +309,7 @@ $sk_bulan = $sk_bulan % 12;
                                     <label class="form-label" for="lihatPassword">Lihat Password</label>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group mb-3 row">
                             <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Foto</label>
                             <div class="col-lg-9 col-xl-8">

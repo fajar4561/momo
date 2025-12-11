@@ -4,7 +4,7 @@ require 'req/style-detail-kredensial.php';
 require 'req/style-penilaian-kredensial.php';
 ?>
 
-<form>
+<form method="post" action="app/controller/keperawatan/simpan-penilaian.php" id="myForm">
     <div class="row">
         <div class="col-md-3">
             <div class="row">
@@ -167,6 +167,8 @@ require 'req/style-penilaian-kredensial.php';
                 	<div class="mb-3">
                 		<label for="message">Catatan</label>
                 		<textarea class="form-control" rows="3" placeholder="Catatan Penilaian" name="catatan"></textarea>
+                        <input type="hidden" name="nopeg" value="<?=$nopeg?>">
+                        <input type="hidden" name="kode" value="<?=$kode?>">
                 	</div>
                 	<div class="mb-3">
                 		<button class="btn btn-secondary" type="submit" name="layak" value="1">Layak</button>
@@ -220,10 +222,21 @@ require 'req/style-penilaian-kredensial.php';
                                         <?php
 									        $no = 1;
 									        $no2 = 1; 
-									        $ambil_ujian = $koneksi->query("SELECT * FROM pengajuan_kredensial_detail INNER JOIN detail_master_rkk ON pengajuan_kredensial_detail.id_jenis_kewenangan=detail_master_rkk.id WHERE kode_pengajuan='$kode'");
+									        $ambil_ujian = $koneksi->query("
+                                                SELECT 
+                                                    pengajuan_kredensial_detail.id AS id_pengajuan_detail,
+                                                    detail_master_rkk.id AS id_master_rkk,
+                                                    detail_master_rkk.kompetensi_rkk,
+                                                    pengajuan_kredensial_detail.jenis_kewenangan
+                                                FROM pengajuan_kredensial_detail
+                                                INNER JOIN detail_master_rkk 
+                                                    ON pengajuan_kredensial_detail.id_jenis_kewenangan = detail_master_rkk.id
+                                                WHERE kode_pengajuan = '$kode'
+                                            ");
+
 									        while ($data=mysqli_fetch_assoc($ambil_ujian)) {
-									       ?>
-                                        <tr class="row-toggle" data-id="<?=$no++?>">
+									   ?>
+                                        <tr class="row-toggle" data-id="<?=$data['id_pengajuan_detail']?>">
                                             <td class="text-center fw-bold">
                                                 <?=$no2++?>
                                             </td>
@@ -244,7 +257,9 @@ require 'req/style-penilaian-kredensial.php';
                                             </td>
                                             <td class="text-center">
                                                 <label class="switch">
-                                                    <input type="checkbox" class="row-check">
+                                                    <!-- Tambahkan hidden input agar unchecked tetap terkirim -->
+                                                    <input type="hidden" name="validasi[<?=$data['id_pengajuan_detail']?>]" value="0">
+                                                    <input type="checkbox" class="row-check" name="validasi[<?=$data['id_pengajuan_detail']?>]" value="1">
                                                     <span class="slider"></span>
                                                 </label>
                                             </td>

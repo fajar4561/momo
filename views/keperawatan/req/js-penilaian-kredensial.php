@@ -18,8 +18,35 @@ $(document).on("click", "#datatable_1 .row-toggle", function(e) {
 
 });
 
+
+ 
 $(document).ready(function () {
-    let table = $('#datatable_2').DataTable(); // gunakan datatable baru
+    let table = $('#datatable_2').DataTable({
+        language: {
+            "decimal":        "",
+            "emptyTable":     "Tidak ada data yang tersedia",
+            "info":           "Menampilkan _START_ sampai _END_ dari total _TOTAL_ data",
+            "infoEmpty":      "Menampilkan 0 sampai 0 dari 0 data",
+            "infoFiltered":   "(disaring dari total _MAX_ data)",
+            "infoPostFix":    "",
+            "thousands":      ",",
+            "lengthMenu":     "Tampilkan _MENU_ data per halaman",
+            "loadingRecords": "Memuat...",
+            "processing":     "Sedang diproses...",
+            "search":         "Cari:",
+            "zeroRecords":    "Tidak ditemukan data yang sesuai",
+            "paginate": {
+                "first":      "Pertama",
+                "last":       "Terakhir",
+                "next":       ">",
+                "previous":   "<"
+            },
+            "aria": {
+                "sortAscending":  ": aktifkan untuk mengurutkan kolom menaik",
+                "sortDescending": ": aktifkan untuk mengurutkan kolom menurun"
+            }
+        }
+    });
     let checkedItems = {};
     let total = table.rows().count();
 
@@ -120,6 +147,19 @@ $(document).ready(function () {
         updateProgress();
     });
 
+    // === Saat form disubmit ===
+    $('form').on('submit', function (e) {
+        let form = $(this);
+
+        // Hapus input hidden lama biar tidak dobel
+        // form.find('input[name^="validasi["]').remove();
+
+        // Tambahkan semua item yang diceklis ke form
+        Object.keys(checkedItems).forEach(id => {
+            form.append(`<input type="hidden" name="validasi[${id}]" value="1">`);
+        });
+    });
+
     updateProgress();
 });
 
@@ -164,6 +204,26 @@ fileBoxContent.addEventListener('wheel', (e) => {
         e.preventDefault();
         fileBoxContent.scrollLeft += e.deltaY; // geser horizontal dengan scroll wheel
     }
+});
+
+// sweetalert ketika di submit
+
+$('#myForm').on('submit', function(e) {
+    Swal.fire({
+        title: 'Sedang diproses...',
+        html: `
+            <p style="font-size:14px; color:#444; font-family:Segoe UI, sans-serif;">
+                Mohon tunggu sebentar, sistem sedang memproses pengajuan Anda...
+            </p>
+        `,
+        imageUrl: 'public/bg/loading3.gif', // ganti dengan GIF kamu
+        imageWidth: 200,
+        imageHeight: 200,
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        background: '#ffffff',
+    });
 });
 
 

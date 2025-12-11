@@ -41,7 +41,7 @@ $validator_berkas = $data_user['nopeg'];
 // Simpan pengajuan kredensial
 // dengan mengupdate tabel pengajuan kredensial
 $simpan_pengajuan = $koneksi->query("UPDATE pengajuan_kredensial SET status_pengajuan='$status_pengajuan',
-	tgl_ujian='$tanggal', validator='$validator_berkas', tgl_validasi='$today2' WHERE nopeg='$nopeg'");
+	tgl_ujian='$tanggal', validator='$validator_berkas', tgl_validasi='$today2' WHERE kode_pengajuan='$kode_pengajuan'");
 
 if ($simpan_pengajuan) {
 	$keterangan_log = 'sistem berhasil memproses validasi berkas kredensial yang divalidasi oleh '.$data_user['nama'].' dengan kode pengajuan '.$kode_pengajuan;
@@ -89,13 +89,13 @@ try {
     $mail->isSMTP();                                            
     $mail->Host       = 'smtp.gmail.com';                      
     $mail->SMTPAuth   = true;                                   
-    $mail->Username   = 'maulanafajar751@gmail.com';  // ==> WAJIB DIUBAH
-    $mail->Password   = 'scpf fpyi pyrz fsce';    // ==> WAJIB DIUBAH
+    $mail->Username   = 'maulanafajar752@gmail.com';  // ==> WAJIB DIUBAH
+    $mail->Password   = 'aciq nuly oxjx vzvm';    // ==> WAJIB DIUBAH
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         
     $mail->Port       = 587;
 
     // Recipients
-    $mail->setFrom('maulanafajar751@gmail.com', 'Fajar Maulana Shidiq');
+    $mail->setFrom('maulanafajar752@gmail.com', 'RSPM');
     $mail->addAddress($email_pemohon, $nama_pemohon);
 
     // Subject & Body

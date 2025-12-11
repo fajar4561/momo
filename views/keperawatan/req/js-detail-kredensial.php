@@ -1,11 +1,12 @@
- 
+<script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 <script>
 const fileBoxContent = document.querySelector('.file-box-content');
 
 // === DRAG TO SCROLL ===
 let isDown = false;
 let startX;
-let scrollLeft;
+let scrollLeft; 
 
 fileBoxContent.addEventListener('mousedown', (e) => {
     isDown = true;
@@ -38,7 +39,7 @@ fileBoxContent.addEventListener('wheel', (e) => {
         e.preventDefault();
         fileBoxContent.scrollLeft += e.deltaY; // geser horizontal dengan scroll wheel
     }
-});
+}); 
 
 // sweet alert validasi berkas
 document.querySelectorAll('.validasi-form').forEach(form => {
@@ -48,18 +49,43 @@ document.querySelectorAll('.validasi-form').forEach(form => {
         Swal.fire({
             title: '<span style="font-size:16px;font-weight:600;color:#333;">Mohon tunggu...</span>',
             html: `
-	        <p style="margin-top:8px;font-size:14px;color:#666;">
-	            Sedang diproses, jangan menutup halaman ini.
-	        </p>
-	    `,
-            imageUrl: 'public/bg/loading3.gif', // bisa pakai GIF / animasi SVG
-            imageWidth: 200,
-            imageHeight: 200,
-            showConfirmButton: false,
+            <div style="padding:10px;">
+                <lottie-player 
+                    src="public/bg/loading.json" 
+                    background="transparent"
+                    speed="1"
+                    style="width: 220px; height: 220px; margin:auto;"
+                    loop autoplay>
+                </lottie-player>
+
+                <h4 style="margin-top: 10px; font-weight:600; color:#2b2b2b;">
+                    Sedang Diproses...
+                </h4>
+                <p id="loadingText" style="font-size:14px; color:#555;">
+                    Mohon tunggu sebentar
+                </p>
+            </div>
+        `,
             allowOutsideClick: false,
-            allowEscapeKey: false,
-            customClass: {
-                popup: 'swal-premium'
+            showConfirmButton: false,
+            background: 'rgba(255,255,255,0.9)',
+            width: 380,
+            didOpen: () => {
+                let steps = [
+                    "Mengecek data file...",
+                    "Validasi data...",
+                    "Menyimpan ke database...",
+                ];
+                let i = 0;
+                setInterval(() => {
+                    document.getElementById('loadingText').innerText = steps[i];
+                    i = (i + 1) % steps.length;
+                }, 1500);
+
+                // ⏳ submit form setelah 1 detik
+                setTimeout(() => {
+                    form.submit(); // SUBMIT manual
+                }, 1000);
             }
         });
 
@@ -120,20 +146,45 @@ function konfirmasiSubmit() {
     Swal.fire({
         title: 'Sedang diproses...',
         html: `
-            <p style="font-size:14px; color:#444; font-family:Segoe UI, sans-serif;">
-                Mohon tunggu sebentar, sistem sedang memproses...
-            </p>
+            <div style="padding:10px;">
+                <lottie-player 
+                    src="public/bg/loading.json" 
+                    background="transparent"
+                    speed="1"
+                    style="width: 220px; height: 220px; margin:auto;"
+                    loop autoplay>
+                </lottie-player>
+
+                <h4 style="margin-top: 10px; font-weight:600; color:#2b2b2b;">
+                    Sedang Diproses...
+                </h4>
+                <p id="loadingText" style="font-size:14px; color:#555;">
+                    Mohon tunggu sebentar
+                </p>
+            </div>
         `,
-        imageUrl: 'public/bg/loading3.gif', // ganti dengan path GIF kamu
-        imageWidth: 200,
-        imageHeight: 200,
-        showConfirmButton: false,
         allowOutsideClick: false,
-        allowEscapeKey: false,
-        background: '#ffffff',
+        showConfirmButton: false,
+        background: 'rgba(255,255,255,0.9)',
+        width: 380,
         didOpen: () => {
             // submit setelah swal muncul
             document.getElementById("kredensial").submit();
+            let steps = [
+                "Mengecek data file...",
+                "Validasi data...",
+                "Menyimpan ke database...",
+            ];
+            let i = 0;
+            setInterval(() => {
+                document.getElementById('loadingText').innerText = steps[i];
+                i = (i + 1) % steps.length;
+            }, 1500);
+
+                // ⏳ submit form setelah 1 detik
+            setTimeout(() => {
+                    form.submit(); // SUBMIT manual
+                }, 1000);
         }
     });
 }

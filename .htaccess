@@ -9,6 +9,7 @@ RewriteRule ^data-pegawai$ index.php?halaman=data-pegawai [L]
 RewriteRule ^detail-pegawai/([^/]+)$ index.php?halaman=detail-pegawai&n=$1 [L]
 RewriteRule ^ubah-pegawai/([^/]+)$ index.php?halaman=ubah-pegawai&n=$1 [L]
 RewriteRule ^penyerahan-inventaris$ index.php?halaman=penyerahan-inventaris [L]
+RewriteRule ^data-sp$ index.php?halaman=data-sp [L]
 
 # Gaji
 RewriteRule ^input-gaji$ index.php?halaman=input-gaji [L]
@@ -63,6 +64,8 @@ RewriteRule ^data-pengajuan-kredensial$ index.php?halaman=data-pengajuan-kredens
 RewriteRule ^data-kredensial$ index.php?halaman=data-kredensial [L]
 RewriteRule ^detail-kredensial$ index.php?halaman=detail-kredensial [L,QSA]
 RewriteRule ^penilaian-kredensial$ index.php?halaman=penilaian-kredensial [L,QSA]
+
+RewriteRule ^detail-data-kredensial$ index.php?halaman=detail-data-kredensial [L,QSA]
 
 # chat gpt
 RewriteRule ^chatbox$ index.php?halaman=chatbox [L]

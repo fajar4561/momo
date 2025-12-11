@@ -1,214 +1,12 @@
-<?php 
-if (isset($_SESSION['pesan']) && $_SESSION['pesan'] <> '') {
-    echo '<div class="row mb-3"><div class="p-2"><div id="pesan" class="alert alert-'.$_SESSION['warna'].' alert-dismissible fade show border-0 b-round" role="alert"><strong>'.$_SESSION['info'].'</strong> '.$_SESSION['pesan'].'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div></div>';
-}
-$_SESSION['pesan'] = '';
-?>
 <?php
+date_default_timezone_set('Asia/Jakarta');
+$n = $pecahuser['nopeg'];
 require 'env/koneksi.php';
 require 'env/tgl_indo.php';
-$n = $pecahuser['nopeg'];
-// Dekripsi data 
-
-
-function getFileFormat($file) {
-    // Menentukan path file dan ekstensi file
-    $file_extension = pathinfo($file, PATHINFO_EXTENSION);
-    $file_path = 'public/file/berkas/' . $file;
-    $file_size = file_exists($file_path) ? filesize($file_path) / 1024 : 0; // Cek apakah file ada
-
-    // Pemendekan nama file jika terlalu panjang
-    $maxLength = 10;
-    if (strlen($file) > $maxLength) {
-        $shortName = substr($file, -$maxLength); // Ambil bagian akhir dari nama file
-        $displayName = '...' . $shortName; // Format nama file pendek
-    } else {
-        $displayName = $file;
-    }
-
-    // Menentukan format berdasarkan ekstensi file
-    if ($file_extension == 'pdf') {
-        $format = 'la-file-pdf text-danger';
-    } elseif ($file_extension == 'png') {
-        $format = 'la-file-image text-warning';
-    } elseif ($file_extension == 'jpg') {
-        $format = 'la-file-image text-info';
-    } elseif ($file_extension == 'jpeg') {
-        $format = 'la-file-image text-success';
-    } else {
-        $format = 'la-file text-secondary';
-    }
-
-    return [
-        'format' => $format,
-        'file_size' => $file_size,
-        'file_path' => $file_path,
-        'display_name' => $displayName, // Nama file pendek
-    ];
-}
-
-// Ambil data dari database
-$ambil_berkas = $koneksi->query("SELECT * FROM file WHERE nopeg='$n'");
-$ambil_berkas_sertif = $koneksi->query("SELECT * FROM sertifikat WHERE nopeg='$n'");
-$sertifikat = $ambil_berkas_sertif->num_rows;
-
-$berkas = mysqli_fetch_assoc($ambil_berkas);
-
-// Memanggil fungsi untuk setiap berkas
-$ktpData = getFileFormat($berkas['KTP']);
-$kkData = getFileFormat($berkas['KK']);
-$ijazahData = getFileFormat($berkas['IJAZAH']);
-$ppniData = getFileFormat($berkas['PPNI']);
-$sipData = getFileFormat($berkas['SIP']);
-$strData = getFileFormat($berkas['STR']);
-$npwpData = getFileFormat($berkas['NPWP']);
-
-// Anda dapat mengakses hasilnya seperti ini
-$ktp = $ktpData['format'];
-$file_path_ktp = $ktpData['file_path'];
-$file_size_ktp = $ktpData['file_size'];
-$display_name_ktp = $ktpData['display_name']; // Nama file pendek
-
-$kk = $kkData['format'];
-$file_path_kk = $kkData['file_path'];
-$file_size_kk = $kkData['file_size'];
-$display_name_kk = $kkData['display_name']; // Nama file pendek
-
-$ijazah = $ijazahData['format'];
-$file_path_ijazah = $ijazahData['file_path'];
-$file_size_ijazah = $ijazahData['file_size'];
-$display_name_ijazah = $ijazahData['display_name']; // Nama file pendek
-
-$ppni = $ppniData['format'];
-$file_path_ppni = $ppniData['file_path'];
-$file_size_ppni = $ppniData['file_size'];
-$display_name_ppni = $ppniData['display_name']; // Nama file pendek
-
-$sip = $sipData['format'];
-$file_path_sip = $sipData['file_path'];
-$file_size_sip = $sipData['file_size'];
-$display_name_sip = $sipData['display_name'];
-
-$str = $strData['format'];
-$file_path_str = $strData['file_path'];
-$file_size_str = $strData['file_size'];
-$display_name_str = $strData['display_name'];
-
-$npwp = $npwpData['format'];
-$file_path_npwp = $npwpData['file_path'];
-$file_size_npwp = $npwpData['file_size'];
-$display_name_npwp = $npwpData['display_name'];
-
-
-
-
-
-?>
-
-<?php if (isMobileDevice()) { ?>
-    <style>
-        .leftbar-tab-menu {
-            display: none; /* Menyembunyikan menu saat halaman dimuat */
-        }
-    </style>
-    <style type="text/css">
-    #results {
-        max-height: 210px; /* Set desired height */
-        overflow-y: hidden; /* Sembunyikan scrollbar secara default */
-        position: relative; /* Posisi relatif untuk kontrol lebih lanjut */
-    }
-
-    #results:hover {
-        overflow-y: auto; /* Tampilkan scrollbar saat hover */
-    }
-
-    /* Gaya scrollbar untuk Webkit (Chrome, Safari) */
-    #results::-webkit-scrollbar {
-        width: 8px; /* Lebar scrollbar */
-    }
-
-    #results::-webkit-scrollbar-track {
-        background: #f1f1f1; /* Warna track */
-        border-radius: 10px; /* Sudut melengkung */
-    }
-
-    #results::-webkit-scrollbar-thumb {
-        background: #888; /* Warna thumb */
-        border-radius: 10px; /* Sudut melengkung */
-    }
-
-    #results::-webkit-scrollbar-thumb:hover {
-        background: #555; /* Warna thumb saat hover */
-    }
-
-    /* Gaya scrollbar untuk Firefox */
-    #results {
-        scrollbar-width: thin; /* Ukuran scrollbar */
-        scrollbar-color: #888 #f1f1f1; /* Warna thumb dan track */
-    }
-
-    .nav-link1 {
-        margin-bottom: 10px; /* Atur jarak antar item */
-    }
-
-    .custom-link {
-        margin-bottom: 10px;
-        margin-right: 50px; /* Default margin */
-    }
-
-    /* Media queries untuk ukuran layar yang lebih kecil */
-    @media (max-width: 768px) {
-        .custom-link {
-            margin-right: auto; /* Ubah margin untuk layar kecil */
-        }
-    }
-
-    @media (max-width: 576px) {
-        .custom-link {
-            margin-right: auto; /* Ubah margin untuk layar sangat kecil */
-        }
-    }
-
-    </style>
-<?php } ?>
-
-<style type="text/css">
-.nav-link1.active {
-    background-color: #007bff; /* Warna background */
-    color: white; /* Warna teks */
-    font-weight: bold; /* Teks lebih tebal */
-}
-/* Tambahkan animasi untuk dropdown-menu */
-.dropdown-menu {
-    opacity: 0;
-    transform: scale(0.9);
-    transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.dropdown-menu.show {
-    opacity: 1;
-    transform: scale(1);
-}
-/* Gaya default dropdown-item */
-.dropdown-item {
-    background-color: #ffffff; /* Warna latar belakang default */
-    color: #6c757d; /* Warna teks default */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Efek transisi */
-}
-
-/* Saat hover */
-.dropdown-item:hover {
-    background-color: #343a40; /* Warna latar belakang lebih gelap saat hover */
-    color: #ffffff; /* Warna teks saat hover */
-}
-
-/* Saat fokus */
-.dropdown-item:focus {
-    background-color: #23272b; /* Warna latar belakang lebih gelap lagi saat fokus */
-    color: #ffffff; /* Warna teks saat fokus */
-}
-</style>
-
+require 'req/head-berkas.php';
+require 'req/style-berkas.php';
+require 'public/component/toast.php';
+?> 
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
@@ -216,7 +14,7 @@ $display_name_npwp = $npwpData['display_name'];
                 <div class="row align-items-center">
                     <!-- Gambar Header -->
                     <div class="col-md-3 col-sm-4 text-center">
-                        <img src="public/bg/bg02.png" class="img-fluid rounded" alt="Header Image">
+                        <img src="public/bg/objek3.webp" class="img-fluid rounded" alt="Header Image">
                     </div>
                     <!-- Teks Header -->
                     <div class="col-md-9 col-sm-8">
@@ -227,9 +25,8 @@ $display_name_npwp = $npwpData['display_name'];
                             </li>
                             <li>
                                 Untuk melakukan proses upload berkas, anda bisa menggunakan tombol
-                                <button type="button" class="btn btn-sm btn-outline-light dropdown-toggle">Upload <i class="mdi mdi-chevron-down"></i></button> 
+                                <button type="button" class="btn btn-sm btn-outline-light dropdown-toggle">Upload <i class="mdi mdi-chevron-down"></i></button>
                                 atau dengan klik menu bertuliskan <strong> KTP,KK,IJAZAH,PPNI,SIP dan lain sebgainya</strong>
-
                             </li>
                             <li>
                                 Pastikan file yang diupload berformatkan "jpeg,jpg,pdf,png" (hanya support File gambar dan pdf)
@@ -238,672 +35,468 @@ $display_name_npwp = $npwpData['display_name'];
                                 Apabila anda masih bingung untuk teknis upload berkas anda bisa melihat dokumentasinya <strong><a href="#">Klik Disini</a></strong>
                             </li>
                         </ol>
-
                     </div>
                 </div>
-            </div>
+            </div> 
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-3">
+    <div class="col-md-3 col-12">
         <div class="card">
             <div class="card-header">
                 <div class="row align-items-center">
                     <div class="col">
                         <h4 class="card-title">Berkas-Berkas</h4>
                     </div>
-                    <!--end col-->
                     <div class="col-auto">
                         <div class="dropdown">
                             <a href="#" class="btn btn-sm btn-outline-light dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                               Upload <i class="mdi mdi-chevron-down"></i>
+                                Upload <i class="mdi mdi-chevron-down"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#uploadktp">Upload KTP</a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#uploadkk">Upload KK</a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#ubahijazah">Upload IJAZAH</a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#ubahppni">Upload PPNI</a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#ubahstr">Upload SIP</a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#ubahnpwp">Upload NPWP</a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#uploadsert">Upload Sertifikat</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!--end col-->
-                </div>
-                <!--end row-->
-            </div>
-            <!--end card-header-->
-            <div class="card-body">
-                <div class="files-nav" id="results">
-                    <!-- ======= KTP ======= -->
-                    <div class="nav flex-column nav-pills" id="files-tab" aria-orientation="vertical">
-                        <a class="nav-link nav-link1 mb-0" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#uploadktp">
-                            <i data-feather="users" class="align-self-center icon-dual-file icon-sm me-2"></i>
-                            <div class="d-inline-block align-self-center">
-                                <h5 class="m-0">KTP</h5>
-
-                                <?php echo !empty($berkas['KTP']) ? '<small>'.$berkas['KTP'].'</small>' : '<small>KTP Belum DiUpload</small>'; ?> 
-                            </div>
-                        </a>
-                    </div>
-                    <div class="modal fade" id="uploadktp" tabindex="-1" role="dialog" aria-labelledby="exampleModalPrimary1" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header bg-primary">
-                                    <h6 class="modal-title m-0 text-white" id="exampleModalPrimary1">Upload Berkas KTP</h6>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div><!--end modal-header-->
-                                <form method="post" action="<?php echo !empty($berkas['KTP']) ? 'app/controller/pegawai/ubah-berkas.php' : 'app/controller/pegawai/upload-berkas.php'; ?>" enctype="multipart/form-data">
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="d-grid">
-                                                    <p class="text-muted">Pastikan File yang diupload berformatkan "pdf / jpeg / jpg / png".</p>
-                                                    <div class="preview-box d-block justify-content-center rounded shadow overflow-hidden bg-light p-1"></div>
-                                                    <input type="hidden" name="jenis" value="ktp">
-                                                    <input type="file" id="input-ktp2" name="berkas" onchange="handleChange2()" hidden />
-                                                    <label class="btn-upload btn btn-primary mt-4" for="input-ktp2">Pilih File</label>
-                                                </div>
-                                            </div>
-                                        </div>                                                   
-                                    </div><!--end modal-body-->
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-de-primary btn-sm"  id="submit-btn-ktp2" hidden>Save</button>
-                                    </div><!--end modal-footer-->
-                                </form>
-                            </div><!--end modal-content-->
-                        </div><!--end modal-dialog-->
-                    </div>
-
-                    <script>
-                        function handleChange2() {
-                                            // Ambil input file
-                            var inputFilektp2 = document.getElementById('input-ktp2');
-
-                                            // Cek apakah file telah dipilih
-                            if (inputFilektp2.files.length > 0) {
-                                            // Jika file dipilih, tampilkan tombol submit dan submitkan formulir
-                                document.getElementById('submit-btn-ktp2').click();
-                            }
-                        }
-                    </script>
-
-                    <!-- ======= KK ======= -->
-                    <div class="nav flex-column nav-pills" id="files-tab" aria-orientation="vertical">
-                        <a class="nav-link nav-link1 mb-0" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#uploadkk">
-                            <i data-feather="trello" class="align-self-center icon-dual-file icon-sm me-2"></i>
-                            <div class="d-inline-block align-self-center">
-                                <h5 class="m-0">KK</h5>
-
-                                <?php echo !empty($berkas['KK']) ? '<small>'.$berkas['KK'].'</small>' : '<small>KK Belum DiUpload</small>'; ?> 
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="modal fade" id="uploadkk" tabindex="-1" role="dialog" aria-labelledby="exampleModalPrimary1" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header bg-primary">
-                                    <h6 class="modal-title m-0 text-white" id="exampleModalPrimary1">Upload Berkas Kk</h6>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <form method="post" action="<?php echo !empty($berkas['KK']) ? 'app/controller/pegawai/ubah-berkas.php' : 'app/controller/pegawai/upload-berkas.php'; ?>" enctype="multipart/form-data">
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="d-grid">
-                                                    <p class="text-muted">Pastikan File yang diupload berformatkan "pdf / jpeg / jpg / png".</p>
-                                                    <div class="preview-box d-block justify-content-center rounded shadow overflow-hidden bg-light p-1"></div>
-                                                    <input type="hidden" name="jenis" value="kk">
-                                                    <input type="file" id="input-kk" name="berkas" onchange="handleChange3()" hidden />
-                                                    <label class="btn-upload btn btn-primary mt-4" for="input-kk">Pilih File</label>
-                                                </div>
-                                            </div>
-                                        </div>                                                   
-                                    </div><!--end modal-body-->
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-de-primary btn-sm"  id="submit-btn-kk" hidden>Save</button>
-                                    </div><!--end modal-footer-->
-                                </form>
-                            </div><!--end modal-content-->
-                        </div><!--end modal-dialog-->
-                    </div>
-                    <!-- Modals Ubah Berkas -->
-                    <script>
-                        function handleChange3() {
-                                            // Ambil input file
-                            var inputFilekk = document.getElementById('input-kk');
-
-                                            // Cek apakah file telah dipilih
-                            if (inputFilekk.files.length > 0) {
-                                            // Jika file dipilih, tampilkan tombol submit dan submitkan formulir
-                                document.getElementById('submit-btn-kk').click();
-                            }
-                        }
-                    </script>
-
-                     <!-- ======= IJAZAH ======= -->
-                     <div class="nav flex-column nav-pills" id="files-tab" aria-orientation="vertical">
-                        <a class="nav-link nav-link1 mb-0" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#ubahijazah">
-                            <i data-feather="file-text" class="align-self-center icon-dual-file icon-sm me-2"></i>
-                            <div class="d-inline-block align-self-center">
-                                <h5 class="m-0">IJAZAH</h5>
-                                <?php echo !empty($berkas['IJAZAH']) ? '<small>'.$berkas['IJAZAH'].'</small>' : '<small>IJAZAH Belum DiUpload</small>'; ?> 
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="modal fade" id="ubahijazah" tabindex="-1" role="dialog" aria-labelledby="exampleModalPrimary1" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header bg-primary">
-                                    <h6 class="modal-title m-0 text-white" id="exampleModalPrimary1">Upload Berkas ijazah</h6>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div><!--end modal-header-->
-                                <form method="post" action="<?php echo !empty($berkas['IJAZAH']) ? 'app/controller/pegawai/ubah-berkas.php' : 'app/controller/pegawai/upload-berkas.php'; ?>" enctype="multipart/form-data">
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="d-grid">
-                                                    <p class="text-muted">Pastikan File yang diupload berformatkan "pdf / jpeg / jpg / png".</p>
-                                                    <div class="preview-box d-block justify-content-center rounded shadow overflow-hidden bg-light p-1"></div>
-                                                    <input type="hidden" name="jenis" value="ijazah">
-                                                    <input type="file" id="input-ijazah" name="berkas" onchange="handleChangeijazah()" hidden />
-                                                    <label class="btn-upload btn btn-primary mt-4" for="input-ijazah">Pilih File</label>
-                                                </div>
-                                            </div>
-                                        </div>                                                   
-                                    </div><!--end modal-body-->
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-de-primary btn-sm"  id="submit-btn-ijazah" hidden>Save</button>
-                                    </div><!--end modal-footer-->
-                                </form>
-                            </div><!--end modal-content-->
-                        </div><!--end modal-dialog-->
-                    </div>
-                    <!-- Modals Ubah Berkas -->
-                    <script>
-                        function handleChangeijazah() {
-                                            // Ambil input file
-                            var inputFileijazah = document.getElementById('input-ijazah');
-
-                                            // Cek apakah file telah dipilih
-                            if (inputFileijazah.files.length > 0) {
-                                            // Jika file dipilih, tampilkan tombol submit dan submitkan formulir
-                                document.getElementById('submit-btn-ijazah').click();
-                            }
-                        }
-                    </script>
-
-                    <!-- ======= PPNI ======= -->
-                    <div class="nav flex-column nav-pills" id="files-tab" aria-orientation="vertical">
-                        <a class="nav-link nav-link1 mb-0" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#ubahppni">
-                            <i data-feather="credit-card" class="align-self-center icon-dual-file icon-sm me-2"></i>
-                            <div class="d-inline-block align-self-center">
-                                <h5 class="m-0">PPNI</h5>
-                                <?php echo !empty($berkas['PPNI']) ? '<small>'.$berkas['PPNI'].'</small>' : '<small>PPNI Belum DiUpload</small>'; ?> 
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="modal fade" id="ubahppni" tabindex="-1" role="dialog" aria-labelledby="exampleModalPrimary1" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header bg-primary">
-                                    <h6 class="modal-title m-0 text-white" id="exampleModalPrimary1">Upload Berkas PPNI</h6>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div><!--end modal-header-->
-                                <form method="post" action="<?php echo !empty($berkas['PPNI']) ? 'app/controller/pegawai/ubah-berkas.php' : 'app/controller/pegawai/upload-berkas.php'; ?>" enctype="multipart/form-data">
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="d-grid">
-                                                    <p class="text-muted">Pastikan File yang diupload berformatkan "pdf / jpeg / jpg / png".</p>
-                                                    <div class="preview-box d-block justify-content-center rounded shadow overflow-hidden bg-light p-1"></div>
-                                                    <input type="hidden" name="jenis" value="ppni">
-                                                    <input type="file" id="input-ppni" name="berkas" onchange="handleChangeppni()" hidden />
-                                                    <label class="btn-upload btn btn-primary mt-4" for="input-ppni">Pilih File</label>
-                                                </div>
-                                            </div>
-                                        </div>                                                   
-                                    </div><!--end modal-body-->
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-de-primary btn-sm"  id="submit-btn-ppni" hidden>Save</button>
-                                    </div><!--end modal-footer-->
-                                </form>
-                            </div><!--end modal-content-->
-                        </div><!--end modal-dialog-->
-                    </div>
-                    <!-- Modals Ubah Berkas -->
-                    <script>
-                        function handleChangeppni() {
-                                            // Ambil input file
-                            var inputFileppni = document.getElementById('input-ppni');
-
-                                            // Cek apakah file telah dipilih
-                            if (inputFileppni.files.length > 0) {
-                                            // Jika file dipilih, tampilkan tombol submit dan submitkan formulir
-                                document.getElementById('submit-btn-ppni').click();
-                            }
-                        }
-                    </script>
-
-                    <!-- ======= SIP ======= -->
-                    <div class="nav flex-column nav-pills" id="files-tab" aria-orientation="vertical">
-                        <a class="nav-link nav-link1 mb-0" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#ubahsip">
-                            <i data-feather="clipboard" class="align-self-center icon-dual-file icon-sm me-2"></i>
-                            <div class="d-inline-block align-self-center">
-                                <h5 class="m-0">SIP</h5>
-                                <?php echo !empty($berkas['SIP']) ? '<small>'.$berkas['SIP'].'</small>' : '<small>SIP Belum DiUpload</small>'; ?> 
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="modal fade" id="ubahsip" tabindex="-1" role="dialog" aria-labelledby="exampleModalPrimary1" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header bg-primary">
-                                    <h6 class="modal-title m-0 text-white" id="exampleModalPrimary1">Upload Berkas SIP</h6>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div><!--end modal-header-->
-                                <form method="post" action="<?php echo !empty($berkas['SIP']) ? 'app/controller/pegawai/ubah-berkas.php' : 'app/controller/pegawai/upload-berkas.php'; ?>" enctype="multipart/form-data">
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="d-grid">
-                                                    <p class="text-muted">Pastikan File yang diupload berformatkan "pdf / jpeg / jpg / png".</p>
-                                                    <div class="preview-box d-block justify-content-center rounded shadow overflow-hidden bg-light p-1"></div>
-                                                    <input type="hidden" name="jenis" value="sip">
-                                                    <input type="file" id="input-sip" name="berkas" onchange="handleChangesip()" hidden />
-                                                    <label class="btn-upload btn btn-primary mt-4" for="input-sip">Pilih File</label>
-                                                </div>
-                                            </div>
-                                        </div>                                                   
-                                    </div><!--end modal-body-->
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-de-primary btn-sm"  id="submit-btn-sip" hidden>Save</button>
-                                    </div><!--end modal-footer-->
-                                </form>
-                            </div><!--end modal-content-->
-                        </div><!--end modal-dialog-->
-                    </div>
-                    <!-- Modals Ubah Berkas -->
-                    <script>
-                        function handleChangesip() {
-                                            // Ambil input file
-                            var inputFilesip = document.getElementById('input-sip');
-
-                                            // Cek apakah file telah dipilih
-                            if (inputFilesip.files.length > 0) {
-                                            // Jika file dipilih, tampilkan tombol submit dan submitkan formulir
-                                document.getElementById('submit-btn-sip').click();
-                            }
-                        }
-                    </script>
-
-                    <!-- ======= STR ======= -->
-                    <div class="nav flex-column nav-pills" id="files-tab" aria-orientation="vertical">
-                        <a class="nav-link nav-link1 mb-0" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#ubahstr">
-                            <i data-feather="hard-drive" class="align-self-center icon-dual-file icon-sm me-2"></i>
-                            <div class="d-inline-block align-self-center">
-                                <h5 class="m-0">STR</h5>
-                                <?php echo !empty($berkas['STR']) ? '<small>'.$berkas['STR'].'</small>' : '<small>STR Belum DiUpload</small>'; ?>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="modal fade" id="ubahstr" tabindex="-1" role="dialog" aria-labelledby="exampleModalPrimary1" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header bg-primary">
-                                    <h6 class="modal-title m-0 text-white" id="exampleModalPrimary1">Upload Berkas STR</h6>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div><!--end modal-header-->
-                                <form method="post" action="<?php echo !empty($berkas['STR']) ? 'app/controller/pegawai/ubah-berkas.php' : 'app/controller/pegawai/upload-berkas.php'; ?>" enctype="multipart/form-data">
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="d-grid">
-                                                    <p class="text-muted">Pastikan File yang diupload berformatkan "pdf / jpeg / jpg / png".</p>
-                                                    <div class="preview-box d-block justify-content-center rounded shadow overflow-hidden bg-light p-1"></div>
-                                                    <input type="hidden" name="jenis" value="str">
-                                                    <input type="file" id="input-str" name="berkas" onchange="handleChangestr()" hidden />
-                                                    <label class="btn-upload btn btn-primary mt-4" for="input-str">Pilih File</label>
-                                                </div>
-                                            </div>
-                                        </div>                                                   
-                                    </div><!--end modal-body-->
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-de-primary btn-sm"  id="submit-btn-str" hidden>Save</button>
-                                    </div><!--end modal-footer-->
-                                </form>
-                            </div><!--end modal-content-->
-                        </div><!--end modal-dialog-->
-                    </div>
-                    <!-- Modals Ubah Berkas -->
-                    <script>
-                        function handleChangestr() {
-                                            // Ambil input file
-                            var inputFilestr = document.getElementById('input-str');
-
-                                            // Cek apakah file telah dipilih
-                            if (inputFilestr.files.length > 0) {
-                                            // Jika file dipilih, tampilkan tombol submit dan submitkan formulir
-                                document.getElementById('submit-btn-str').click();
-                            }
-                        }
-                    </script>
-
-
-                    <!-- ======= NPWP ======= -->
-                    <div class="nav flex-column nav-pills" id="files-tab" aria-orientation="vertical">
-                        <a class="nav-link nav-link1 mb-0" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#ubahnpwp">
-                            <i data-feather="settings" class="align-self-center icon-dual-file icon-sm me-2"></i>
-                            <div class="d-inline-block align-self-center">
-                                <h5 class="m-0">NPWP</h5>
-                                <?php echo !empty($berkas['NPWP']) ? '<small>'.$berkas['NPWP'].'</small>' : '<small>NPWP Belum DiUpload</small>'; ?>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="modal fade" id="ubahnpwp" tabindex="-1" role="dialog" aria-labelledby="exampleModalPrimary1" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header bg-primary">
-                                    <h6 class="modal-title m-0 text-white" id="exampleModalPrimary1">Upload Berkas NPWP</h6>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div><!--end modal-header-->
-                                <form method="post" action="<?php echo !empty($berkas['NPWP']) ? 'app/controller/pegawai/ubah-berkas.php' : 'app/controller/pegawai/upload-berkas.php'; ?>" enctype="multipart/form-data">
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="d-grid">
-                                                    <p class="text-muted">Pastikan File yang diupload berformatkan "pdf / jpeg / jpg / png".</p>
-                                                    <div class="preview-box d-block justify-content-center rounded shadow overflow-hidden bg-light p-1"></div>
-                                                    <input type="hidden" name="jenis" value="npwp">
-                                                    <input type="file" id="input-npwp" name="berkas" onchange="handleChangenpwp()" hidden />
-                                                    <label class="btn-upload btn btn-primary mt-4" for="input-npwp">Pilih File</label>
-                                                </div>
-                                            </div>
-                                        </div>                                                   
-                                    </div><!--end modal-body-->
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-de-primary btn-sm"  id="submit-btn-npwp" hidden>Save</button>
-                                    </div><!--end modal-footer-->
-                                </form>
-                            </div><!--end modal-content-->
-                        </div><!--end modal-dialog-->
-                    </div>
-                    <!-- Modals Ubah Berkas -->
-                    <script>
-                        function handleChangenpwp() {
-                                            // Ambil input file
-                            var inputFilenpwp = document.getElementById('input-npwp');
-
-                                            // Cek apakah file telah dipilih
-                            if (inputFilenpwp.files.length > 0) {
-                                            // Jika file dipilih, tampilkan tombol submit dan submitkan formulir
-                                document.getElementById('submit-btn-npwp').click();
-                            }
-                        }
-                    </script>
-
-                    <!-- ======= Sertifikat ======= -->
-                    <?php 
-                        $ambil_berkas = $koneksi->query("SELECT * FROM sertifikat WHERE nopeg='$n'");
-                        $sertifikat = $ambil_berkas->num_rows;
-                    ?>
-
-                    <div class="nav flex-column nav-pills" id="files-tab" aria-orientation="vertical">
-                        <a class="nav-link nav-link1  mb-0 align-items-center" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#uploadsert">
-                            <i data-feather="toggle-left" class="align-self-center icon-dual-file icon-sm me-2"></i>
-                            <div class="d-inline-block align-self-center">
-                                <h5 class="m-0">Sertifikat</h5>
-                                <?php   if ($sertifikat <= 0) { echo "<small>Sertifikat Belum DiUpload</small></small>";} else { echo "<small>".$sertifikat." Telah diupload</small>"; } ?>
-
-                            </div>
-                            <?php   if ($sertifikat >= 1) { echo '<span class="badge bg-success ms-auto font-10">'.$sertifikat.'</span>';} ?>
-                            
-                        </a>
-                    </div>
-
-                    <div class="modal fade" id="uploadsert" tabindex="-1" role="dialog" aria-labelledby="exampleModalPrimary1" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header bg-primary">
-                                    <h6 class="modal-title m-0 text-white" id="exampleModalPrimary1">Upload Sertifikat</h6>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div><!--end modal-header-->
-                                <form method="post" action="app/controller/pegawai/upload-berkas.php" enctype="multipart/form-data">
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="d-grid">
-                                                    <p class="text-muted">Pastikan File yang diupload berformatkan "pdf / jpeg / jpg / png".</p>
-                                                    <div class="preview-box d-block justify-content-center rounded shadow overflow-hidden bg-light p-1"></div>
-                                                    <input type="hidden" name="jenis" value="sertif">
-                                                    <input type="file" id="input-sertif" name="berkas" onchange="handleChangesertif()" hidden />
-                                                    <label class="btn-upload btn btn-primary mt-4" for="input-sertif">Pilih File</label>
-                                                </div>
-                                            </div>
-                                        </div>                                                   
-                                    </div><!--end modal-body-->
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-de-primary btn-sm"  id="submit-btn-sertif" hidden>Save</button>
-                                    </div><!--end modal-footer-->
-                                </form>
-                            </div><!--end modal-content-->
-                        </div><!--end modal-dialog-->
-                    </div>
-                    <!-- Modals Ubah Berkas -->
-                    <script>
-                        function handleChangesertif() {
-                                            // Ambil input file
-                            var inputFilesertif = document.getElementById('input-sertif');
-
-                                            // Cek apakah file telah dipilih
-                            if (inputFilesertif.files.length > 0) {
-                                            // Jika file dipilih, tampilkan tombol submit dan submitkan formulir
-                                document.getElementById('submit-btn-sertif').click();
-                            }
-                        }
-                    </script>
-
-                    
-                </div>
-            </div>
-            <!--end card-body-->
-        </div>
-        <!--end card-->
-        <!-- <div class="card">
-            <div class="card-body">
-                <small class="float-end">62%</small>
-                <h6 class="mt-0">620GB / 1TB Used</h6>
-                <div class="progress" style="height: 5px;">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: 62%;" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>
-        </div> -->
-        <!--end card-->
-    </div>
-    <!--end col-->
-    <div class="col-lg-9">
-        <div class="">
-            <div class="tab-content" id="files-tabContent">
-                <div class="float-end">
-                    <div class="dropdown">
-                        <a class="btn btn-primary position-relative overflow-hidden dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="las la-cloud-upload-alt me-2 font-15"></i>Upload File
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#uploadktp">Upload KTP</a>
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#uploadkk">Upload KK</a>
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#ubahijazah">Upload IJAZAH</a>
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#ubahppni">Upload PPNI</a>
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#ubahstr">Upload SIP</a>
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#ubahnpwp">Upload NPWP</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#uploadsert">Upload Sertifikat</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade show active" id="files-projects">
-                    <h4 class="card-title mt-0 mb-3">File Berkas</h4>
-                    <?php if (!empty($berkas['KTP']) || !empty($berkas['KK']) || !empty($berkas['IJAZAH']) || !empty($berkas['PPNI']) || !empty($berkas['PPNI']) || !empty($berkas['PPNI']) || !empty($berkas['PPNI']) || $sertifikat>=1) { ?>
-                        <div class="file-box-content">
-                            <?php if (!empty($berkas['KTP'])) { ?>
-                                <div class="file-box">
-                                    <a href="<?=$file_path_ktp?>" class="download-icon-link">
-                                        <i class="las la-download file-download-icon"></i>
-                                        <div class="text-center">
-                                            <i class="lar <?=$ktp?>"></i>
-                                            <h6 class="text-truncate">KTP</h6>
-                                            <small class="text-muted"><?=$display_name_ktp?> / <?=round($file_size_ktp)?> kb</small>
-                                        </div>
-                                    </a>
-                                </div>
-                            <?php } ?>
-                            <?php if (!empty($berkas['KK'])) { ?>
-                                <div class="file-box">
-                                    <a href="<?=$file_path_kk?>" class="download-icon-link">
-                                        <i class="las la-download file-download-icon"></i>
-                                        <div class="text-center">
-                                            <i class="lar <?=$kk?>"></i>
-                                            <h6 class="text-truncate">KK</h6>
-                                            <small class="text-muted"><?=$display_name_kk?> / <?=round($file_size_kk)?> kb</small>
-                                        </div>
-                                    </a>
-                                </div>
-                            <?php } ?>
-                            <?php if (!empty($berkas['IJAZAH'])) { ?>
-                                <div class="file-box">
-                                    <a href="<?=$file_path_ijazah?>" class="download-icon-link">
-                                        <i class="las la-download file-download-icon"></i>
-                                        <div class="text-center">
-                                            <i class="lar <?=$ijazah?>"></i>
-                                            <h6 class="text-truncate">IJAZAH</h6>
-                                            <small class="text-muted"><?=$display_name_ijazah?> / <?=round($file_size_ijazah)?> kb</small>
-                                        </div>
-                                    </a>
-                                </div>
-                            <?php } ?>
-                            <?php if (!empty($berkas['PPNI'])) { ?>
-                                <div class="file-box">
-                                    <a href="<?=$file_path_ppni?>" class="download-icon-link">
-                                        <i class="las la-download file-download-icon"></i>
-                                        <div class="text-center">
-                                            <i class="lar <?=$ppni?>"></i>
-                                            <h6 class="text-truncate">PPNI</h6>
-                                            <small class="text-muted"><?=$display_name_ppni?> / <?=round($file_size_ppni)?> kb</small>
-                                        </div>
-                                    </a>
-                                </div>
-                            <?php } ?>
-                            <?php if (!empty($berkas['SIP'])) { ?>
-                                <div class="file-box">
-                                    <a href="<?=$file_path_sip?>" class="download-icon-link">
-                                        <i class="las la-download file-download-icon"></i>
-                                        <div class="text-center">
-                                            <i class="lar <?=$sip?>"></i>
-                                            <h6 class="text-truncate">SIP</h6>
-                                            <small class="text-muted"><?=$display_name_sip?> / <?=round($file_size_sip)?> kb</small>
-                                        </div>
-                                    </a>
-                                </div>
-                            <?php } ?>
-                            <?php if (!empty($berkas['STR'])) { ?>
-                                <div class="file-box">
-                                    <a href="<?=$file_path_str?>" class="download-icon-link">
-                                        <i class="las la-download file-download-icon"></i>
-                                        <div class="text-center">
-                                            <i class="lar <?=$str?>"></i>
-                                            <h6 class="text-truncate">STR</h6>
-                                            <small class="text-muted"><?=$display_name_str?> / <?=round($file_size_str)?> kb</small>
-                                        </div>
-                                    </a>
-                                </div>
-                            <?php } ?>
-                            <?php if (!empty($berkas['NPWP'])) { ?>
-                                <div class="file-box">
-                                    <a href="<?=$file_path_npwp?>" class="download-icon-link">
-                                        <i class="las la-download file-download-icon"></i>
-                                        <div class="text-center">
-                                            <i class="lar <?=$npwp?>"></i>
-                                            <h6 class="text-truncate">NPWP</h6>
-                                            <small class="text-muted"><?=$display_name_npwp?> / <?=round($file_size_npwp)?> kb</small>
-                                        </div>
-                                    </a>
-                                </div>
-                            <?php } ?>
-                        </div>
-                        <?php if ($sertifikat>=1) { ?>
-                            <h4 class="card-title mt-3 mb-3">Sertifikat</h4>
-                            <div class="file-box-content">
-                                <?php 
-                                    while ($row_file = mysqli_fetch_assoc($ambil_berkas_sertif)) {
-                                        $sertifikatData = getFileFormat($row_file['berkas']);
-                                        $sertif = $sertifikatData['format'];
-                                        $file_path_sertif = $sertifikatData['file_path'];
-                                        $file_size_sertif = $sertifikatData['file_size'];
-                                        $display_name_sertif = $sertifikatData['display_name'];
+                                <?php
+                                foreach ($fileList  as $label => $target) {
                                 ?>
-                                    <div class="file-box">
-                                        <a href="<?=$file_path_sertif?>" class="download-icon-link">
-                                            <i class="las la-download file-download-icon"></i>
-                                            <div class="text-center">
-                                                <i class="lar <?=$sertif?>"></i>
-                                                <h6 class="text-truncate">Sertifikat</h6>
-                                                <small class="text-muted"><?=$display_name_sertif?> / <?=round($file_size_sertif)?> kb</small>
-                                            </div>
-                                        </a>
-                                    </div>
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#modal_<?=strtolower($label)?>">
+                                <?=$label?></a>
                                 <?php } ?>
                             </div>
-                        <?php } ?>
-                    <?php } else { ?>
-                        <div class="row justify-content-center align-items-center">
-                            <div class="col-md-8 col-sm-12 text-center">
-                                <center><img src="public/bg/bg03.png" style="max-width: 50%; height: auto;" class="img-fluid rounded d-block" alt="Header Image"></center>
-                                <h5 class="mt-3">Berkas Anda Masih Kosong</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="files-nav" id="results">
+                    <?php
+                    function buatModal($key, $info, $berkas, $sertifikat, $data_diri)
+                    {
+                    $adaFile = !empty($berkas[$key]);
+                    $label = $info['label'];
+                    $icon = $info['icon'];
+                    $idModal = strtolower("modal_" . $key);
+                    $nik = $data_diri['nik'];
+                    $formAction = $adaFile
+                    ? 'app/controller/pegawai/ubah-berkas.php'
+                    : 'app/controller/pegawai/upload-berkas.php';
+                    ?>
+                    <!-- Tombol -->
+                    <div class="nav flex-column nav-pills">
+                        <a class="nav-link nav-link1 mb-0 d-flex align-items-center justify-content-between" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#<?php echo $idModal; ?>">
+                            <div class="d-flex align-items-center">
+                                <i data-feather="<?php echo $icon; ?>" class="align-self-center icon-dual-file icon-sm me-2"></i>
+                                <div class="d-inline-block align-self-center">
+                                    <h5 class="m-0">
+                                    <?php echo $label; ?>
+                                    </h5>
+                                    <?php
+                                    // ==== Bagian teks status ====
+                                    if ($key == "SERTIFIKAT") {
+                                    echo $sertifikat <= 0
+                                    ? '<small>Sertifikat Belum DiUpload</small>'
+                                    : '<small>' . $sertifikat . ' Telah DiUpload</small>';
+                                    } else {
+                                    echo $adaFile
+                                    ? '<small>' . htmlspecialchars($berkas[$key]) . '</small>'
+                                    : '<small>' . $label . ' Belum DiUpload</small>';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                            <?php
+                            // ==== Badge untuk sertifikat ====
+                            if ($key == "SERTIFIKAT" && $sertifikat >= 1) {
+                            echo '<span class="badge bg-success ms-auto font-10">' . $sertifikat . '</span>';
+                            } ?>
+                        </a>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="<?php echo $idModal; ?>" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary">
+                                    <h6 class="modal-title m-0 text-white">Upload Berkas
+                                    <?php echo $label; ?>
+                                    </h6>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <form method="post" action="<?php echo $formAction; ?>" enctype="multipart/form-data">
+                                    <div class="modal-body">
+                                        <div class="text-center mb-3">
+                                            <img src="public/bg/upload.webp" class="img-fluid rounded" style="max-width:300px;">
+                                        </div>
+                                        <p class="text-muted">Pastikan file berformat "pdf / jpeg / jpg / png".</p>
+                                        <input type="hidden" name="jenis" value="<?php echo strtolower($key); ?>">
+                                        <div class="input-group mb-3">
+                                            <input type="file" class="form-control" name="berkas" accept=".pdf,.jpeg,.jpg,.png" required>
+                                            <label class="input-group-text">Upload</label>
+                                        </div>
+                                        <?php
+                                        $withTanggalDibuat   = ["KTP", "SIP", "STR", "SERTIFIKAT", "IJAZAH", "NPWP", "KK", "TRANSKIP", "PPNI"];
+                                        $withTanggalBerakhir = ["SIP", "STR", "SERTIFIKAT", "NPWP", "PPNI"];
+                                        $withNomor           = ["KTP", "SIP", "STR", "SERTIFIKAT", "NPWP", "KK", "TRANSKIP", "IJAZAH"];
+                                        $withKeterangan      = ["SERTIFIKAT"];
+                                        ?>
+                                        <?php if (in_array($key, $withTanggalDibuat)) : ?>
+                                            <div class="mb-2">
+                                                <label class="form-label">Tanggal Dibuat:</label>
+                                                <input type="date" class="form-control" name="tgl_dibuat">
+                                            </div>
+                                        <?php endif; ?>
+
+                                        <?php if (in_array($key, $withTanggalBerakhir)) : ?>
+                                            <div class="mb-2">
+                                                <label class="form-label">Tanggal Berakhir:</label>
+                                                <input type="date" class="form-control" name="tgl_berakhir">
+                                            </div>
+                                        <?php else: ?>
+                                            <input type="hidden" name="tgl_berakhir">
+                                        <?php endif; ?>
+
+                                        <?php if (in_array($key, $withNomor)) : ?>
+                                            <div class="mb-2">
+                                                <label class="form-label">No Surat: <code>*</code></label>
+                                                <input type="text" 
+                                                       name="nomor" 
+                                                       class="form-control" 
+                                                       placeholder="Nomor Surat/Sertifikat/Kartu"
+                                                       value="<?= ($key == 'KTP') ? $nik : '' ?>">
+                                            </div>
+                                        <?php endif; ?>
+
+                                        <?php if (in_array($key, $withKeterangan)) : ?>
+                                            <div class="mb-2">
+                                                <label class="form-label">Keterangan:</label>
+                                                <textarea name="keterangan" class="form-control" placeholder="Pelatihan / Seminar / dll"></textarea>
+                                            </div>
+                                        <?php endif; ?>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-
+                    </div>
+                    <?php } ?>
+                    <!-- ===== Render Semua Modal ===== -->
+                    <?php
+                    foreach ($files as $key => $info) {
+                    if (in_array($key, ['STR', 'SIP', 'PPNI']) && (!isset($jenis_pegawai) || $jenis_pegawai != 1)) continue;
+                        buatModal($key, $info, $berkas, $sertifikat, $data_diri);
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9 col-12">
+        <div class="row">
+            <?php
+            $berkas_ada = false;
+            $today = new DateTime();
+            // Cek apakah ada berkas yang tidak kosong
+            foreach ($fileList as $key => $label) {
+            if (!empty($berkas[$key])) {
+            $berkas_ada = true;
+            break;
+            }
+            }
+            // --- CEK UNTUK FILE BIASA ---
+            if ($berkas_ada) {
+            foreach ($fileList as $key => $label) {
+            if (empty($berkas[$key])) continue;
+            $ambil_detail = $koneksi->query("SELECT * FROM file_detail WHERE jenis_file='$key' AND nopeg='$n'");
+            if (!$ambil_detail) continue;
+            $data_detail = $ambil_detail->fetch_assoc();
+            $sisaMasa = '-';
+            $interval = null;
+            // Cek apakah tanggal berakhir valid
+            if (!empty($data_detail['tgl_berakhir']) && $data_detail['tgl_berakhir'] != '0000-00-00') {
+            $tglBerakhir = date_create($data_detail['tgl_berakhir']);
+            if ($tglBerakhir && $tglBerakhir >= $today) {
+            $interval = date_diff($today, $tglBerakhir);
+            $sisaMasa = $interval->y . " tahun, " . $interval->m . " bulan, " . $interval->d . " hari";
+            } else {
+            $sisaMasa = "Sudah Kadaluarsa";
+            }
+            }
+            // Alert merah
+            if ($sisaMasa == "Sudah Kadaluarsa") {
+            ?>
+            <div class="col-lg-12">
+                <div class="alert custom-alert custom-alert-danger icon-custom-alert fade show" role="alert">
+                    <i class="mdi mdi-alert-outline alert-icon text-danger align-self-center font-30 me-3"></i>
+                    <div class="alert-text my-1">
+                        <h5 class="mb-1 fw-bold mt-0">
+                        <?= htmlspecialchars($label) ?>
+                        </h5>
+                        <span>Berkas <b>
+                        <?= htmlspecialchars($label) ?></b> sudah kadaluarsa!</span>
+                    </div>
+                    <div class="alert-close">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+            <?php } ?>
+            <?php
+            // Alert kuning (masa aktif < 3 bulan)
+            if ($sisaMasa != "Sudah Kadaluarsa" && $interval && $interval->m <= 3) {
+            ?>
+            <div class="col-lg-12">
+                <div class="alert custom-alert custom-alert-warning icon-custom-alert fade show" role="alert">
+                    <i class="mdi mdi-alert-outline alert-icon text-warning align-self-center font-30 me-3"></i>
+                    <div class="alert-text my-1">
+                        <h5 class="mb-1 fw-bold mt-0">
+                        <?= htmlspecialchars($label) ?>
+                        </h5>
+                        <span>Masa aktif berkas <b>
+                            <?= htmlspecialchars($label) ?></b> tinggal
+                        <?= htmlspecialchars($sisaMasa) ?></span>
+                    </div>
+                    <div class="alert-close">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+            <?php
+            }
+            }
+            }
+            // --- CEK UNTUK SERTIFIKAT ---
+            if ($sertifikat > 0) {
+            $qSertifikatDetail = $koneksi->query("SELECT * FROM file_detail WHERE jenis_file ='SERTIFIKAT' AND nopeg='$n'");
+            while ($sert = $qSertifikatDetail->fetch_assoc()) {
+            $nama_berkas = $sert['nama_file'];
+            $konek_sert = $koneksi->query("SELECT * FROM sertifikat WHERE berkas='$nama_berkas'");
+            $data_sert = $konek_sert->fetch_assoc();
+            $sisaMasa = '-';
+            $interval = null;
+            if (!empty($sert['tgl_berakhir']) && $sert['tgl_berakhir'] != '0000-00-00') {
+            $tglBerakhir = date_create($sert['tgl_berakhir']);
+            if ($tglBerakhir && $tglBerakhir >= $today) {
+            $interval = date_diff($today, $tglBerakhir);
+            $sisaMasa = $interval->y . " tahun, " . $interval->m . " bulan, " . $interval->d . " hari";
+            } else {
+            $sisaMasa = "Sudah Kadaluarsa";
+            }
+            }
+            // Jika sertifikat sudah kadaluarsa
+            if ($sisaMasa == "Sudah Kadaluarsa") {
+            ?>
+            <div class="col-lg-12">
+                <div class="alert custom-alert custom-alert-danger icon-custom-alert fade show" role="alert">
+                    <i class="mdi mdi-alert-outline alert-icon text-danger align-self-center font-30 me-3"></i>
+                    <div class="alert-text my-1">
+                        <h5 class="mb-1 fw-bold mt-0">Sertifikat:
+                        <?= htmlspecialchars($data_sert['keterangan']) ?>
+                        </h5>
+                        <span>Sertifikat <b>
+                        <?= htmlspecialchars($data_sert['keterangan']) ?></b> sudah kadaluarsa!</span>
+                    </div>
+                    <div class="alert-close">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+            <?php } ?>
+            <?php
+            // Jika masa aktif sertifikat < 3 bulan
+            if ($sisaMasa != "Sudah Kadaluarsa" && $interval && $interval->m <= 3) {
+            ?>
+            <div class="col-lg-12">
+                <div class="alert custom-alert custom-alert-warning icon-custom-alert fade show" role="alert">
+                    <i class="mdi mdi-alert-outline alert-icon text-warning align-self-center font-30 me-3"></i>
+                    <div class="alert-text my-1">
+                        <h5 class="mb-1 fw-bold mt-0">Sertifikat:
+                        <?= htmlspecialchars($data_sert['keterangan']) ?>
+                        </h5>
+                        <span>Masa aktif sertifikat <b>
+                            <?= htmlspecialchars($data_sert['keterangan']) ?></b> tinggal
+                        <?= htmlspecialchars($sisaMasa) ?></span>
+                    </div>
+                    <div class="alert-close">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+            <?php
+            }
+            }
+            }
+            ?>
+        </div>
+        <div class="tab-content" id="files-tabContent">
+            <div class="float-end">
+                <div class="dropdown">
+                    <a class="btn btn-primary position-relative overflow-hidden dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="las la-cloud-upload-alt me-2 font-15"></i>Upload File
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <?php
+                        foreach ($fileList  as $label => $target) {
+                        if ($label == "---") {
+                        echo '<div class="dropdown-divider"></div>';
+                        } else {
+                        echo '<a class="dropdown-item" href="#" data-bs-toggle="modal" data-animation="bounce" data-bs-target="#modal_' . strtolower($label) . '">Upload ' . $label . '</a>';
+                        }
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade show active" id="files-projects">
+                <h4 class="card-title mt-0 mb-3">Berkas-berkas</h4>
+                <?php
+                // Cek apakah ada file terupload atau sertifikat
+                $adaBerkas = false;
+                foreach ($fileList as $key => $label) {
+                if (!empty($berkas[$key])) { $adaBerkas = true; break; }
+                }
+                if ($sertifikat >= 1) $adaBerkas = true;
+                ?>
+                <?php if ($adaBerkas) { ?>
+                <div class="file-box-content">
+                    <?php
+                    foreach ($fileList as $key => $label) {
+                        if (empty($berkas[$key])) continue;
+                        $fileData = getFileFormat($berkas[$key]);
+                        $nama_file = $berkas[$key];
+                        $format = $fileData['format'];
+                        $file_path = $fileData['file_path'];
+                        $file_size = round($fileData['file_size']);
+                        $display_name = $fileData['display_name'];
+                        $ambil_detail_berkas = $koneksi->query("SELECT * FROM file_detail WHERE nama_file='$nama_file'");
+                        $row_berkas = $ambil_detail_berkas->fetch_assoc();
+                        $status = !empty($row_berkas['validasi']) ? $row_berkas['validasi'] : 'Belum Validasi';
+                        $status2 = ($status == 'ada')      ? 'Divalidasi' :
+                           (($status == 'proses') ? 'On Proses'  :
+                           (($status == 'tidak')  ? 'Tidak Valid' : 'Menunggu Validasi'));
+                        $badgeClass = ($status == 'ada') ? 'badge bg-success' : 
+                            (($status == 'proses') ? 'badge bg-warning text-dark' :
+                            (($status == 'tidak') ? 'badge bg-danger text-danger'  : 'badge bg-secondary'));
+                        $upload = tgl_indo($row_berkas['tgl_upload']);
+                        $popoverContent = htmlspecialchars("
+                        <strong>Nama File:</strong> {$display_name}<br>
+                        <strong>Ukuran:</strong> {$file_size} KB<br>
+                        <strong>Status:</strong> {$status2}<br>
+                        <strong>Tgl Upload:</strong> {$upload}
+                        ");
+                    ?>
+                    <div class="file-box" data-filebox data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-html="true" data-bs-placement="top" data-bs-content="<?=$popoverContent?>">
+                        <div class="dropdown dropend">
+                            <span class="<?=$badgeClass?> position-absolute top-0 end-0 m-1 text-secondary custom-badge">.</span>
+                            <a href="#" data-bs-toggle="dropdown" class="download-icon-link" download>
+                                <div class="text-center">
+                                    <i class="lar <?= $format ?>"></i>
+                                    <h6 class="text-truncate">
+                                    <?= $label ?>
+                                    </h6>
+                                    <small class="text-muted">
+                                    <?= $display_name ?> /
+                                    <?= round($file_size) ?> kb
+                                    </small>
+                                </div>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="<?= $file_path ?>">Download</a>
+                                <a href="app/controller/pegawai/hapus-berkas.php?id=<?= $berkas[$key] ?>&jenis=<?= $key ?>" class="dropdown-item btn-hapus" data-deskripsi="Berkas <?= htmlspecialchars($label) ?> akan dihapus!">
+                                    Hapus
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                     <?php } ?>
                 </div>
-                <!--end tab-pen-->
-                <div class="tab-pane fade" id="files-hide">
-                    <h4 class="mt-0 card-title mb-3">Hide</h4>
+                <?php if ($sertifikat >= 1) { ?>
+                <div class="row">
+                    <div class="col-12">
+                        <h4 class="card-title my-3">Sertifikat</h4>
+                    </div>
                 </div>
-                <!--end tab-pane-->
-            </div>
-            <!--end tab-content-->
-        </div>
-        <!--end card-body-->
-    </div>
-    <!--end col-->
-</div>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const navLinks = document.querySelectorAll('.nav-link'); // Pilih semua elemen dengan kelas "nav-link"
+                <div class="file-box-content">
+                    <?php while ($row_file = mysqli_fetch_assoc($ambil_berkas_sertif)) {
+                        $data = getFileFormat($row_file['berkas']);
+                        $format = $data['format'];
+                        $file_path = $data['file_path'];
+                        $file_size = $data['file_size'];
+                        $display_name = $data['display_name'];
+                        $ambil_sertif = $koneksi->query("SELECT * FROM sertifikat WHERE berkas='$row_file[berkas]'");
+                        $data_sertif = $ambil_sertif->fetch_assoc();
+                        $nama_file = $data_sertif['berkas'];
+                        $ambil_detail_berkas = $koneksi->query("SELECT * FROM file_detail WHERE nama_file='$nama_file'");
+                        $row_berkas = $ambil_detail_berkas->fetch_assoc();
+                        $status = !empty($row_berkas['validasi']) ? $row_berkas['validasi'] : 'Belum Validasi';
+                        $status2 = ($status == 'ada') ? 'Divalidasi' : (($status == 'proses') ? 'On Proses' : 'Menunggu Validasi');
+                        $badgeClass = ($status == 'ada') ? 'badge bg-success' : (($status == 'proses') ? 'badge bg-warning text-dark' : 'badge bg-secondary');
+                        $upload = tgl_indo($row_berkas['tgl_upload']);
+                        $popoverContent = htmlspecialchars("
+                            <strong>Nama File:</strong> {$display_name}<br>
+                            <strong>Ukuran:</strong> {$file_size} KB<br>
+                            <strong>Status:</strong> {$status2}<br>
+                            <strong>Tgl Upload:</strong> {$upload}<br>
+                            <strong>Ket:</strong> {$data_sertif['keterangan']}
+                        ");
+                    ?>
+                    <div class="file-box" data-filebox data-filebox data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-html="true" data-bs-placement="top" data-bs-content="<?=$popoverContent?>">
+                        <div class="dropdown ">
+                            <span class="<?=$badgeClass?> position-absolute top-0 end-0 m-1 text-secondary custom-badge">.</span>
+                            <a href="#" class="download-icon-link" data-bs-toggle="dropdown">
+                                <div class="text-center">
+                                    <i class="lar <?= $format ?>"></i>
+                                    <h6 class="text-truncate">Sertifikat</h6>
+                                    <small class="text-muted">
+                                    <?= $display_name ?> /
+                                    <?= round($file_size) ?> kb
+                                    </small>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <a class="dropdown-item" href="<?= $file_path ?>" download>Download</a>
+                                <a href="app/controller/pegawai/hapus-berkas.php?id=<?= $row_file['berkas'] ?>&jenis=SERTIFIKAT" class="dropdown-item btn-hapus" data-deskripsi="Berkas Sertifikat akan dihapus!">
+                                    Hapus
+                                </a>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php } ?>
+                </div>
+                <?php }  ?>
+                <div class='row mb-3 mt-3'>
+                    <div class='col-md-4'>
+                        <h5><small>Keterangan :</small></h5>
+                        <ul class='list-unstyled text-muted mb-0'>
+                            <li>
+                                <span class='badge bg-success text-success'>.</span> = Telah Tervalidasi
+                            </li>
+                            <li>
+                                <span class='badge bg-secondary text-secondary'>.</span> = Belum Divalidasi
+                            </li>
+                            <li>
+                                <span class='badge bg-warning text-warning'>.</span> = Dalam Proses (Perbaikan, ganti dll)
+                            </li>
+                            <li>
+                                <span class='badge bg-danger text-danger'>.</span> = Berkas tidak Valid
+                            </li>
+                        </ul>
 
-        navLinks.forEach(link => {
-            link.addEventListener('click', function () {
-                // Hapus kelas "active" dari semua link
-                navLinks.forEach(item => item.classList.remove('active'));
-                
-                // Tambahkan kelas "active" ke link yang diklik
-                this.classList.add('active');
-            });
-        });
-    });
-</script>
+                    </div>
+                </div>
+                <?php } else { ?>
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-md-8 col-sm-12 text-center">
+                        <center>
+                        <img src="public/bg/bg03.png" style="max-width: 50%; height: auto;" class="img-fluid rounded d-block" alt="Header Image">
+                        </center>
+                        <h5 class="mt-3">Berkas Anda Masih Kosong</h5>
+                    </div>
+                </div>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php require 'req/js-berkas.php'; ?>
